@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WEDÉ — Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green-dark: #4B5945;
+            --green-medium: #66785F;
+            --green-light: #91AC8F;
+            --green-pale: #B2C9AD;
+            --section-bg: #D4E3D0; /* نفس لون خلفية food-services */
+            --gold: #D4AF37;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at center, #E8EFE5 0%, #B2C9AD 70%, #8DA187 100%); /* نفس خلفية food-services */
+            color: var(--green-dark);
+            margin: 0;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow-x: hidden;
+            padding-top: 110px; /* لتجنب تداخل الهيدر */
+        }
+
+        header {
+            background-color: var(--green-medium);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 20;
+            height: 70px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* نفس ظل food-services */
+        }
+
+        header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 36px;
+            color: var(--green-pale);
+            margin: 0;
+        }
+
+        header a {
+            color: var(--green-pale);
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); /* نفس تأثير food-services */
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover { opacity: 0.8; }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background-color: var(--green-light);
+            color: white;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.3s;
+            border: none;
+            cursor: pointer;
+            margin-left: 25px;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--green-medium);
+            transform: translateY(-2px);
+        }
+
+        .profile-cover {
+            position: relative;
+            height: 300px;
+            background: url('imgs/cover-demo.jpg') center/cover no-repeat;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(105, 121, 85, 0.2); /* نفس ظل food-services */
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1.2s ease-out forwards;
+        }
+
+        .profile-cover::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.4); /* نفس تأثير services-hero */
+            z-index: 1;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            width: 150px;
+            margin: -75px auto 20px;
+            z-index: 2;
+        }
+
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 6px solid white;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(105, 121, 85, 0.4); /* نفس ظل الصور في food-services */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .avatar:hover {
+            transform: scale(1.1); /* نفس تأثير hover في food-services */
+            box-shadow: 0 8px 25px rgba(105, 121, 85, 0.5);
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .change-avatar-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 40px;
+            height: 40px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .change-avatar-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .profile-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: var(--section-bg); /* نفس خلفية الأقسام */
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 20px rgba(105, 121, 85, 0.2);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.2s forwards;
+        }
+
+        .profile-meta .left {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .profile-meta h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 28px;
+            margin: 0;
+        }
+
+        .profile-meta p {
+            margin: 0;
+            color: var(--green-medium);
+            font-size: 16px;
+        }
+
+        .profile-meta .small {
+            font-size: 14px;
+            color: var(--green-medium);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: var(--section-bg); /* نفس خلفية الأقسام */
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(105, 121, 85, 0.2);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.3s; }
+        .card:nth-child(2) { animation-delay: 0.4s; }
+        .card:nth-child(3) { animation-delay: 0.5s; }
+
+        .card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: var(--green-dark);
+            margin-bottom: 15px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed #ddd;
+            font-size: 14px;
+        }
+
+        .small { color: var(--green-medium); }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .section-title h3 { margin: 0; }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .btn.primary {
+            background: var(--green-light);
+            color: white;
+        }
+
+        .btn.primary:hover {
+            background: var(--green-medium);
+            transform: translateY(-2px);
+        }
+
+        .btn.ghost {
+            background: transparent;
+            border: 1px solid var(--green-light);
+            color: var(--green-dark);
+        }
+
+        .btn.ghost:hover {
+            background: var(--green-light);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .bookings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        .bookings-table th, .bookings-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .status {
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .status.confirmed {
+            background: #E6F4EA;
+            color: var(--green-dark);
+        }
+
+        .status.pending {
+            background: #FFF5E6;
+            color: #7a5f2f;
+        }
+
+        .vision-grid {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .vision-grid img {
+            width: 120px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(105, 121, 85, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .vision-grid img:hover {
+            transform: scale(1.1);
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .checklist li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .payments-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .payments-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        footer {
+            background-color: var(--green-medium);
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 14px;
+            margin-top: 60px;
+            width: 100%;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* نفس ظل food-services */
+        }
+
+        footer span {
+            color: var(--green-pale);
+            font-weight: 500;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 980px) {
+            .grid { grid-template-columns: 1fr; }
+            .profile-meta { flex-direction: column; align-items: center; text-align: center; gap: 15px; }
+            .profile-meta .left { align-items: center; }
+            body { padding: 20px; padding-top: 110px; }
+        }
+
+        @media (max-width: 600px) {
+            .avatar { width: 120px; height: 120px; }
+            .avatar-wrapper { margin: -60px auto 15px; }
+            .profile-cover { height: 200px; }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1><a href="main.html" class="logo-link">WEDÉ</a></h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="services.html" style="text-decoration: underline;">Services</a>
+        <a href="#">Gallery</a>
+        <a href="#">Contact</a>
+        <button id="loginBtn" class="nav-btn">Login</button>
+    </nav>
+</header>
+
+<main class="container">
+    <div class="profile-cover"></div>
+
+    <div class="avatar-wrapper">
+        <div class="avatar" id="avatarPreview">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><rect width='100%' height='100%' fill='%23E6EFE2'/></svg>">
+        </div>
+        <div class="change-avatar-btn" id="changeAvatarBtn">📷</div>
+    </div>
+
+    <div class="profile-meta">
+        <div class="left">
+            <h2 id="fullName">Full Name</h2>
+            <p id="roleAndAge">Role • Age</p>
+            <p id="location" class="small">City • Wedding Date</p>
+        </div>
+        <div class="right">
+            <button class="btn ghost" id="editBtn">Edit Profile</button>
+            <button class="btn primary" id="messagePlanner">Message Planner</button>
+        </div>
+    </div>
+
+    <div class="grid">
+        <aside>
+            <div class="card">
+                <h3>Contact</h3>
+                <div class="info-row"><div>Email</div><div id="contactEmail" class="small">—</div></div>
+                <div class="info-row"><div>Phone</div><div id="contactPhone" class="small">—</div></div>
+                <div class="info-row"><div>City</div><div id="contactCity" class="small">—</div></div>
+                <div class="info-row"><div>Wedding Date</div><div id="contactDate" class="small">—</div></div>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+                <h3>Booked Services</h3>
+                <table class="bookings-table" id="bookingsTable">
+                    <thead><tr><th>Service</th><th>Status</th><th>Price</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+                <div style="margin-top: 15px; text-align: center;">
+                    <button class="btn primary" id="addService">Add Service</button>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+                <h3>Payments</h3>
+                <ul class="payments-list" id="paymentsList"></ul>
+            </div>
+        </aside>
+
+        <section>
+            <div class="card">
+                <div class="section-title"><h3>Vision Board</h3><button class="btn primary" id="addVision">Add Image</button></div>
+                <div class="vision-grid" id="visionGrid"></div>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+                <div class="section-title"><h3>Wedding Checklist</h3><button class="btn ghost" id="clearChecklist">Clear</button></div>
+                <ul class="checklist" id="checklist"></ul>
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <input id="newChecklist" placeholder="Add task" style="flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #ddd;">
+                    <button class="btn primary" id="addChecklistBtn">Add</button>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+                <div class="section-title"><h3>Notes & About</h3><button class="btn ghost" id="editAbout">Edit</button></div>
+                <p id="aboutText" style="color: var(--green-medium);">No notes yet. Use Edit to add a short description about your wedding vision.</p>
+            </div>
+        </section>
+    </div>
+</main>
+
+<input type="file" id="avatarFile" accept="image/*" style="display: none;">
+<input type="file" id="visionFile" accept="image/*" style="display: none;">
+
+<footer>
+    © 2025 <span>WEDÉ</span> | All rights reserved
+</footer>
+
+<script>
+    const STORAGE_KEY = 'wede_profile_demo';
+    function defaultProfile() {
+        return {
+            firstName: 'Zainab',
+            lastName: 'Samarah',
+            email: 'zainab@gmail.com',
+            phone: '',
+            city: '',
+            weddingDate: '',
+            role: 'User',
+            age: 27,
+            avatar: null,
+            about: '',
+            bookings: [],
+            payments: [],
+            vision: [],
+            checklist: []
+        };
+    }
+    function saveProfile(p) { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); }
+    function loadProfile() { return JSON.parse(localStorage.getItem(STORAGE_KEY) || JSON.stringify(defaultProfile())); }
+
+    function render() {
+        const p = loadProfile();
+        document.getElementById('fullName').innerText = p.firstName + ' ' + p.lastName;
+        document.getElementById('roleAndAge').innerText = `${p.role} • ${p.age} yrs`;
+        document.getElementById('location').innerText = `${p.city || '—'} • ${p.weddingDate || '—'}`;
+        document.getElementById('contactEmail').innerText = p.email || '—';
+        document.getElementById('contactPhone').innerText = p.phone || '—';
+        document.getElementById('contactCity').innerText = p.city || '—';
+        document.getElementById('contactDate').innerText = p.weddingDate || '—';
+        document.getElementById('aboutText').innerText = p.about || 'No notes yet. Use Edit to add a short description about your wedding vision.';
+        const av = document.getElementById('avatarPreview');
+        av.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = p.avatar || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><rect width="100%" height="100%" fill="%23E6EFE2"/></svg>';
+        av.appendChild(img);
+
+        // Bookings
+        const tbody = document.querySelector('#bookingsTable tbody');
+        tbody.innerHTML = '';
+        p.bookings.forEach(b => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${b.service}</td><td><span class="status ${b.status === 'Confirmed' ? 'confirmed' : 'pending'}">${b.status}</span></td><td>${b.price || '—'}</td>`;
+            tbody.appendChild(tr);
+        });
+
+        // Payments
+        const payList = document.getElementById('paymentsList');
+        payList.innerHTML = '';
+        p.payments.forEach(pay => {
+            const li = document.createElement('li');
+            li.innerHTML = `<div>${pay.label}</div><div>${pay.amount} • ${pay.status}</div>`;
+            payList.appendChild(li);
+        });
+
+        // Vision
+        const vg = document.getElementById('visionGrid');
+        vg.innerHTML = '';
+        p.vision.forEach(imgSrc => {
+            const im = document.createElement('img');
+            im.src = imgSrc;
+            vg.appendChild(im);
+        });
+
+        // Checklist
+        const cl = document.getElementById('checklist');
+        cl.innerHTML = '';
+        p.checklist.forEach((c, i) => {
+            const li = document.createElement('li');
+            const chk = document.createElement('input');
+            chk.type = 'checkbox';
+            chk.checked = !!c.done;
+            chk.addEventListener('change', () => toggleChecklist(i));
+            const span = document.createElement('span');
+            span.innerText = c.text;
+            span.style.flex = '1';
+            const del = document.createElement('button');
+            del.className = 'btn ghost';
+            del.innerText = 'Delete';
+            del.addEventListener('click', () => removeChecklist(i));
+            li.appendChild(chk);
+            li.appendChild(span);
+            li.appendChild(del);
+            cl.appendChild(li);
+        });
+    }
+
+    document.getElementById('editBtn').addEventListener('click', () => {
+        const p = loadProfile();
+        const firstName = prompt('First name', p.firstName) || p.firstName;
+        const lastName = prompt('Last name', p.lastName) || p.lastName;
+        const email = prompt('Email', p.email) || p.email;
+        const phone = prompt('Phone', p.phone) || p.phone;
+        const city = prompt('City', p.city) || p.city;
+        const weddingDate = prompt('Wedding date (YYYY-MM-DD)', p.weddingDate) || p.weddingDate;
+        const role = prompt('Role (User/Owner/Planner)', p.role) || p.role;
+        const age = Number(prompt('Age', p.age) || p.age);
+        const about = prompt('Short about text', p.about) || p.about;
+        Object.assign(p, { firstName, lastName, email, phone, city, weddingDate, role, age, about });
+        saveProfile(p);
+        render();
+
+        if (confirm('Do you want to change avatar image now?')) {
+            document.getElementById('avatarFile').click();
+        }
+    });
+
+    document.getElementById('avatarFile').addEventListener('change', (e) => {
+        const f = e.target.files[0];
+        if (!f) return;
+        const r = new FileReader();
+        r.onload = () => {
+            const p = loadProfile();
+            p.avatar = r.result;
+            saveProfile(p);
+            render();
+        };
+        r.readAsDataURL(f);
+    });
+
+    document.getElementById('changeAvatarBtn').addEventListener('click', () => document.getElementById('avatarFile').click());
+
+    document.getElementById('addService').addEventListener('click', () => {
+        const service = prompt('Service name (e.g., Venue, Photographer)', 'Decoration');
+        if (!service) return;
+        const price = prompt('Price (e.g., $2500)', '');
+        const status = prompt('Status (Confirmed / Pending)', 'Pending') || 'Pending';
+        const p = loadProfile();
+        p.bookings.push({ service, price, status });
+        saveProfile(p);
+        render();
+    });
+
+    document.getElementById('addVision').addEventListener('click', () => document.getElementById('visionFile').click());
+    document.getElementById('visionFile').addEventListener('change', (e) => {
+        const f = e.target.files[0];
+        if (!f) return;
+        const r = new FileReader();
+        r.onload = () => {
+            const p = loadProfile();
+            p.vision.push(r.result);
+            saveProfile(p);
+            render();
+        };
+        r.readAsDataURL(f);
+    });
+
+    document.getElementById('addChecklistBtn').addEventListener('click', () => {
+        const txt = document.getElementById('newChecklist').value.trim();
+        if (!txt) return;
+        const p = loadProfile();
+        p.checklist.push({ text: txt, done: false });
+        saveProfile(p);
+        document.getElementById('newChecklist').value = '';
+        render();
+    });
+
+    function toggleChecklist(i) {
+        const p = loadProfile();
+        p.checklist[i].done = !p.checklist[i].done;
+        saveProfile(p);
+        render();
+    }
+
+    function removeChecklist(i) {
+        const p = loadProfile();
+        p.checklist.splice(i, 1);
+        saveProfile(p);
+        render();
+    }
+
+    document.getElementById('clearChecklist').addEventListener('click', () => {
+        if (confirm('Clear checklist?')) {
+            const p = loadProfile();
+            p.checklist = [];
+            saveProfile(p);
+            render();
+        }
+    });
+
+    document.getElementById('loginBtn').addEventListener('click', function () {
+        document.body.style.opacity = '0';
+        setTimeout(() => { window.location.href = 'login.html'; }, 400);
+    });
+
+    if (!localStorage.getItem(STORAGE_KEY)) {
+        const p = defaultProfile();
+        p.bookings = [
+            { service: 'Decoration & Setup', price: '$1200', status: 'Confirmed' },
+            { service: 'Photographer', price: '$900', status: 'Pending' }
+        ];
+        p.payments = [
+            { label: 'Deposit - Venue', amount: '$500', status: 'Paid' },
+            { label: 'Balance - Photographer', amount: '$900', status: 'Unpaid' }
+        ];
+        p.vision = [];
+        p.checklist = [
+            { text: 'Book venue', done: true },
+            { text: 'Choose menu', done: false }
+        ];
+        saveProfile(p);
+    }
+
+    render();
+</script>
+</body>
+</html>

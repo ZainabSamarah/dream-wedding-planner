@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up – Dream Wedding Planner</title>
+
+    <!-- الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #D0DDD0;
+            font-family: "Poppins", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .signup-box {
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            width: 350px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            font-family: "Great Vibes", cursive;
+            font-size: 32px;
+            color: #AAB99A;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9rem;
+            display: block;
+            margin-top: 5px;
+            text-align: left;
+        }
+
+        .role-choice {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .role-btn {
+            background: transparent;
+            border: 1px solid #AAB99A;
+            color: #AAB99A;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .role-btn:hover {
+            background: #AAB99A;
+            color: white;
+        }
+
+        button {
+            background-color: #AAB99A;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 10px;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        button:hover { background-color: #8f9f8a; }
+
+        .link {
+            color: #AAB99A;
+            text-decoration: none;
+            display: block;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .link:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+<div class="signup-box">
+    <h2>Sign Up</h2>
+    <form id="signupForm">
+        <input type="text" id="firstName" placeholder="First Name" required>
+        <span id="firstNameError" class="error"></span>
+
+        <input type="text" id="lastName" placeholder="Last Name" required>
+        <span id="lastNameError" class="error"></span>
+
+        <input type="number" id="age" placeholder="Age" required>
+        <span id="ageError" class="error"></span>
+
+        <input type="email" id="email" placeholder="Email (Gmail only)" required>
+        <span id="emailError" class="error"></span>
+
+        <input type="password" id="password" placeholder="Password" required>
+        <span id="passwordError" class="error"></span>
+
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+        <span id="confirmPasswordError" class="error"></span>
+
+        <div class="role-choice">
+            <button type="button" class="role-btn" onclick="selectRole('user')">User</button>
+            <button type="button" class="role-btn" onclick="selectRole('owner')">Owner</button>
+        </div>
+        <span id="roleError" class="error"></span>
+
+        <button type="submit">Create Account</button>
+    </form>
+
+    <a href="login.html" class="link">← Back to Login</a>
+</div>
+
+<script>
+    let selectedRole = '';
+
+    function selectRole(role) {
+        selectedRole = role;
+        document.getElementById('roleError').textContent = ''; // Clear error
+    }
+
+    // Clear errors on input
+    const inputs = ['firstName', 'lastName', 'age', 'email', 'password', 'confirmPassword'];
+    inputs.forEach(id => {
+        document.getElementById(id).addEventListener('input', function() {
+            document.getElementById(id + 'Error').textContent = '';
+        });
+    });
+
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        let isValid = true;
+
+        // Clear previous errors
+        inputs.forEach(id => {
+            document.getElementById(id + 'Error').textContent = '';
+        });
+        document.getElementById('roleError').textContent = '';
+
+        const firstName = document.getElementById('firstName').value.trim();
+        const lastName = document.getElementById('lastName').value.trim();
+        const age = document.getElementById('age').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (firstName === '') {
+            document.getElementById('firstNameError').textContent = 'First Name is required.';
+            isValid = false;
+        }
+
+        if (lastName === '') {
+            document.getElementById('lastNameError').textContent = 'Last Name is required.';
+            isValid = false;
+        }
+
+        if (age === '' || isNaN(age) || age < 18) {
+            document.getElementById('ageError').textContent = 'Age must be 18 or older.';
+            isValid = false;
+        }
+
+        if (email === '') {
+            document.getElementById('emailError').textContent = 'Email is required.';
+            isValid = false;
+        } else {
+            const gmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.gmail\.com$/;
+            if (!gmailRegex.test(email)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid Gmail address (e.g., example@gmail.com).';
+                isValid = false;
+            }
+        }
+
+        if (password === '') {
+            document.getElementById('passwordError').textContent = 'Password is required.';
+            isValid = false;
+        } else if (password.length < 6) {
+            document.getElementById('passwordError').textContent = 'Password must be at least 6 characters.';
+            isValid = false;
+        }
+
+        if (confirmPassword === '') {
+            document.getElementById('confirmPasswordError').textContent = 'Please confirm your password.';
+            isValid = false;
+        } else if (password !== confirmPassword) {
+            document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
+            isValid = false;
+        }
+
+        if (selectedRole === '') {
+            document.getElementById('roleError').textContent = 'Please select a role.';
+            isValid = false;
+        }
+
+        if (isValid) {
+            // Save to localStorage as demo for database
+            const userData = {
+                firstName: firstName,
+                lastName: lastName,
+                age: age,
+                email: email,
+                password: password, // In real app, hash this
+                role: selectedRole
+            };
+            localStorage.setItem('user', JSON.stringify(userData));
+
+            alert("Account created successfully! Redirecting to home...");
+            setTimeout(() => {
+                window.location.href = "main.html";
+            }, 1000);
+        }
+    });
+</script>
+</body>
+</html>

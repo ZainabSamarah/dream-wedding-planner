@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Luxury Cake Menu – WEDÉ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great_Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --green-dark: #4B5945;
+            --green-medium: #66785F;
+            --green-light: #91AC8F;
+            --green-pale: #B2C9AD;
+            --section-bg: #E8EFE5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at center, #E8EFE5 0%, #B2C9AD 70%, #8DA187 100%);
+            color: var(--green-dark);
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            overflow-x: hidden;
+            padding-top: 110px;
+        }
+
+        header {
+            background-color: var(--green-medium);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 20;
+            height: 70px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 36px;
+            color: var(--green-pale);
+        }
+
+        header a {
+            color: var(--green-pale);
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--green-dark);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        p.intro {
+            font-size: 1.1rem;
+            color: var(--green-medium);
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+            line-height: 1.5;
+        }
+
+        #cart {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        #cart:hover {
+            transform: scale(1.1);
+        }
+
+        #cart img {
+            width: 100%;
+            height: 100%;
+        }
+
+        #cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--green-light);
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .rotating-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 15px auto;
+            box-shadow: 0 4px 15px rgba(105, 121, 85, 0.4);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .rotating-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+            border-radius: 50%;
+        }
+
+        .rotating-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .rotating-image:hover {
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 8px 25px rgba(105, 121, 85, 0.5);
+        }
+
+        section {
+            margin-top: 40px;
+            background: var(--section-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(105, 121, 85, 0.2);
+        }
+
+        section h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: var(--green-dark);
+            margin-bottom: 20px;
+        }
+
+        section p {
+            font-size: 1.2rem;
+            color: var(--green-dark);
+            margin-bottom: 40px;
+        }
+
+        .dishes-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .dish {
+            width: 150px;
+            flex: 1 1 calc(25% - 15px);
+            max-width: 150px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .dish:nth-child(1) { animation-delay: 0.1s; }
+        .dish:nth-child(2) { animation-delay: 0.2s; }
+        .dish:nth-child(3) { animation-delay: 0.3s; }
+        .dish:nth-child(4) { animation-delay: 0.4s; }
+
+        .dish:hover .rotating-image {
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 8px 25px rgba(105, 121, 85, 0.5);
+        }
+
+        .dish p {
+            font-size: 1rem;
+            color: var(--green-dark);
+            margin-bottom: 10px;
+        }
+
+        .dish-desc {
+            font-size: 0.9rem;
+            color: var(--green-medium);
+            line-height: 1.4;
+            margin-top: 5px;
+        }
+
+        footer {
+            background-color: var(--green-medium);
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 14px;
+            margin-top: 60px;
+            width: 100%;
+            z-index: 5;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        footer span {
+            color: var(--green-pale);
+            font-weight: 500;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 1200px) {
+            body {
+                padding: 20px;
+                padding-top: 110px;
+            }
+
+            .dish {
+                flex: 1 1 calc(33.33% - 20px);
+                max-width: 180px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .dish {
+                flex: 1 1 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1><a href="main.html">WEDÉ</a></h1>
+</header>
+
+<h2>Luxury Cake Menu</h2>
+<p class="intro">Indulge in our premium selection of sophisticated cakes, crafted for an unforgettable experience with WEDÉ.</p>
+
+<!-- Cart Icon -->
+<div id="cart">
+    <img src="https://cdn-icons-png.flaticon.com/512/1170/1170576.png" alt="Cart">
+    <div id="cart-count">0</div>
+</div>
+
+<!-- Luxury Cake Menu Section -->
+<section id="luxury-cake-menu">
+    <h3>Luxury Cakes</h3>
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Kahlua Cake With Mocha Buttercream.jpg" alt="Kahlua Cake With Mocha Buttercream" />
+            </div>
+            <p>Kahlua Cake With Mocha Buttercream</p>
+            <span class="dish-desc">Kahlua-infused cake with mocha frosting.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Ombre Peach Cake.jpg" alt="Ombre Peach Cake" />
+            </div>
+            <p>Ombre Peach Cake</p>
+            <span class="dish-desc">Stunning peach ombre effect in layers.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Pineapple Cake (with dried Pineapple flowers).jpg" alt="Pineapple Cake (with dried Pineapple flowers)" />
+            </div>
+            <p>Pineapple Cake (with dried Pineapple flowers)</p>
+            <span class="dish-desc">Tropical pineapple with dried flower decor.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Raffaello Cake (Coconut Almond Cake).jpg" alt="Raffaello Cake (Coconut Almond Cake)" />
+            </div>
+            <p>Raffaello Cake (Coconut Almond Cake)</p>
+            <span class="dish-desc">Coconut and almond inspired by Raffaello.</span>
+        </div>
+    </div>
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/White Chocolate Raspberry Cake.jpg" alt="White Chocolate Raspberry Cake" />
+            </div>
+            <p>White Chocolate Raspberry Cake</p>
+            <span class="dish-desc">White chocolate with tart raspberry filling.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Milk Chocolate Almond Cake.jpg" alt="Milk Chocolate Almond Cake" />
+            </div>
+            <p>Milk Chocolate Almond Cake</p>
+            <span class="dish-desc">Creamy milk chocolate with almond crunch.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Lemon Elderflower Cake (Copycat Royal Wedding Cake).jpg" alt="Lemon Elderflower Cake (Copycat Royal Wedding Cake)" />
+            </div>
+            <p>Lemon Elderflower Cake (Copycat Royal Wedding Cake)</p>
+            <span class="dish-desc">Light lemon and elderflower royal-inspired.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Boston Cream Pie.jpg" alt="Boston Cream Pie" />
+            </div>
+            <p>Boston Cream Pie</p>
+            <span class="dish-desc">Classic custard and chocolate ganache.</span>
+        </div>
+    </div>
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Cotton Candy Cake.jpg" alt="Cotton Candy Cake" />
+            </div>
+            <p>Cotton Candy Cake</p>
+            <span class="dish-desc">Fluffy cotton candy flavor in cake form.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Brown Butter Cake.jpg" alt="Brown Butter Cake" />
+            </div>
+            <p>Brown Butter Cake</p>
+            <span class="dish-desc">Rich nutty flavor from brown butter.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Nutella Banana Cake with Hazelnut Meringue.jpg" alt="Nutella Banana Cake with Hazelnut Meringue" />
+            </div>
+            <p>Nutella Banana Cake with Hazelnut Meringue</p>
+            <span class="dish-desc">Nutella and banana with hazelnut meringue.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Key Lime Pie Cake.jpg" alt="Key Lime Pie Cake" />
+            </div>
+            <p>Key Lime Pie Cake</p>
+            <span class="dish-desc">Tangy key lime pie in cake layers.</span>
+        </div>
+    </div>
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Chocolate Raspberry Cake.jpg" alt="Chocolate Raspberry Cake" />
+            </div>
+            <p>Chocolate Raspberry Cake</p>
+            <span class="dish-desc">Two mini cakes decorated with fresh raspberries.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Raspberry Vanilla Mini Cakes.jpg" alt="Raspberry Vanilla Mini Cakes" />
+            </div>
+            <p>Raspberry Vanilla Mini Cakes</p>
+            <span class="dish-desc">Cake on a white cake stand.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Berry Layer Cake Momofuku Birthday Cake.jpg" alt="Berry Layer Cake Momofuku Birthday Cake" />
+            </div>
+            <p>Berry Layer Cake Momofuku Birthday Cake</p>
+            <span class="dish-desc">Cake on a white cake stand and black background. Candied hazelnuts on top of the cake and chopped hazelnuts along the bottom.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Nutella Hazelnut Cake.jpg" alt="Nutella Hazelnut Cake" />
+            </div>
+            <p>Nutella Hazelnut Cake</p>
+            <span class="dish-desc">Nutella-infused cake with hazelnut crunch.</span>
+        </div>
+    </div>
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Caramel Apple Cake.jpg" alt="Caramel Apple Cake" />
+            </div>
+            <p>Caramel Apple Cake</p>
+            <span class="dish-desc">Blueberry shortcake cake sitting on a green cake stand.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Peanut Butter Chocolate Cake.jpg" alt="Peanut Butter Chocolate Cake" />
+            </div>
+            <p>Peanut Butter Chocolate Cake</p>
+            <span class="dish-desc">A decorated cake on a cake stand.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Nanaimo Bar Cake.jpg" alt="Nanaimo Bar Cake" />
+            </div>
+            <p>Nanaimo Bar Cake</p>
+            <span class="dish-desc">A cake sitting on top of a wooden table.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/French Silk Pie Cake (Copycat Deep’n Delicious Chocolate Cake).jpg" alt="French Silk Pie Cake (Copycat Deep’n Delicious Chocolate Cake)" />
+            </div>
+            <p>French Silk Pie Cake (Copycat Deep’n Delicious Chocolate Cake)</p>
+            <span class="dish-desc">Naked cake on a cake stand.</span>
+        </div>
+    </div>
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Mint Chocolate Chip Cake.jpg" alt="Mint Chocolate Chip Cake" />
+            </div>
+            <p>Mint Chocolate Chip Cake</p>
+            <span class="dish-desc">A cake sitting on top of a table.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Chocolate Dulce de Leche Cake.jpg" alt="Chocolate Dulce de Leche Cake" />
+            </div>
+            <p>Chocolate Dulce de Leche Cake</p>
+            <span class="dish-desc">A large chocolate cake sitting on top of a table.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Chocolate Gingerbread Cake.jpg" alt="Chocolate Gingerbread Cake" />
+            </div>
+            <p>Chocolate Gingerbread Cake</p>
+            <span class="dish-desc">Cake on a white cake stand with opened Ferreros' in the foreground.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Ferrero Rocher Cake.jpg" alt="Ferrero Rocher Cake" />
+            </div>
+            <p>Ferrero Rocher Cake</p>
+            <span class="dish-desc">A decorated cake on a table.</span>
+        </div>
+    </div>
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Chocolate Mocha Cake.jpg" alt="Chocolate Mocha Cake" />
+            </div>
+            <p>Chocolate Mocha Cake</p>
+            <span class="dish-desc">Cake on a cake stand.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Nutella Cake.jpg" alt="Nutella Cake" />
+            </div>
+            <p>Nutella Cake</p>
+            <span class="dish-desc">Cake on a cake stand.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Black Forest Cake.jpg" alt="Black Forest Cake" />
+            </div>
+            <p>Black Forest Cake</p>
+            <span class="dish-desc">A decorated cake on a cake stand.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Chocolate Truffle Cake.jpg" alt="Chocolate Truffle Cake" />
+            </div>
+            <p>Chocolate Truffle Cake</p>
+            <span class="dish-desc">A cake sitting on top of a table.</span>
+        </div>
+    </div>
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Chocolate Strawberry Cake Hot Chocolate Cake With Marshmallow Filling.jpg" alt="Chocolate Strawberry Cake Hot Chocolate Cake With Marshmallow Filling" />
+            </div>
+            <p>Chocolate Strawberry Cake Hot Chocolate Cake With Marshmallow Filling</p>
+            <span class="dish-desc">Chocolate cake with honeycomb shards on the top.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Dark Chocolate Honeycomb Cake.jpg" alt="Dark Chocolate Honeycomb Cake" />
+            </div>
+            <p>Dark Chocolate Honeycomb Cake</p>
+            <span class="dish-desc">A cake sitting on top of a white cake stand.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Turtles Cake.jpg" alt="Turtles Cake" />
+            </div>
+            <p>Turtles Cake</p>
+            <span class="dish-desc">Naked style chocolate cake with a ganache drip on a white cake stand. Cookies in the background.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Cookie Dough Cake.jpg" alt="Cookie Dough Cake" />
+            </div>
+            <p>Cookie Dough Cake</p>
+            <span class="dish-desc">Naked style chocolate cake with a ganache drip on a white cake stand. Cookies in the background.</span>
+        </div>
+    </div>
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Crème Brûlée Cake.jpg" alt="Crème Brûlée Cake" />
+            </div>
+            <p>Crème Brûlée Cake</p>
+            <span class="dish-desc">Creamy custard with caramelized top.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Banana Split Cake.jpg" alt="Banana Split Cake" />
+            </div>
+            <p>Banana Split Cake</p>
+            <span class="dish-desc">Banana split flavors in cake form.</span>
+        </div>
+    </div>
+</section>
+
+<!-- Drinks Menu Section -->
+<section id="drinks-menu">
+    <h3>Drinks</h3>
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/IcedBananaProteinMatcha.jpg" alt="Iced Banana Protein Matcha" />
+            </div>
+            <p>Iced Banana Protein Matcha</p>
+            <span class="dish-desc">Refreshing matcha with banana protein.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/IcedVanillaCreamProteinLatte.jpg" alt="Iced Vanilla Cream Protein Latte" />
+            </div>
+            <p>Iced Vanilla Cream Protein Latte</p>
+            <span class="dish-desc">Creamy vanilla latte with protein boost.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/SBX20211210_CaramelRibbonCrunchFrapp.jpg" alt="Caramel Ribbon Crunch Frapp" />
+            </div>
+            <p>Caramel Ribbon Crunch Frapp</p>
+            <span class="dish-desc">Rich caramel frappe with crunch topping.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/DragonDrink.jpg" alt="Dragon Drink" />
+            </div>
+            <p>Dragon Drink</p>
+            <span class="dish-desc">Exotic dragon fruit and mango blend.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/water (2).jpg" alt="Water" />
+            </div>
+            <p>Water</p>
+            <span class="dish-desc">Pure and refreshing hydration.</span>
+        </div>
+    </div>
+</section>
+
+<footer>
+    © 2025 <span>WEDÉ</span> | All rights reserved
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Regular Dashboard – WEDÉ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --green-dark: #4B5945;
+            --green-medium: #66785F;
+            --green-light: #91AC8F;
+            --green-pale: #B2C9AD;
+            --section-bg: #E8EFE5;
+            --gradient-bg: linear-gradient(135deg, #B2C9AD, #91AC8F);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--gradient-bg);
+            color: var(--green-dark);
+            min-height: 100vh;
+            padding: 20px;
+            padding-top: 80px;
+            padding-bottom: 60px;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: var(--green-medium);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 32px;
+            color: var(--green-pale);
+        }
+
+        header a {
+            color: var(--green-pale);
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        header a:hover {
+            opacity: 0.8;
+        }
+
+        .main-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(105, 121, 85, 0.2);
+            border: 1px solid rgba(145, 172, 143, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 28px;
+            color: var(--green-dark);
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .booking-form label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: var(--green-medium);
+        }
+
+        .booking-form input, .booking-form select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--green-light);
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .booking-form button {
+            padding: 10px 20px;
+            background: var(--green-light);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .booking-form button:hover {
+            background: var(--green-dark);
+            transform: translateY(-2px);
+        }
+
+        .services-list ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .services-list li {
+            background: var(--section-bg);
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            color: var(--green-dark);
+        }
+
+        .decor-gallery {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .decor-gallery img {
+            width: 30%;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .decor-gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .checklist p {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--green-medium);
+        }
+
+        .contact-form label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: var(--green-medium);
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--green-light);
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .contact-form button {
+            padding: 10px 20px;
+            background: var(--green-light);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .contact-form button:hover {
+            background: var(--green-dark);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            background: var(--green-medium);
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        footer span {
+            color: var(--green-pale);
+            font-weight: 500;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+                padding-top: 70px;
+                padding-bottom: 60px;
+            }
+
+            header {
+                padding: 10px 20px;
+            }
+
+            header h1 {
+                font-size: 28px;
+            }
+
+            .main-content {
+                padding: 10px;
+            }
+
+            .section {
+                padding: 15px;
+            }
+
+            .services-list ul {
+                flex-direction: column;
+            }
+
+            .booking-form button, .contact-form button {
+                width: 100%;
+            }
+
+            .decor-gallery img {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <h1><a href="main.html">WEDÉ</a></h1>
+    <a href="logout.html">Logout</a>
+</header>
+
+<div class="main-content">
+    <div class="section">
+        <h2>Book Your Package</h2>
+        <div class="booking-form">
+            <label for="package">Select Package:</label>
+            <select id="package" name="package">
+                <option value="basic">Basic Photography </option>
+            </select>
+            <label for="date">Event Date:</label>
+            <input type="date" id="date" name="date" required />
+            <button type="submit">Book Now</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Available Services</h2>
+        <div class="services-list">
+            <ul>
+                <li>Basic Decor ($50)</li>
+                <li>Photography ($100)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Decoration Inspirations</h2>
+        <div class="decor-gallery">
+            <img src="images/simple_decor.jpg" alt="Simple Decor">
+            <img src="images/floral_table.jpg" alt="Floral Table">
+            <img src="images/classic_theme.jpg" alt="Classic Theme">
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Wedding Planning Checklist</h2>
+        <div class="checklist">
+            <p>1. Set a budget and stick to it.<br>
+                2. Choose a date and venue.<br>
+                3. Select a photographer.<br>
+                4. Finalize simple decor details.</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Contact Support</h2>
+        <div class="contact-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required />
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+            <button type="submit">Send Message</button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    © 2025 <span>WEDÉ</span> | All rights reserved
+</footer>
+</body>
+</html>

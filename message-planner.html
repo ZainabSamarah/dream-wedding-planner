@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Chat – WEDÉ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green-dark: #4B5945;
+            --green-medium: #66785F;
+            --green-light: #91AC8F;
+            --green-pale: #B2C9AD;
+            --section-bg: #E8EFE5;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            font-family:'Poppins', sans-serif;
+            background: var(--section-bg);
+            color: var(--green-dark);
+            padding:20px;
+            min-height:100vh;
+        }
+
+        header {
+            background-color: var(--green-medium);
+            padding:15px 30px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            color:white;
+            position:fixed;
+            top:0; left:0; width:100%;
+            height:70px;
+            box-shadow:0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        header h1 {
+            font-family:'Great Vibes', cursive;
+            font-size:32px;
+            color: var(--green-pale);
+        }
+
+        header a { color: var(--green-pale); text-decoration:none; font-weight:500; margin-left:20px; }
+
+        .chat-container {
+            margin-top:100px; /* space for header */
+            display:flex;
+            justify-content:center;
+        }
+
+        .chat-window {
+            width:100%;
+            max-width:600px;
+            background: rgba(255,255,255,0.95);
+            border-radius:15px;
+            padding:20px;
+            box-shadow:0 8px 25px rgba(105,121,85,0.3);
+            display:flex;
+            flex-direction:column;
+            height:500px;
+        }
+
+        .chat-window h2 {
+            text-align:center;
+            color: var(--green-dark);
+            margin-bottom:15px;
+            font-family:'Great Vibes', cursive;
+        }
+
+        .messages {
+            flex:1;
+            overflow-y:auto;
+            padding:10px;
+            border:1px solid var(--green-light);
+            border-radius:10px;
+            margin-bottom:10px;
+            background:#f8f9f7;
+        }
+
+        .message {
+            padding:8px 12px;
+            margin-bottom:8px;
+            border-radius:15px;
+            max-width:70%;
+            word-wrap:break-word;
+        }
+
+        .message.admin { background: var(--green-pale); align-self:flex-start; }
+        .message.user { background: var(--green-light); color:white; align-self:flex-end; }
+
+        .input-area {
+            display:flex;
+            gap:10px;
+        }
+
+        .input-area input {
+            flex:1;
+            padding:10px 15px;
+            border-radius:20px;
+            border:1px solid var(--green-light);
+            outline:none;
+        }
+
+        .input-area button {
+            padding:10px 20px;
+            border-radius:20px;
+            border:none;
+            background-color: var(--green-light);
+            color:white;
+            font-weight:600;
+            cursor:pointer;
+            transition: background-color 0.3s;
+        }
+
+        .input-area button:hover { background-color: var(--green-dark); }
+
+        footer {
+            background-color: var(--green-medium);
+            color:white;
+            text-align:center;
+            padding:15px 0;
+            margin-top:20px;
+            border-radius:0 0 15px 15px;
+        }
+
+        footer span { color: var(--green-pale); font-weight:500; }
+
+        @media (max-width:600px) {
+            .chat-window { height:400px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1><a href="main.html">WEDÉ</a></h1>
+    <nav>
+        <a href="main.html">Home</a>
+        <a href="#">Logout</a>
+    </nav>
+</header>
+
+<div class="chat-container">
+    <div class="chat-window" id="chatWindow">
+        <h2>User Chat with Admin</h2>
+        <div class="messages" id="messages">
+            <p style="text-align:center; opacity:0.6;">Start chatting with admin...</p>
+        </div>
+        <div class="input-area">
+            <input type="text" id="messageInput" placeholder="Type a message...">
+            <button id="sendBtn">Send</button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    © 2025 <span>WEDÉ</span> | All rights reserved
+</footer>
+
+<script>
+    const messages = document.getElementById('messages');
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    // مثال محادثات سابقة من قاعدة البيانات (يمكن جلبها من السيرفر لاحقًا)
+    const chatHistory = [
+        // {sender:'admin', text:'Hello!'},
+        // {sender:'user', text:'Hi, I have a question.'}
+    ];
+
+    function renderMessages() {
+        messages.innerHTML = '';
+        if(chatHistory.length === 0){
+            messages.innerHTML = '<p style="text-align:center; opacity:0.6;">Start chatting with admin...</p>';
+        } else {
+            chatHistory.forEach(msg=>{
+                const p = document.createElement('p');
+                p.textContent = msg.text;
+                p.classList.add('message', msg.sender);
+                messages.appendChild(p);
+            });
+            messages.scrollTop = messages.scrollHeight;
+        }
+    }
+
+    sendBtn.addEventListener('click', () => {
+        const text = messageInput.value.trim();
+        if(text==='') return;
+        chatHistory.push({sender:'user', text});
+        renderMessages();
+        messageInput.value='';
+        // هنا يمكن عمل AJAX لإرسال الرسالة للادمن وحفظها في قاعدة البيانات
+    });
+
+    renderMessages();
+</script>
+
+</body>
+</html>

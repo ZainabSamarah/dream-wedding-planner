@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RSVP – WEDÉ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #fdf6e3; color: #4a3c31; padding: 40px; text-align: center; }
+        .container { max-width: 500px; margin: 0 auto; background: white; padding: 40px; border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        h1 { font-size: 28px; margin-bottom: 20px; color: #d4af37; }
+        p { font-size: 16px; line-height: 1.8; margin: 15px 0; }
+        .form-group { margin: 20px 0; text-align: left; }
+        input, select { width: 100%; padding: 12px; border: 1.5px solid #ddd; border-radius: 12px; font-size: 15px; }
+        button { background: #d4af37; color: white; border: none; padding: 14px; border-radius: 30px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 20px; }
+        button:hover { background: #c19a2e; }
+        .success { color: #91AC8F; font-weight: 600; margin-top: 20px; display: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Confirm Your Attendance</h1>
+    <p id="couple-name">Loading...</p>
+    <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="guest-name" placeholder="Enter your name" />
+    </div>
+    <div class="form-group">
+        <label>Number of Guests</label>
+        <select id="guests">
+            <option value="1">1 Person</option>
+            <option value="2">2 People</option>
+            <option value="3">3 People</option>
+            <option value="4+">4 or more</option>
+        </select>
+    </div>
+    <button id="submit-rsvp">Submit RSVP</button>
+    <p class="success" id="success-msg">Thank you! Your attendance is confirmed.</p>
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const coupleId = urlParams.get('couple') || 'Our Couple';
+    document.getElementById('couple-name').textContent = `You're invited to ${coupleId.replace('-', ' & ')}'s Wedding`;
+
+    document.getElementById('submit-rsvp').addEventListener('click', () => {
+        const name = document.getElementById('guest-name').value.trim();
+        const guests = document.getElementById('guests').value;
+        if (!name) return alert('Please enter your name');
+
+        const data = { couple: coupleId, guest: name, count: guests, time: new Date().toLocaleString() };
+        localStorage.setItem(`rsvp_${coupleId}_${Date.now()}`, JSON.stringify(data));
+
+        document.getElementById('success-msg').style.display = 'block';
+        document.querySelector('button').disabled = true;
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WEDÉ – Gallery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --green-dark: #4B5945;
+            --green-medium: #66785F;
+            --green-light: #91AC8F;
+            --green-pale: #B2C9AD;
+        }
+        body {
+            font-family:'Poppins',sans-serif;
+            background-color:var(--green-pale);
+            color:var(--green-dark);
+            margin:0;
+        }
+        header {
+            background-color:var(--green-medium);
+            color:white;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:15px 40px;
+        }
+        header h1 {
+            font-family:'Great Vibes',cursive;
+            font-size:32px;
+            color:var(--green-pale);
+        }
+        .btn {
+            background:var(--green-light);
+            color:white;
+            border:none;
+            padding:8px 16px;
+            border-radius:10px;
+            cursor:pointer;
+            transition:0.3s;
+        }
+        .btn:hover {
+            background:var(--green-medium);
+        }
+        main {
+            max-width:1100px;
+            margin:40px auto;
+            padding:0 20px;
+        }
+        main h2 {
+            font-family:'Great Vibes',cursive;
+            font-size:36px;
+            margin-bottom:20px;
+            text-align:center;
+        }
+        .gallery-grid {
+            display:flex;
+            flex-wrap:wrap;
+            gap:15px;
+            justify-content:center;
+        }
+        .gallery-grid img {
+            width:240px;
+            height:180px;
+            object-fit:cover;
+            border-radius:12px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.15);
+            transition:transform 0.3s,box-shadow 0.3s;
+        }
+        .gallery-grid img:hover {
+            transform:scale(1.04);
+            box-shadow:0 4px 12px rgba(0,0,0,0.25);
+        }
+        .empty {
+            text-align:center;
+            color:#555;
+            margin-top:60px;
+            font-size:15px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>WEDÉ</h1>
+    <button class="btn" onclick="window.location.href='index.html'">← Back Home</button>
+</header>
+
+<main>
+    <h2>Your Gallery</h2>
+    <div id="galleryGrid" class="gallery-grid"></div>
+    <p id="emptyMsg" class="empty">No images available yet.</p>
+</main>
+
+<script>
+    // تحميل الصور من localStorage (نفس المفتاح اللي حفظناه من الـ Vision Board)
+    const imgs = JSON.parse(localStorage.getItem('wede_gallery') || '[]');
+    const grid = document.getElementById('galleryGrid');
+    const msg = document.getElementById('emptyMsg');
+
+    if (imgs.length > 0) {
+        msg.style.display = 'none';
+        imgs.forEach(src => {
+            const im = document.createElement('img');
+            im.src = src;
+            grid.appendChild(im);
+        });
+    }
+</script>
+
+</body>
+</html>
