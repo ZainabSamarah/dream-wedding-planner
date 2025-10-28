@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Luxury Invitation – WEDÉ</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <!-- html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            --green-dark: #4B5945;
+            --green-light: #91AC8F;
+            --green-pale: #B2C9AD;
+            --bg: #f8f9f5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0f7f0, #e8f5e8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .editor-container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Left side (card) */
+        .card-section {
+            flex: 1.2;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            position: relative;
+        }
+
+        .card-preview {
+            width: 400px;
+            height: 600px;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 3px solid var(--green-pale);
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .card-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .overlay-text {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            cursor: grab;
+            user-select: none;
+            white-space: pre-wrap;
+            font-family: 'Playfair Display', serif;
+            color: var(--green-dark);
+        }
+
+        .overlay-text.selected {
+            outline: 2px dashed rgba(145,172,143,0.6);
+            border-radius: 6px;
+        }
+
+        /* Right side (controls) */
+        .controls {
+            flex: 1;
+            background: #fff;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .controls h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--green-dark);
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #444;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            margin-top: 6px;
+            border-radius: 8px;
+            border: 1px solid #d8e3d6;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .row { display: flex; gap: 8px; }
+        .col { flex: 1; }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            background: var(--green-light);
+            color: white;
+            box-shadow: 0 6px 18px rgba(145,172,143,.16);
+        }
+
+        .btn.gray { background: #777; }
+        .btn.ghost {
+            background: transparent;
+            color: var(--green-dark);
+            border: 1px solid #ddd;
+        }
+
+        .note {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        @media(max-width:900px) {
+            .editor-container { flex-direction: column; }
+            .card-section, .controls { width: 100%; flex: none; }
+            .controls { border-top: 1px solid #eee; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="editor-container">
+
+    <!-- CARD -->
+    <div class="card-section">
+        <div class="card-preview" id="card-area">
+            <img id="card-bg" src="" alt="Luxury Card" />
+            <div class="overlay-text" style="top:15%;font-size:28px;">Save The Date</div>
+            <div class="overlay-text" style="top:35%;font-size:16px;">FOR THE WEDDING OF</div>
+            <div class="overlay-text" style="top:50%;font-family:'Great Vibes', cursive;font-size:32px;">Layla & Adam</div>
+            <div class="overlay-text" style="top:65%;font-size:16px;">SATURDAY, JUNE 14, 2026 | 6:00 PM</div>
+            <div class="overlay-text" style="top:78%;font-size:15px;">Royal Garden, London</div>
+        </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+        <h2>Edit Your Card</h2>
+
+        <label for="text-input">Edit Selected Text</label>
+        <textarea id="text-input" placeholder="Click any text on the card to edit it"></textarea>
+
+        <div class="row">
+            <div class="col">
+                <label for="font-select">Font</label>
+                <select id="font-select">
+                    <option value="'Playfair Display', serif">Playfair Display</option>
+                    <option value="'Great Vibes', cursive">Great Vibes</option>
+                    <option value="'Poppins', sans-serif">Poppins</option>
+                </select>
+            </div>
+            <div class="col">
+                <label for="size-input">Font size (px)</label>
+                <input type="text" id="size-input" placeholder="e.g. 18">
+            </div>
+        </div>
+
+        <label for="color-input">Text Color</label>
+        <input type="color" id="color-input" value="#4B5945">
+
+        <div class="actions">
+            <button class="btn" id="download-btn">Download</button>
+        </div>
+
+        <p class="note">Click any text to edit, move, resize, or recolor it — then download your final card.</p>
+    </div>
+</div>
+
+<script>
+    // Load selected card from localStorage
+    window.addEventListener("DOMContentLoaded", () => {
+        const selectedCard = localStorage.getItem("selected_card_LX");
+        const bg = document.getElementById("card-bg");
+
+        if(selectedCard) bg.src = "imgs/" + selectedCard.replace(".png","b.png");
+    });
+
+    const cardArea = document.getElementById("card-area");
+    const textInput = document.getElementById("text-input");
+    const fontSelect = document.getElementById("font-select");
+    const sizeInput = document.getElementById("size-input");
+    const colorInput = document.getElementById("color-input");
+    const downloadBtn = document.getElementById("download-btn");
+
+    let activeEl = null;
+
+    // Select & edit
+    cardArea.querySelectorAll(".overlay-text").forEach(el => {
+        makeDraggable(el);
+        el.addEventListener("click", () => {
+            cardArea.querySelectorAll(".overlay-text").forEach(t => t.classList.remove("selected"));
+            el.classList.add("selected");
+            activeEl = el;
+            textInput.value = el.textContent;
+            fontSelect.value = el.style.fontFamily;
+            sizeInput.value = parseInt(el.style.fontSize);
+            colorInput.value = el.style.color || "#4B5945";
+        });
+    });
+
+    function makeDraggable(el) {
+        let dragging=false, startX=0, startY=0, origX=0, origY=0;
+        el.addEventListener("pointerdown", e => {
+            dragging=true; startX=e.clientX; startY=e.clientY;
+            const rect = el.getBoundingClientRect();
+            const parent = cardArea.getBoundingClientRect();
+            origX = rect.left - parent.left;
+            origY = rect.top - parent.top;
+            el.setPointerCapture(e.pointerId);
+        });
+        el.addEventListener("pointermove", e => {
+            if(!dragging) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            const newX = origX + dx;
+            const newY = origY + dy;
+            el.style.left = (newX / cardArea.clientWidth)*100 + "%";
+            el.style.top = (newY / cardArea.clientHeight)*100 + "%";
+        });
+        el.addEventListener("pointerup", e => { dragging=false; el.releasePointerCapture(e.pointerId); });
+    }
+
+    // Live editing
+    textInput.addEventListener("input", ()=>{ if(activeEl) activeEl.textContent=textInput.value; });
+    fontSelect.addEventListener("change", ()=>{ if(activeEl) activeEl.style.fontFamily=fontSelect.value; });
+    sizeInput.addEventListener("input", ()=>{ if(activeEl) activeEl.style.fontSize=sizeInput.value+"px"; });
+    colorInput.addEventListener("input", ()=>{ if(activeEl) activeEl.style.color=colorInput.value; });
+
+    // Download
+    downloadBtn.addEventListener("click", ()=>{
+        cardArea.querySelectorAll(".overlay-text").forEach(x=>x.classList.remove("selected"));
+        html2canvas(cardArea,{scale:3,useCORS:true,backgroundColor:null}).then(canvas=>{
+            const a=document.createElement("a");
+            a.href=canvas.toDataURL("image/png");
+            a.download="WEDÉ_Lux_Invitation.png";
+            a.click();
+        });
+    });
+</script>
+</body>
+</html>

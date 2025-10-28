@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stack to Grid 3D Animation – WEDÉ</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --green-dark: #4B5945;
+            --green-medium: #66785F;
+            --green-light: #91AC8F;
+            --green-pale: #B2C9AD;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #B2C9AD 0%, #E8EFE5 100%);
+            color: var(--green-dark);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            perspective: 1500px;
+            position: relative;
+        }
+
+        header {
+            background-color: var(--green-medium);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 20;
+            height: 70px;
+        }
+
+        header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 36px;
+            color: var(--green-pale);
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 100px;
+            position: relative;
+            z-index: 2;
+        }
+
+        #falling-hearts-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        #falling-hearts {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        section#services {
+            position: relative;
+            width: 1200px;
+            max-width: 100%;
+            min-height: calc(300px * 4); /* Adjusted for 3 cards per row (10 cards = 4 rows) */
+            margin: 0 auto;
+            padding: 0 20px 300px;
+            text-align: center;
+            user-select: none;
+            z-index: 3;
+        }
+
+        section#services h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 48px;
+            margin-bottom: 40px;
+            color: var(--green-dark);
+        }
+
+        .services-stack {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .service-card {
+            position: relative;
+            width: 360px; /* Slightly reduced to fit 3 cards per row */
+            max-width: 100%;
+            height: 260px;
+            padding: 30px 25px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            box-shadow: 0 12px 30px rgba(105, 121, 85, 0.35);
+            font-size: 14px;
+            line-height: 1.6;
+            color: #444;
+            text-align: center;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .service-card:hover {
+            box-shadow: 0 25px 50px rgba(105, 121, 85, 0.6);
+            transform: scale(1.05) !important;
+            z-index: 999 !important;
+        }
+
+        .service-card h3 {
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 20px;
+            color: var(--green-dark);
+        }
+
+        .icon {
+            margin-bottom: 15px;
+        }
+
+        .icon img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: 50%;
+            padding: 6px;
+            background-color: #fff;
+        }
+
+        .music-icon img {
+            width: 50px !important;
+            height: 50px !important;
+        }
+
+        footer {
+            background-color: var(--green-medium);
+            color: #fff;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 14px;
+            margin-top: auto;
+            z-index: 5;
+        }
+
+        footer span {
+            color: var(--green-pale);
+            font-weight: 500;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at center, #E8EFE5 0%, #B2C9AD 80%);
+            filter: blur(50px);
+            z-index: 0;
+        }
+
+        /* Breathing animation for cards */
+        @keyframes breathe {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.03);
+            }
+        }
+
+        .breathe {
+            animation: breathe 3s ease-in-out infinite;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            section#services {
+                width: 100%;
+                padding: 0 20px 300px;
+            }
+
+            .service-card {
+                width: 100%;
+                max-width: 320px;
+            }
+
+            .services-stack {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1><a href="main.html" style="color:#B2C9AD;text-decoration:none;">WEDÉ</a></h1>
+</header>
+
+<main>
+    <div id="falling-hearts-container">
+        <canvas id="falling-hearts"></canvas>
+    </div>
+
+    <section id="services">
+        <h2>Our Wedding Services</h2>
+        <div class="services-stack">
+            <!-- ✅ Cards -->
+            <div class="service-card" data-index="0">
+                <div class="icon"><img src="imgs/camera (2).png" alt="Photography Icon"></div>
+                <h3>Photography & Videography</h3>
+                <p>Capture your most precious moments with professional photographers and cinematic video production.</p>
+            </div>
+            <div class="service-card" data-index="1">
+                <div class="icon"><img src="imgs/cutlery.png" alt="Food Menu Icon"></div>
+                <h3>Custom Food Menus & Planning</h3>
+                <p>We help you choose the best menu for your guests, tailored to your style and theme.</p>
+            </div>
+            <div class="service-card" data-index="2">
+                <div class="icon"><img src="imgs/bus.png" alt="Bus Icon"></div>
+                <h3>Guest Transportation & Accommodation</h3>
+                <p>Organizing transportation and hotel arrangements for your guests for a stress-free experience.</p>
+            </div>
+            <div class="service-card" data-index="3">
+                <div class="icon"><img src="imgs/love-letter.png" alt="Love Letter Icon"></div>
+                <h3>Invitations & Stationery Design</h3>
+                <p>Elegant invitation cards, seating charts, and thank-you notes — fully customized to your theme.</p>
+            </div>
+            <div class="service-card" data-index="4">
+                <div class="icon music-icon"><img src="imgs/musical-note.png" alt="Music Icon"></div>
+                <h3>Music & Entertainment</h3>
+                <p>We help you choose the best entertainment for your guests to keep the party alive.</p>
+            </div>
+            <div class="service-card" data-index="5">
+                <div class="icon"><img src="imgs/wedding-arch.png" alt="Decor Icon"></div>
+                <h3>Decor & Venue Design</h3>
+                <p>We help you choose the best decor and venue setup that matches your wedding vibe.</p>
+            </div>
+            <div class="service-card" data-index="6">
+                <div class="icon"><img src="imgs/theme.png" alt="Theme Icon"></div>
+                <h3>Theme & Color Consultation</h3>
+                <p>Helping you choose color palettes, floral styles, and design elements for your dream wedding theme.</p>
+            </div>
+            <div class="service-card" data-index="7">
+                <div class="icon"><img src="imgs/cake.png" alt="Cake Icon"></div>
+                <h3>Cake & Dessert Table Design</h3>
+                <p>Custom wedding cakes and dessert displays that look (and taste) amazing.</p>
+            </div>
+            <div class="service-card" data-index="8">
+                <div class="icon"><img src="imgs/rsvp.png" alt="RSVP Icon"></div>
+                <h3>RSVP & Guest Count</h3>
+                <p>We help you keep track of your guests efficiently and easily.</p>
+            </div>
+            <div class="service-card" data-index="9">
+                <div class="icon"><img src="imgs/earning.png" alt="Budget Icon"></div>
+                <h3>Budget Management</h3>
+                <p>Helping you plan and manage your wedding budget — ensuring your dream day stays affordable.</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    © 2025 <span>WEDÉ</span> | All rights reserved
+</footer>
+
+<script>
+    const cards = document.querySelectorAll('.service-card');
+
+    // Initial stack look (all cards stacked on top of each other in the center)
+    cards.forEach((card, i) => {
+        card.style.position = 'absolute'; // Ensure absolute positioning for stacking
+        card.style.left = '50%'; // Center horizontally
+        card.style.top = '150px'; // Position below the header
+        card.style.transform = `translateX(-50%) translateY(0) translateZ(${-i * 15}px)`; // Stack with 3D effect
+        card.style.zIndex = cards.length - i;
+        card.style.opacity = 1; // Ensure cards are visible initially
+    });
+
+    // Animate to grid layout with 3 cards per row and apply breathing animation
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            cards.forEach((card, i) => {
+                const cols = 3; // 3 cards per row
+                const row = Math.floor(i / cols);
+                const col = i % cols;
+                const cardWidth = 360; // Card width
+                const gap = 30; // Gap between cards
+                const sectionWidth = 1200; // Section width
+                // Center the cards within the section
+                const x = col * (cardWidth + gap) - (sectionWidth - cardWidth * cols - gap * (cols - 1)) / 2;
+                const y = row * 300;
+
+                // Remove absolute positioning to allow flexbox to take over
+                card.style.position = 'relative';
+                card.style.left = '0';
+                card.style.top = '0';
+                card.style.transition = 'transform 1.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 1.3s';
+                card.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(0)`;
+                card.style.zIndex = 10; // Ensure cards stay above other elements
+                card.style.opacity = 1; // Ensure cards remain visible
+
+                // Apply breathing animation after grid transition
+                setTimeout(() => {
+                    card.classList.add('breathe');
+                    card.style.animationDelay = `${i * 0.2}s`;
+                }, 1300); // Wait for grid transition (1.3s) to complete
+            });
+
+            // Ensure the container uses flexbox after animation
+            setTimeout(() => {
+                document.querySelector('.services-stack').style.position = 'relative';
+            }, 1300);
+        }, 600);
+    });
+
+    // Falling hearts (unchanged)
+    const canvas = document.getElementById('falling-hearts');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = document.querySelector('main').offsetHeight;
+
+    let hearts = [];
+    const colors = ['#4B5945', '#66785F', '#91AC8F', '#B2C9AD'];
+
+    class Heart {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * -canvas.height;
+            this.size = Math.random() * 12 + 8;
+            this.speedY = Math.random() * 1 + 0.5;
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+            this.angle = Math.random() * Math.PI * 2;
+            this.rotationSpeed = (Math.random() - 0.5) * 0.02;
+        }
+
+        draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.angle);
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            const size = this.size;
+            ctx.moveTo(0, 0);
+            ctx.bezierCurveTo(0, -size / 2, -size, -size / 2, -size, 0);
+            ctx.bezierCurveTo(-size, size / 2, 0, size, 0, size * 1.5);
+            ctx.bezierCurveTo(0, size, size, size / 2, size, 0);
+            ctx.bezierCurveTo(size, -size / 2, 0, -size / 2, 0, 0);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        update() {
+            this.y += this.speedY;
+            this.angle += this.rotationSpeed;
+            if (this.y > canvas.height + 20) {
+                this.y = -20;
+                this.x = Math.random() * canvas.width;
+            }
+        }
+    }
+
+    function initHearts(count = 50) {
+        hearts = [];
+        for (let i = 0; i < count; i++) {
+            hearts.push(new Heart());
+        }
+    }
+
+    function animateHearts() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        hearts.forEach((heart) => {
+            heart.update();
+            heart.draw();
+        });
+        requestAnimationFrame(animateHearts);
+    }
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = document.querySelector('main').offsetHeight;
+        initHearts();
+    });
+
+    initHearts();
+    animateHearts();
+</script>
+
+</body>
+</html>

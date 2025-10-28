@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEDÉ – Plan Your Perfect Day</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom right, #AAB99A, #D0DDD0);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* شاشة التحميل */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom right, #AAB99A, #D0DDD0);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* الصورة بدون خلفية أو مربع */
+        .loading-image {
+            width: 120px;
+            height: auto;
+            background: none;
+            border: none;
+            box-shadow: none;
+            animation: pulse 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); opacity: 0.9; }
+            to { transform: scale(1.1); opacity: 1; }
+        }
+
+        .loading-text {
+            color: #727D73;
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+
+        /* النصوص بعد التحميل */
+        .hero {
+            text-align: center;
+            padding: 50px;
+            background: rgba(240, 240, 215, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(114, 125, 115, 0.3);
+            max-width: 600px;
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .hero.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4rem;
+            color: #727D73;
+            margin-bottom: 20px;
+        }
+
+        .link-button {
+            display: inline-block;
+            position: relative;
+            color: #727D73;
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .link-button::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -3px;
+            width: 0;
+            height: 2px;
+            background-color: #727D73;
+            transition: width 0.3s ease;
+        }
+
+        .link-button:hover {
+            color: #4e574e;
+        }
+
+        .link-button:hover::after {
+            width: 100%;
+        }
+
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #F0F0D7 0%, #D0DDD0 100%);
+            filter: blur(3px);
+            z-index: 1;
+        }
+
+        .hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            color: #AAB99A;
+            font-size: 20px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero { padding: 30px; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="loading" id="loading">
+    <img src="imgs/tulips1.jpg" alt="Loading Tulips" class="loading-image">
+    <div class="loading-text"></div>
+</div>
+
+<div class="background"></div>
+<div class="hearts" id="hearts"></div>
+
+<div class="hero" id="hero">
+    <h1>Your Perfect Day Starts Here</h1>
+    <a href="main.html" class="link-button">Plan your dream wedding with us</a>
+</div>
+
+<script>
+    setTimeout(() => {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('hero').classList.add('show');
+    }, 3000);
+
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = '💚';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        document.getElementById('hearts').appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+    }
+
+    setInterval(createHeart, 300);
+</script>
+</body>
+</html>

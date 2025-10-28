@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WEDÉ – Plan Your Perfect Day</title>
+
+    <!-- الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --green-dark: #4B5945;
+            --green-medium: #66785F;
+            --green-light: #91AC8F;
+            --green-pale: #B2C9AD;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--green-pale);
+            color: var(--green-dark);
+            transition: opacity 0.4s ease-in-out;
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: var(--green-medium);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            height: 70px;
+        }
+
+        header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 36px;
+            color: var(--green-pale);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: 0.3s;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        nav a::after {
+            content: '▼';
+            font-size: 9px;
+            opacity: 0.6;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        nav a:hover::after {
+            transform: translateY(2px);
+            opacity: 1;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        #servicesLink {
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            opacity: 0.9;
+            color: white;
+        }
+
+        .services-active::after {
+            transform: rotate(180deg);
+        }
+
+        .dropdown {
+            position: absolute;
+            background-color: var(--green-pale);
+            min-width: 250px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            z-index: 11;
+            display: none;
+            padding: 8px;
+            border-radius: 0 0 10px 10px;
+            margin-top: 8px;
+            left: 0;
+        }
+
+        .dropdown div {
+            padding: 8px 12px;
+            color: var(--green-dark);
+            border-bottom: 1px solid var(--green-medium);
+            font-size: 12px;
+            line-height: 1.3;
+        }
+
+        .dropdown div small {
+            font-size: 10px;
+            color: #666;
+        }
+
+        .dropdown div:hover {
+            background-color: var(--green-light);
+            color: white;
+        }
+
+        .dropdown div:hover small {
+            color: #f0f0f0;
+        }
+
+        .dropdown.show {
+            display: block;
+        }
+
+        .services-active {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            padding: 5px 10px;
+            opacity: 1;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 100px 20px 50px;
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            z-index: 1;
+        }
+
+        .hero-text {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            z-index: 5;
+            position: relative;
+            max-width: 600px;
+        }
+
+        .hero-text h2 {
+            font-size: 40px;
+            color: var(--green-dark);
+            font-family: 'Great Vibes', cursive;
+            margin-bottom: 20px;
+        }
+
+        .hero-text p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background-color: var(--green-light);
+            color: white;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            margin-left: 25px;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--green-medium);
+            transform: translateY(-2px);
+        }
+
+        .about-section {
+            background-color: var(--green-pale);
+            padding: 100px 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 40px;
+            max-width: 1100px;
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .about-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-text h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 40px;
+            color: var(--green-dark);
+            margin-bottom: 20px;
+        }
+
+        .about-text p {
+            font-size: 17px;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .about-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .about-image img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        .about-image img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .counters {
+            display: flex;
+            justify-content: center;
+            max-width: 1100px;
+            gap: 60px;
+            margin: 50px auto 100px;
+            padding: 0 20px;
+            color: var(--green-dark);
+        }
+
+        .counter-item {
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+            border-left: 1px solid var(--green-medium);
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .counter-item:first-child {
+            border-left: none;
+            padding-left: 0;
+        }
+
+        .counter-number {
+            font-family: 'Great Vibes', cursive;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--green-dark);
+            margin-bottom: 10px;
+        }
+
+        .counter-text {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--green-medium);
+        }
+
+        .services-section {
+            background-color: var(--green-light);
+            color: white;
+            text-align: center;
+            padding: 100px 40px;
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .services-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .services-section h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .services-section p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .services-section .nav-btn {
+            background-color: white;
+            color: var(--green-dark);
+        }
+
+        footer {
+            background-color: var(--green-medium);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>WEDÉ</h1>
+    <nav>
+        <a href="#">Home</a>
+        <div class="dropdown-container">
+            <a id="servicesLink">Services</a>
+            <div class="dropdown" id="servicesDropdown">
+                <div>Custom Food Menus & Planning<br><small>We help you choose the best menu for your guests!</small></div>
+                <div>Music & Entertainment<br><small>We help you choose the best entertainment for your guests!</small></div>
+                <div>Decor & Venue Design<br><small>We help you choose the best decor and venue for your guests!</small></div>
+                <div>RSVP & Guest Count<br><small>We help you keep track of your guests!</small></div>
+                <div>Wedding Date & Timeline<br><small>We help you choose the best date and timeline for your wedding!</small></div>
+            </div>
+        </div>
+        <a href="gallery.html">Gallery</a>
+        <a href="#">Contact</a>
+        <button id="loginBtn" class="nav-btn">Login</button>
+    </nav>
+</header>
+
+<section class="hero">
+    <video autoplay muted loop playsinline class="background-video">
+        <source src="imgs/v5.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+    </video>
+    <div class="hero-text">
+        <h2>Plan Your Perfect Day</h2>
+        <p>Elegant venues, custom menus, and unforgettable moments — all in one place.</p>
+        <a href="services.html" class="nav-btn">Explore Services</a>
+    </div>
+</section>
+
+<section class="about-section" id="about">
+    <div class="about-content">
+        <div class="about-text">
+            <h2>About Us</h2>
+            <p>
+                We turn your vision into reality — blending artistry, precision, and heartfelt passion to design the wedding of your dreams.
+                Every detail, from floral arrangements to venue ambiance, is crafted with love to make your day truly magical.
+            </p>
+            <a href="#" class="nav-btn">Learn More</a>
+        </div>
+        <div class="about-image">
+            <img src="imgs/v6.jpg" alt="About WEDÉ" />
+        </div>
+    </div>
+</section>
+
+<section class="counters">
+    <div class="counter-item">
+        <div class="counter-number">120+</div>
+        <div class="counter-text">WEDDINGS PLANNED</div>
+    </div>
+    <div class="counter-item">
+        <div class="counter-number">8+</div>
+        <div class="counter-text">YEARS EXPERIENCE</div>
+    </div>
+    <div class="counter-item">
+        <div class="counter-number">300+</div>
+        <div class="counter-text">HAPPY COUPLES</div>
+    </div>
+    <div class="counter-item">
+        <div class="counter-number">20+</div>
+        <div class="counter-text">VENUES PARTNERED</div>
+    </div>
+</section>
+
+<section class="services-section" id="services">
+    <h2>Our Services</h2>
+    <p>Elegant solutions for every detail of your big day.</p>
+    <a href="#" class="nav-btn">Learn More</a>
+</section>
+
+<footer>
+    <p>© 2025 WEDÉ | All rights reserved</p>
+</footer>
+
+<script>
+    document.getElementById('loginBtn').addEventListener('click', function () {
+        document.body.style.opacity = '0';
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 400);
+    });
+
+    const servicesLink = document.getElementById('servicesLink');
+    const servicesDropdown = document.getElementById('servicesDropdown');
+
+    servicesLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        servicesDropdown.classList.toggle('show');
+        servicesLink.classList.toggle('services-active');
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!servicesLink.contains(e.target) && !servicesDropdown.contains(e.target)) {
+            servicesDropdown.classList.remove('show');
+            servicesLink.classList.remove('services-active');
+        }
+    });
+
+    window.addEventListener('scroll', function () {
+        const aboutSection = document.querySelector('.about-content');
+        const servicesSection = document.querySelector('.services-section');
+        const screenPosition = window.innerHeight / 1.3;
+
+        if (aboutSection.getBoundingClientRect().top < screenPosition) {
+            aboutSection.classList.add('visible');
+        }
+
+        if (servicesSection.getBoundingClientRect().top < screenPosition) {
+            servicesSection.classList.add('visible');
+        }
+    });
+</script>
+
+</body>
+</html>

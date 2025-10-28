@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Preparation – WEDÉ</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --green-dark: #4B5945;
+            --green-medium: #66785F;
+            --green-light: #91AC8F;
+            --green-pale: #B2C9AD;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--green-pale);
+            color: var(--green-dark);
+            transition: opacity 0.6s ease-in-out;
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: var(--green-medium);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            height: 70px;
+        }
+
+        header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 36px;
+            color: var(--green-pale);
+        }
+
+        section {
+            padding: 130px 60px 80px 60px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease-out;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ✨ النص الجديد والأنيميشن */
+        .intro {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            font-size: 18px;
+            line-height: 1.7;
+            color: #333;
+            animation: fadeUp 1.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-container {
+            background-color: white;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: left;
+            animation: fadeInForm 1.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInForm {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        button.submit-btn {
+            margin-top: 25px;
+            width: 100%;
+            background-color: var(--green-light);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button.submit-btn:hover {
+            background-color: var(--green-medium);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            background-color: var(--green-medium);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 80px;
+        }
+
+        label {
+            font-weight: 500;
+            display: block;
+            margin-top: 18px;
+            color: var(--green-dark);
+        }
+
+        h2 {
+            font-family:'Great Vibes',cursive;
+            font-size:46px;
+            animation: fadeDown 1.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeDown {
+            0% { opacity: 0; transform: translateY(-30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <h1><a href="main.html" style="color:#B2C9AD;text-decoration:none;">WEDÉ</a></h1>
+</header>
+
+<section id="prep">
+    <h2>Preparation Form</h2>
+    <p class="intro">Start planning your dream wedding — share your details and we'll guide you every step of the way.</p>
+
+    <div class="form-container">
+        <form id="prepForm">
+            <label>Full Name</label>
+            <input type="text" id="name" placeholder="Your full name" required>
+
+            <label>Email Address</label>
+            <input type="email" id="email" placeholder="you@example.com" required>
+
+            <label>Select Package</label>
+            <select id="package" required>
+                <option value="">Choose...</option>
+                <option>Regular Package – ₪2300</option>
+                <option>Medium Bouquet – ₪2700</option>
+                <option>Luxury Bouquet – ₪3200</option>
+            </select>
+
+            <label>Preferred Wedding Date</label>
+            <input type="date" id="date" required>
+
+            <label>Additional Notes</label>
+            <textarea id="notes" placeholder="Tell us more about your ideas or special requests..."></textarea>
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+</section>
+
+<footer><p>© 2025 WEDÉ | All rights reserved</p></footer>
+
+<script>
+    window.addEventListener('load', ()=>{
+        document.querySelector('section').classList.add('visible');
+        const selectedPackage = localStorage.getItem('selectedPackage');
+        if (selectedPackage) document.getElementById('package').value = selectedPackage;
+    });
+
+    document.getElementById('prepForm').addEventListener('submit', (e)=>{
+        e.preventDefault();
+        const formData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            package: document.getElementById('package').value,
+            date: document.getElementById('date').value,
+            notes: document.getElementById('notes').value
+        };
+        localStorage.setItem('weddingPreparation', JSON.stringify(formData));
+        alert('Your details have been saved successfully! 💍');
+        document.body.style.opacity = '0';
+        setTimeout(()=>{ window.location.href='services.html'; },500);
+    });
+</script>
+
+</body>
+</html>

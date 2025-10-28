@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Food Services – WEDÉ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --green-dark: #4B5945;
+            --green-medium: #66785F;
+            --green-light: #91AC8F;
+            --green-pale: #B2C9AD;
+            --section-bg: #E8EFE5; /* لون خلفية الأقسام */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at center, #E8EFE5 0%, #B2C9AD 70%, #8DA187 100%);
+            color: var(--green-dark);
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            overflow-x: hidden;
+            padding-top: 110px;
+        }
+
+        header {
+            background-color: var(--green-medium);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 20;
+            height: 70px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 36px;
+            color: var(--green-pale);
+        }
+
+        header a {
+            color: var(--green-pale);
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--green-dark);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        p.intro {
+            font-size: 1.1rem;
+            color: var(--green-medium);
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+            line-height: 1.5;
+        }
+
+        #cart {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        #cart:hover {
+            transform: scale(1.1);
+        }
+
+        #cart img {
+            width: 100%;
+            height: 100%;
+        }
+
+        #cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--green-light);
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes rotateOnHover {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .rotating-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 15px auto;
+            box-shadow: 0 4px 15px rgba(105, 121, 85, 0.4);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .rotating-image:hover {
+            animation: rotateOnHover 1s linear forwards; /* دوران 360 درجة عند الـ hover */
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(105, 121, 85, 0.5);
+        }
+
+        .rotating-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+            border-radius: 50%;
+        }
+
+        .rotating-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        section {
+            margin-top: 40px;
+            background: var(--section-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(105, 121, 85, 0.2);
+        }
+
+        section h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: var(--green-dark);
+            margin-bottom: 20px;
+        }
+
+        section p {
+            font-size: 1.2rem;
+            color: var(--green-dark);
+            margin-bottom: 40px;
+        }
+
+        .dishes-row {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .dish {
+            width: 150px;
+            flex: 1 1 calc(25% - 30px);
+            max-width: 150px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .dish:nth-child(1) { animation-delay: 0.1s; }
+        .dish:nth-child(2) { animation-delay: 0.2s; }
+        .dish:nth-child(3) { animation-delay: 0.3s; }
+        .dish:nth-child(4) { animation-delay: 0.4s; }
+
+        .dish:hover .rotating-image {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(105, 121, 85, 0.5);
+        }
+
+        .dish p {
+            font-size: 1rem;
+            color: var(--green-dark);
+            margin-bottom: 10px;
+        }
+
+        .dish-desc {
+            font-size: 0.9rem;
+            color: var(--green-medium);
+            line-height: 1.4;
+            margin-top: 5px;
+        }
+
+        footer {
+            background-color: var(--green-medium);
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 14px;
+            margin-top: 60px;
+            width: 100%;
+            z-index: 5;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        footer span {
+            color: var(--green-pale);
+            font-weight: 500;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 1200px) {
+            body {
+                padding: 20px;
+                padding-top: 110px;
+            }
+
+            .dish {
+                flex: 1 1 calc(50% - 30px);
+                max-width: 180px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .dish {
+                flex: 1 1 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1><a href="main.html">WEDÉ</a></h1>
+</header>
+
+<h2>Food Services</h2>
+<p class="intro">Discover customized food menus and planning options designed to delight your wedding guests and suit your unique celebration style.</p>
+
+<!-- Cart Icon -->
+<div id="cart">
+    <img src="https://cdn-icons-png.flaticon.com/512/1170/1170576.png" alt="Cart">
+    <div id="cart-count">0</div>
+</div>
+
+<!-- Main Dishes Section -->
+<section id="main-dishes">
+    <h3>Main Dishes</h3>
+
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/GrilledSalmon.jpg" alt="Grilled Salmon with Olive Oil" />
+            </div>
+            <p>Grilled Salmon with Olive Oil</p>
+            <span class="dish-desc">Succulent salmon grilled with olive oil.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/JumboShrimp.jpg" alt="Grilled Jumbo Shrimp" />
+            </div>
+            <p>Grilled Jumbo Shrimp</p>
+            <span class="dish-desc">Juicy jumbo shrimp with a smoky finish.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/HerbCrab.jpg" alt="Crab with Herbs" />
+            </div>
+            <p>Crab with Herbs</p>
+            <span class="dish-desc">Tender crab infused with fresh herbs.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/SeafoodPasta.jpg" alt="Seafood Pasta" />
+            </div>
+            <p>Seafood Pasta</p>
+            <span class="dish-desc">Pasta with a medley of seafood delights.</span>
+        </div>
+    </div>
+
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/SquidRisotto.jpg" alt="Squid Risotto" />
+            </div>
+            <p>Squid Risotto</p>
+            <span class="dish-desc">Creamy risotto with tender squid.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/GrilledOysters.jpg" alt="Grilled Oysters" />
+            </div>
+            <p>Grilled Oysters</p>
+            <span class="dish-desc">Oysters grilled to perfection.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/CreamyShrimpTray.jpg" alt="Creamy Shrimp Tray" />
+            </div>
+            <p>Creamy Shrimp Tray</p>
+            <span class="dish-desc">Shrimp in a rich creamy sauce.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/ShrimpCroquettes.jpg" alt="Shrimp Croquettes" />
+            </div>
+            <p>Shrimp Croquettes</p>
+            <span class="dish-desc">Crispy croquettes filled with shrimp.</span>
+        </div>
+    </div>
+
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/GarlicLobster.jpg" alt="Grilled Lobster with Garlic" />
+            </div>
+            <p>Grilled Lobster with Garlic</p>
+            <span class="dish-desc">Lobster grilled with aromatic garlic.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/ShrimpFajita.jpg" alt="Shrimp Fajita" />
+            </div>
+            <p>Shrimp Fajita</p>
+            <span class="dish-desc">Sizzling shrimp with vibrant veggies.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/SquidRice.jpg" alt="Squid Rice" />
+            </div>
+            <p>Squid Rice</p>
+            <span class="dish-desc">Fragrant rice with tender squid.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/HerbSeaBream.jpg" alt="Sea Bream with Herbs" />
+            </div>
+            <p>Sea Bream with Herbs</p>
+            <span class="dish-desc">Sea bream with aromatic herb seasoning.</span>
+        </div>
+    </div>
+
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/PremiumSushi.jpg" alt="Premium Sushi" />
+            </div>
+            <p>Premium Sushi</p>
+            <span class="dish-desc">Exquisite sushi with fresh seafood.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/LemonGrilledFish.jpg" alt="Grilled Fish with Lemon" />
+            </div>
+            <p>Grilled Fish with Lemon</p>
+            <span class="dish-desc">Fish grilled with zesty lemon flavor.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/SeafoodSoup.jpg" alt="Seafood Soup" />
+            </div>
+            <p>Seafood Soup</p>
+            <span class="dish-desc">Rich soup with assorted seafood.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/StuffedFish.jpg" alt="Stuffed Fish" />
+            </div>
+            <p>Stuffed Fish</p>
+            <span class="dish-desc">Fish stuffed with herbs and spices.</span>
+        </div>
+    </div>
+
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/FishKebab.jpg" alt="Fish Kebab" />
+            </div>
+            <p>Fish Kebab</p>
+            <span class="dish-desc">Skewered fish with savory spices.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/LemonSalmonFillet.jpg" alt="Salmon Fillet with Lemon" />
+            </div>
+            <p>Salmon Fillet with Lemon</p>
+            <span class="dish-desc">Tender salmon with lemon sauce.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/SeafoodTagliatelle.jpg" alt="Seafood Tagliatelle" />
+            </div>
+            <p>Seafood Tagliatelle</p>
+            <span class="dish-desc">Tagliatelle with mixed seafood.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/ShrimpPie.jpg" alt="Shrimp Pie" />
+            </div>
+            <p>Shrimp Pie</p>
+            <span class="dish-desc">Savory pie filled with shrimp.</span>
+        </div>
+    </div>
+</section>
+
+<!-- Appetizers Section -->
+<section id="appetizers">
+    <h3>Appetizers</h3>
+
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/CheeseSamosaLuxury.jpg" alt="Luxury Cheese Samosa" />
+            </div>
+            <p>Luxury Cheese Samosa</p>
+            <span class="dish-desc">Crispy samosas with premium cheese.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/SalmonCrostini.jpg" alt="Salmon Crostini" />
+            </div>
+            <p>Salmon Crostini</p>
+            <span class="dish-desc">Toasted bread topped with salmon.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/CaesarShrimpSalad.jpg" alt="Caesar Salad with Shrimp" />
+            </div>
+            <p>Caesar Salad with Shrimp</p>
+            <span class="dish-desc">Classic Caesar with fresh shrimp.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Caviar.jpg" alt="Caviar" />
+            </div>
+            <p>Caviar</p>
+            <span class="dish-desc">Premium caviar with delicate flavor.</span>
+        </div>
+    </div>
+
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/SmokedSeafood.jpg" alt="Smoked Seafood" />
+            </div>
+            <p>Smoked Seafood</p>
+            <span class="dish-desc">Assorted smoked seafood delicacies.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/SmokedSalmonRolls.jpg" alt="Smoked Salmon Rolls" />
+            </div>
+            <p>Smoked Salmon Rolls</p>
+            <span class="dish-desc">Delicate rolls with smoked salmon.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/SeafoodCreamSoup.jpg" alt="Seafood Cream Soup" />
+            </div>
+            <p>Seafood Cream Soup</p>
+            <span class="dish-desc">Rich creamy soup with seafood.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/SalmonTart.jpg" alt="Salmon Tart" />
+            </div>
+            <p>Salmon Tart</p>
+            <span class="dish-desc">Flaky tart with fresh salmon.</span>
+        </div>
+    </div>
+
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Oysters.jpg" alt="Oysters" />
+            </div>
+            <p>Oysters</p>
+            <span class="dish-desc">Fresh oysters with a briny taste.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/AvocadoShrimpSalad.jpg" alt="Avocado and Shrimp Salad" />
+            </div>
+            <p>Avocado and Shrimp Salad</p>
+            <span class="dish-desc">Creamy avocado with tender shrimp.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/MiniSalmonBurger.jpg" alt="Mini Salmon Burger" />
+            </div>
+            <p>Mini Salmon Burger</p>
+            <span class="dish-desc">Bite-sized burgers with salmon patty.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/BlackCaviar.jpg" alt="Black Caviar" />
+            </div>
+            <p>Black Caviar</p>
+            <span class="dish-desc">Luxurious black caviar delicacy.</span>
+        </div>
+    </div>
+
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/StuffedMushrooms.jpg" alt="Stuffed Mushrooms with Cheese" />
+            </div>
+            <p>Stuffed Mushrooms with Cheese</p>
+            <span class="dish-desc">Mushrooms stuffed with creamy cheese.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/CrabSticks.jpg" alt="Crab Sticks" />
+            </div>
+            <p>Crab Sticks</p>
+            <span class="dish-desc">Flavorful crab sticks with dip.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/TomatoBruschetta.jpg" alt="Tomato Bruschetta" />
+            </div>
+            <p>Tomato Bruschetta</p>
+            <span class="dish-desc">Toasted bread with fresh tomato.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/SushiRolls.jpg" alt="Sushi Rolls" />
+            </div>
+            <p>Sushi Rolls</p>
+            <span class="dish-desc">Fresh sushi rolls with seafood.</span>
+        </div>
+    </div>
+
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/GrilledShrimpSkewers.jpg" alt="Grilled Shrimp Skewers" />
+            </div>
+            <p>Grilled Shrimp Skewers</p>
+            <span class="dish-desc">Shrimp skewers grilled to perfection.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/CrabSoup.jpg" alt="Crab Soup" />
+            </div>
+            <p>Crab Soup</p>
+            <span class="dish-desc">Rich crab soup with spices.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/SeafoodSpringRolls.jpg" alt="Seafood Spring Rolls" />
+            </div>
+            <p>Seafood Spring Rolls</p>
+            <span class="dish-desc">Crispy rolls with seafood filling.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/SmokedFishLemon.jpg" alt="Smoked Fish with Lemon" />
+            </div>
+            <p>Smoked Fish with Lemon</p>
+            <span class="dish-desc">Smoked fish with lemon slices.</span>
+        </div>
+    </div>
+</section>
+
+<footer>
+    © 2025 <span>WEDÉ</span> | All rights reserved
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Our Services – WEDÉ</title>
+
+    <!-- الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --green-dark: #4B5945;
+            --green-medium: #66785F;
+            --green-light: #91AC8F;
+            --green-pale: #B2C9AD;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--green-pale);
+            color: var(--green-dark);
+            transition: opacity 0.5s ease-in-out;
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: var(--green-medium);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            height: 70px;
+        }
+
+        header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 36px;
+            color: var(--green-pale);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover { opacity: 0.8; }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background-color: var(--green-light);
+            color: white;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            margin-left: 25px;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--green-medium);
+            transform: translateY(-2px);
+        }
+
+        /* === قسم Hero مع فيديو كامل 100vh بدون غبش أبيض === */
+        .services-hero {
+            position: relative;
+            height: 100vh; /* زيادة الطول لكامل الشاشة */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+        }
+
+        .services-hero.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .services-hero video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3; /* غبش خفيف فقط من الفيديو نفسه */
+            z-index: 1;
+        }
+
+        /* تم حذف الطبقة البيضاء تمامًا */
+        .services-hero h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 62px;
+            font-weight: 500;
+            color: white; /* لون أبيض ليبرز على الفيديو */
+            z-index: 3;
+            text-shadow: 0px 3px 12px rgba(0, 0, 0, 0.6); /* ظل قوي ليظهر النص */
+            position: relative;
+            letter-spacing: 1px;
+        }
+
+        .services-content {
+            padding: 120px 60px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+        }
+
+        .services-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .services-content h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 42px;
+            color: var(--green-dark);
+            margin-bottom: 15px;
+        }
+
+        .services-content p {
+            font-family: 'Poppins', sans-serif;
+            max-width: 750px;
+            margin: 0 auto 20px;
+            font-size: 18px;
+            color: #444;
+            line-height: 1.9;
+            letter-spacing: 0.2px;
+        }
+
+        .divider {
+            width: 80px;
+            height: 4px;
+            background: var(--green-light);
+            margin: 30px auto;
+            border-radius: 2px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .services-gallery {
+            text-align: center;
+            padding: 60px 60px 100px 60px;
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+            background: linear-gradient(135deg, #B2C9AD 0%, #91AC8F 50%, #66785F 100%);
+        }
+
+        .services-gallery.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .services-gallery h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 40px;
+            color: var(--green-dark);
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .services-gallery h2::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 6px;
+            background-color: var(--green-light);
+            border-radius: 3px;
+        }
+
+        .packages-intro {
+            font-size: 17px;
+            color: #f5f5f5;
+            max-width: 800px;
+            margin: 0 auto 50px;
+            line-height: 1.8;
+            font-weight: 400;
+        }
+
+        .gallery-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .gallery-item {
+            position: relative;
+            width: 300px;
+            height: 420px;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transform: scale(0.95);
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover { transform: scale(1); }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(2px) brightness(0.8);
+            transition: filter 0.3s ease;
+        }
+
+        .gallery-item:hover img { filter: blur(1px) brightness(0.9); }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            color: white;
+            background: rgba(0, 0, 0, 0.35);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            font-size: 16px;
+            backdrop-filter: blur(2px);
+        }
+
+        .overlay h3 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .overlay .price {
+            font-size: 22px;
+            margin-bottom: 5px;
+            color: var(--green-pale);
+        }
+
+        .overlay .per {
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .overlay ul {
+            list-style: none;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .overlay button {
+            background-color: var(--green-light);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .overlay button:hover {
+            background-color: var(--green-medium);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            background-color: var(--green-medium);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 60px;
+        }
+
+        .word {
+            display: inline-block;
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: all 0.5s cubic-bezier(0.25, 0.9, 0.3, 1.2);
+            margin-right: 6px;
+            white-space: pre;
+        }
+
+        .word.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .logo-link {
+            color: var(--green-pale);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo-link:hover { opacity: 0.8; }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1><a href="main.html" class="logo-link">WEDÉ</a></h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="services.html" style="text-decoration: underline;">Services</a>
+        <a href="#">Gallery</a>
+        <a href="#">Contact</a>
+        <button id="loginBtn" class="nav-btn">Login</button>
+    </nav>
+</header>
+
+<!-- === قسم Hero مع فيديو كامل 100vh بدون غبش أبيض === -->
+<section class="services-hero" id="hero">
+    <video autoplay muted loop playsinline>
+        <source src="imgs/aboutus.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+    </video>
+    <h1>Our Services</h1>
+</section>
+
+<section class="services-content" id="content">
+    <h2 id="animated-title">Elegant Solutions for Every Detail</h2>
+    <p id="animated-text">
+        From floral design to menu planning and entertainment — we provide full wedding coordination
+        tailored to your unique style and vision. Our team ensures every detail is perfect so your
+        big day feels effortless, elegant, and unforgettable.
+    </p>
+    <div class="divider"></div>
+</section>
+
+<section class="services-gallery" id="gallery">
+    <h2>Our Packages</h2>
+    <p class="packages-intro">
+        Every couple deserves a celebration that matches their vision. Each of our wedding packages
+        offers a different level of service and customization — from essential coordination in our
+        Regular Package, to enhanced elegance in our Medium option, and full luxury experience in
+        our top-tier plan.
+    </p>
+
+    <div class="gallery-container">
+        <div class="gallery-item">
+            <img src="imgs/p13.jpg" alt="Regular Package">
+            <div class="overlay">
+                <h3>Regular Package</h3>
+                <div class="price">$2800</div>
+                <div class="per">per package</div>
+                <ul>
+                    <li>Decoration</li>
+                    <li>Flower Bouquet</li>
+                    <li>Documentation</li>
+                    <li>Dance Party</li>
+                </ul>
+                <button onclick="goToPreparation()">Get Started</button>
+            </div>
+        </div>
+
+        <div class="gallery-item">
+            <img src="imgs/p14.jpg" alt="Medium Bouquet">
+            <div class="overlay">
+                <h3>Medium Bouquet</h3>
+                <div class="price">$3000</div>
+                <div class="per">per package</div>
+                <ul>
+                    <li>Decoration</li>
+                    <li>Flower Bouquet</li>
+                    <li>Documentation</li>
+                    <li>Dance Party</li>
+                </ul>
+                <button onclick="goToPreparation()">Get Started</button>
+            </div>
+        </div>
+
+        <div class="gallery-item">
+            <img src="imgs/p15.jpg" alt="Luxury Bouquet">
+            <div class="overlay">
+                <h3>Luxury Bouquet</h3>
+                <div class="price">$3200</div>
+                <div class="per">per package</div>
+                <ul>
+                    <li>Decoration</li>
+                    <li>Flower Bouquet</li>
+                    <li>Documentation</li>
+                    <li>Dance Party</li>
+                </ul>
+                <button onclick="goToPreparation()">Get Started</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>© 2025 WEDÉ | All rights reserved</p>
+</footer>
+
+<script>
+    window.addEventListener('load', () => {
+        document.querySelector('.services-hero').classList.add('visible');
+        setTimeout(() => {
+            document.querySelector('.services-content').classList.add('visible');
+            animateText('animated-title', 60);
+            animateText('animated-text', 35);
+        }, 700);
+        setTimeout(() => {
+            document.querySelector('.services-gallery').classList.add('visible');
+        }, 1400);
+    });
+
+    document.getElementById('loginBtn').addEventListener('click', function () {
+        document.body.style.opacity = '0';
+        setTimeout(() => { window.location.href = 'login.html'; }, 400);
+    });
+
+    function animateText(id, speed){
+        const el = document.getElementById(id);
+        const raw = el.innerText.trim();
+        const words = raw.split(' ');
+        el.innerHTML = '';
+        words.forEach((word, i) => {
+            const span = document.createElement('span');
+            span.className = 'word';
+            span.innerText = word + (i < words.length - 1 ? ' ' : '');
+            el.appendChild(span);
+            setTimeout(() => {
+                span.style.transform = i % 2 === 0 ? 'translateX(40px)' : 'translateX(-40px)';
+                setTimeout(() => {
+                    span.classList.add('visible');
+                    span.style.transform = 'translateX(0)';
+                }, 80);
+            }, i * speed);
+        });
+    }
+
+    function goToPreparation() {
+        document.body.style.opacity = '0';
+        setTimeout(() => {
+            window.location.href = 'preparation.html';
+        }, 400);
+    }
+
+    document.querySelector('.logo-link').addEventListener('click', function (e) {
+        e.preventDefault();
+        document.body.style.opacity = '0';
+        setTimeout(() => { window.location.href = 'main.html'; }, 400);
+    });
+</script>
+
+</body>
+</html>
