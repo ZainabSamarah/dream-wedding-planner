@@ -16,14 +16,27 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to bottom right, #AAB99A, #D0DDD0);
             height: 100vh;
+            overflow: hidden;
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            position: relative;
         }
+
+        /* === الفيديو بنفس التغبيش الموجود في main.html === */
+        .video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4; /* نفس التغبيش في main.html */
+            z-index: 1;
+        }
+
+        /* === إزالة الطبقة الخضراء (مش موجودة في main.html) === */
 
         /* شاشة التحميل */
         .loading {
@@ -46,7 +59,6 @@
             pointer-events: none;
         }
 
-        /* الصورة بدون خلفية أو مربع */
         .loading-image {
             width: 120px;
             height: auto;
@@ -67,18 +79,19 @@
             margin-top: 20px;
         }
 
-        /* النصوص بعد التحميل */
+        /* === المربع بخلفية أخضر فاتح === */
         .hero {
             text-align: center;
             padding: 50px;
-            background: rgba(240, 240, 215, 0.95);
+            background: rgba(200, 216, 200, 0.96); /* #C8D8C8 */
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(114, 125, 115, 0.3);
+            box-shadow: 0 10px 30px rgba(75, 89, 69, 0.3);
             max-width: 600px;
-            z-index: 2;
+            z-index: 3;
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.8s ease, transform 0.8s ease;
+            position: relative;
         }
 
         .hero.show {
@@ -89,14 +102,14 @@
         .hero h1 {
             font-family: 'Great Vibes', cursive;
             font-size: 4rem;
-            color: #727D73;
+            color: #4B5945;
             margin-bottom: 20px;
         }
 
         .link-button {
             display: inline-block;
             position: relative;
-            color: #727D73;
+            color: #4B5945;
             font-size: 1.2rem;
             font-weight: 500;
             text-decoration: none;
@@ -111,46 +124,39 @@
             bottom: -3px;
             width: 0;
             height: 2px;
-            background-color: #727D73;
+            background-color: #4B5945;
             transition: width 0.3s ease;
         }
 
         .link-button:hover {
-            color: #4e574e;
+            color: #2d362d;
         }
 
         .link-button:hover::after {
             width: 100%;
         }
 
-        .background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #F0F0D7 0%, #D0DDD0 100%);
-            filter: blur(3px);
-            z-index: 1;
-        }
-
+        /* القلوب */
         .hearts {
             position: absolute;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 0;
+            z-index: 4;
+            top: 0;
+            left: 0;
         }
 
         .heart {
             position: absolute;
-            color: #AAB99A;
+            color: #C8D8C8;
             font-size: 20px;
             animation: fall linear infinite;
+            opacity: 0.85;
         }
 
         @keyframes fall {
-            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 0.85; }
             100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
         }
 
@@ -162,14 +168,25 @@
 </head>
 
 <body>
+
+<!-- شاشة التحميل -->
 <div class="loading" id="loading">
     <img src="imgs/tulips1.jpg" alt="Loading Tulips" class="loading-image">
     <div class="loading-text"></div>
 </div>
 
-<div class="background"></div>
+<!-- الفيديو (نفس التغبيش في main.html) -->
+<video autoplay muted loop playsinline class="video-bg">
+    <source src="imgs/f.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+<!-- تم إزالة الـ video-overlay (مش موجود في main.html) -->
+
+<!-- القلوب -->
 <div class="hearts" id="hearts"></div>
 
+<!-- المربع -->
 <div class="hero" id="hero">
     <h1>Your Perfect Day Starts Here</h1>
     <a href="main.html" class="link-button">Plan your dream wedding with us</a>
@@ -184,7 +201,7 @@
     function createHeart() {
         const heart = document.createElement('div');
         heart.className = 'heart';
-        heart.innerHTML = '💚';
+        heart.innerHTML = 'Heart';
         heart.style.left = Math.random() * 100 + 'vw';
         heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
         document.getElementById('hearts').appendChild(heart);
@@ -193,5 +210,6 @@
 
     setInterval(createHeart, 300);
 </script>
+
 </body>
 </html>
