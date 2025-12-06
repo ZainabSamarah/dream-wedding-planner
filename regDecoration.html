@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Regular Decoration Service – WEDÉ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great_Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --green-dark: #4B5945;
+            --green-medium: #66785F;
+            --green-light: #91AC8F;
+            --green-pale: #B2C9AD;
+            --section-bg: #E8EFE5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at center, #E8EFE5 0%, #B2C9AD 70%, #8DA187 100%);
+            color: var(--green-dark);
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            overflow-x: hidden;
+            padding-top: 110px;
+        }
+
+        header {
+            background-color: var(--green-medium);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 20;
+            height: 70px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 36px;
+            color: var(--green-pale);
+        }
+
+        header a {
+            color: var(--green-pale);
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--green-dark);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        p.intro {
+            font-size: 1.1rem;
+            color: var(--green-medium);
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+            line-height: 1.5;
+        }
+
+        #cart {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        #cart:hover {
+            transform: scale(1.1);
+        }
+
+        #cart img {
+            width: 100%;
+            height: 100%;
+        }
+
+        #cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--green-light);
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .rotating-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 15px auto;
+            box-shadow: 0 4px 15px rgba(105, 121, 85, 0.4);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .rotating-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+            border-radius: 50%;
+        }
+
+        .rotating-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .rotating-image:hover {
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 8px 25px rgba(105, 121, 85, 0.5);
+        }
+
+        section {
+            margin-top: 40px;
+            background: var(--section-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(105, 121, 85, 0.2);
+        }
+
+        section h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: var(--green-dark);
+            margin-bottom: 20px;
+        }
+
+        section p {
+            font-size: 1.2rem;
+            color: var(--green-dark);
+            margin-bottom: 40px;
+        }
+
+        .dishes-row {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .dish {
+            width: 200px;
+            flex: 1 1 calc(33% - 25px);
+            max-width: 200px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .dish:nth-child(1) { animation-delay: 0.1s; }
+        .dish:nth-child(2) { animation-delay: 0.2s; }
+        .dish:nth-child(3) { animation-delay: 0.3s; }
+
+        .dish:hover .rotating-image {
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 8px 25px rgba(105, 121, 85, 0.5);
+        }
+
+        .dish p {
+            font-size: 1.1rem;
+            color: var(--green-dark);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .dish-desc {
+            font-size: 0.9rem;
+            color: var(--green-medium);
+            line-height: 1.4;
+            margin-top: 5px;
+        }
+
+        footer {
+            background-color: var(--green-medium);
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 14px;
+            margin-top: 60px;
+            width: 100%;
+            z-index: 5;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        footer span {
+            color: var(--green-pale);
+            font-weight: 500;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 1200px) {
+            body {
+                padding: 20px;
+                padding-top: 110px;
+            }
+
+            .dish {
+                flex: 1 1 calc(50% - 25px);
+                max-width: 200px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .dish {
+                flex: 1 1 100%;
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1><a href="main.html">WEDÉ</a></h1>
+</header>
+
+<h2>Regular Decoration Service</h2>
+<p class="intro">Choose beautiful flowers and decorative elements to personalize your wedding. Select from our romantic options for flowers, lighting, accessories, and table centerpieces. All included in your subscription.</p>
+
+<!-- Cart Icon -->
+<div id="cart">
+    <img src="https://cdn-icons-png.flaticon.com/512/1170/1170576.png" alt="Cart">
+    <div id="cart-count">0</div>
+</div>
+
+<!-- Flowers Section -->
+<section id="flowers">
+    <h3>Flowers</h3>
+    <p>Choose these beautiful flowers to decorate your wedding tables with romance and elegance.</p>
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/roses-bouquet.jpg" alt="Roses Bouquet" />
+            </div>
+            <p>Roses Bouquet</p>
+            <span class="dish-desc">Classic red roses for timeless love and passion.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/lilies-arrangement.jpg" alt="Lilies Arrangement" />
+            </div>
+            <p>Lilies Arrangement</p>
+            <span class="dish-desc">Elegant white lilies symbolizing purity and grace.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/mixed-wildflowers.jpg" alt="Mixed Wildflowers" />
+            </div>
+            <p>Mixed Wildflowers</p>
+            <span class="dish-desc">Colorful wildflowers for a natural, joyful touch.</span>
+        </div>
+    </div>
+</section>
+
+<!-- Lighting Section -->
+<section id="lighting">
+    <h3>Lighting</h3>
+    <p>Illuminate your venue with soft, romantic lighting to create magical moments.</p>
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/string-lights.jpg" alt="String Lights" />
+            </div>
+            <p>String Lights</p>
+            <span class="dish-desc">Warm string lights for a cozy, fairy-tale ambiance.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/Candle Lanterns.jpg" alt="Candle Lanterns" />
+            </div>
+            <p>Candle Lanterns</p>
+            <span class="dish-desc">Glowing lanterns with candles for intimate elegance.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/led-fairy-lights.jpg" alt="LED Fairy Lights" />
+            </div>
+            <p>LED Fairy Lights</p>
+            <span class="dish-desc">Twinkling LED lights for a modern, enchanting glow.</span>
+        </div>
+    </div>
+</section>
+
+<!-- Decor Accessories Section -->
+<section id="decor-accessories">
+    <h3>Decor Accessories</h3>
+    <p>Add charming details with accessories that enhance the beauty of your wedding.</p>
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/ribbons-bows.jpg" alt="Ribbons and Bows" />
+            </div>
+            <p>Ribbons and Bows</p>
+            <span class="dish-desc">Silk ribbons and bows for a delicate, romantic finish.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/crystal-vases.jpg" alt="Crystal Vases" />
+            </div>
+            <p>Crystal Vases</p>
+            <span class="dish-desc">Sparkling crystal vases to hold your flowers beautifully.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/pearl-accents.jpg" alt="Pearl Accents" />
+            </div>
+            <p>Pearl Accents</p>
+            <span class="dish-desc">Elegant pearl details for a touch of luxury and shine.</span>
+        </div>
+    </div>
+</section>
+
+<!-- Table Centerpieces Section -->
+<section id="table-centerpieces">
+    <h3>Table Centerpieces</h3>
+    <p>Choose centerpieces to make your tables the heart of the celebration.</p>
+    <div class="dishes-row">
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/floral-centerpiece.jpg" alt="Floral Centerpiece" />
+            </div>
+            <p>Floral Centerpiece</p>
+            <span class="dish-desc">Fresh flowers in a vase for a simple, natural look.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/candle-flower-mix.jpg" alt="Candle and Flower Mix" />
+            </div>
+            <p>Candle and Flower Mix</p>
+            <span class="dish-desc">Candles surrounded by flowers for warmth and romance.</span>
+        </div>
+        <div class="dish">
+            <div class="rotating-image">
+                <img src="imgs/greenery-arrangement.jpg" alt="Greenery Arrangement" />
+            </div>
+            <p>Greenery Arrangement</p>
+            <span class="dish-desc">Lush greenery with subtle flowers for a fresh vibe.</span>
+        </div>
+    </div>
+</section>
+
+<footer>
+    © 2025 <span>WEDÉ</span> | All rights reserved
+</footer>
+
+</body>
+</html>

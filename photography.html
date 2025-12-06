@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Photography Mini Session – WEDÉ</title>
+
+    <!-- الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --green-dark: #4B5945;
+            --green-medium: #66785F;
+            --green-light: #91AC8F;
+            --green-pale: #B2C9AD;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--green-pale);
+            color: var(--green-dark);
+            transition: opacity 0.1s ease-in-out;
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: var(--green-medium);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            height: 70px;
+        }
+
+        header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 36px;
+            color: var(--green-pale);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover { opacity: 0.8; }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background-color: var(--green-light);
+            color: white;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            margin-left: 25px;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--green-medium);
+            transform: translateY(-2px);
+        }
+
+        /* === Hero Section === */
+        .hero {
+            position: relative;
+            height: 70vh; /* أقل من طول الشاشة */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: 70px; /* header offset */
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.7); /* غمق الفيديو أكثر */
+            z-index:2;
+        }
+
+        .hero video {
+            position: absolute;
+            top:0; left:0;
+            width:100%; height:100%;
+            object-fit: cover;
+            z-index:1;
+        }
+
+        /* نصوص تظهر تدريجيًا من اليسار لليمين */
+        .hero-text {
+            position: relative;
+            z-index: 3;
+            color: #E6D7C5; /* بني فاتح */
+            text-align: center;
+            max-width: 900px;
+            padding: 20px;
+        }
+
+        .hero-text h1, .hero-text h2, .hero-text p {
+            opacity: 0;
+            transform: translateX(-50px);
+            animation: slideIn 1s forwards;
+        }
+
+        .hero-text h1 { animation-delay: 0.3s; font-size: 52px; text-shadow: 2px 4px 10px rgba(0,0,0,0.7); }
+        .hero-text h2 { animation-delay: 0.6s; font-size: 36px; text-shadow: 2px 4px 10px rgba(0,0,0,0.6); margin-bottom: 15px; }
+        .hero-text p { animation-delay: 0.9s; font-size: 18px; line-height: 1.8; text-shadow: 1px 2px 6px rgba(0,0,0,0.5); }
+
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateX(-50px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        /* === Mini Session Form === */
+        .section {
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .section h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 42px;
+            color: var(--green-dark);
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            max-width: 750px;
+            margin: 0 auto 25px;
+            font-size: 18px;
+            color: #444;
+            line-height: 1.8;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 30px auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        form input, form textarea {
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--green-dark);
+            font-size: 16px;
+            width: 100%;
+        }
+
+        form button {
+            padding: 12px 20px;
+            border-radius: 25px;
+            background-color: var(--green-light);
+            color: white;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        form button:hover {
+            background-color: var(--green-medium);
+            transform: translateY(-2px);
+        }
+
+        /* === Footer === */
+        footer {
+            background-color: var(--green-medium);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 60px;
+        }
+
+        .logo-link { color: var(--green-pale); text-decoration: none; }
+        .logo-link:hover { opacity: 0.8; }
+
+        .saved-msg {
+            color: var(--green-dark);
+            margin-top: 10px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1><a href="main.html" class="logo-link">WEDÉ</a></h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="services.html" style="text-decoration: underline;">Services</a>
+        <a href="#">Gallery</a>
+        <a href="#">Contact</a>
+        <button id="loginBtn" class="nav-btn">Login</button>
+    </nav>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+    <video autoplay muted loop playsinline>
+        <source src="imgs/ph.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="hero-text">
+        <h1>Photography Sessions</h1>
+        <h2>Photography Mini Session</h2>
+        <p>This package includes wedding day photography inside the venue for all users.<br>
+            The Mini Session outside the venue is optional for users who want a private external shoot.<br>
+            Choose your preferred date, time, and location if you want an outside session.</p>
+    </div>
+</section>
+
+<!-- Mini Session -->
+<section class="section">
+    <h2>Photography Mini Session</h2>
+    <p>Enjoy a special mini session outside the wedding venue, included as part of your package. Choose your preferred date, time, and location.</p>
+
+    <form id="miniSessionForm">
+        <input type="date" id="date" required>
+        <input type="time" id="time" required>
+        <input type="text" id="location" placeholder="Enter location (Park, Studio, Beach...)" required>
+        <textarea id="notes" placeholder="Additional notes (optional)"></textarea>
+        <button type="submit">Confirm Session</button>
+        <div class="saved-msg" id="savedMsg"></div>
+    </form>
+</section>
+
+<footer>
+    <p>© 2025 WEDÉ | All rights reserved</p>
+</footer>
+
+<script>
+    // Login button
+    document.getElementById('loginBtn').addEventListener('click', function () {
+        document.body.style.opacity = '0';
+        setTimeout(() => { window.location.href = 'login.html'; }, 400);
+    });
+
+    // Hero animation
+    window.addEventListener('load', () => {
+        document.querySelector('.hero').style.opacity = '1';
+    });
+
+    // Mini Session Form Logic
+    const FORM_KEY = 'miniSessionData';
+
+    function loadSession() {
+        return JSON.parse(localStorage.getItem(FORM_KEY) || '{}');
+    }
+
+    function saveSession(data) {
+        localStorage.setItem(FORM_KEY, JSON.stringify(data));
+        const msg = document.getElementById('savedMsg');
+        msg.textContent = 'Session Saved!';
+        setTimeout(() => { msg.textContent = ''; }, 2000);
+    }
+
+    document.getElementById('miniSessionForm').addEventListener('submit', function(e){
+        e.preventDefault();
+        const data = {
+            date: document.getElementById('date').value,
+            time: document.getElementById('time').value,
+            location: document.getElementById('location').value,
+            notes: document.getElementById('notes').value
+        };
+        saveSession(data);
+    });
+
+    window.addEventListener('load', () => {
+        const data = loadSession();
+        if(data.date) document.getElementById('date').value = data.date;
+        if(data.time) document.getElementById('time').value = data.time;
+        if(data.location) document.getElementById('location').value = data.location;
+        if(data.notes) document.getElementById('notes').value = data.notes;
+    });
+</script>
+
+</body>
+</html>

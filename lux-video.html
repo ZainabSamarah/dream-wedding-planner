@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Luxury Video Creation – WEDÉ</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+    <style>
+        :root {
+            --green-dark: #4B5945;
+            --green-medium: #66785F;
+            --green-light: #91AC8F;
+            --green-pale: #B2C9AD;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--green-pale);
+            color: var(--green-dark);
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: var(--green-medium);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            height: 70px;
+        }
+
+        header h1 { font-family: 'Great Vibes', cursive; font-size: 36px; color: var(--green-pale); text-decoration: none; }
+
+        nav a { color: white; text-decoration: none; margin-left: 25px; font-weight: 500; }
+        nav a:hover { opacity: 0.8; }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background-color: var(--green-light);
+            color: white;
+            border-radius: 25px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            margin-left: 25px;
+        }
+
+        .nav-btn:hover { background-color: var(--green-medium); transform: translateY(-2px); }
+
+        .lux-hero {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+        }
+
+        .lux-hero.visible { opacity: 1; transform: translateY(0); }
+
+        .lux-hero video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; z-index: 1; }
+
+        .lux-hero h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 62px;
+            color: white;
+            z-index: 3;
+            text-shadow: 0px 3px 12px rgba(0,0,0,0.6);
+        }
+
+        .lux-content { padding: 120px 60px; text-align: center; opacity: 0; transform: translateY(60px); transition: opacity 1.5s ease-out, transform 1.5s ease-out; }
+        .lux-content.visible { opacity: 1; transform: translateY(0); }
+
+        .divider { width: 80px; height: 4px; background: var(--green-light); margin: 30px auto; border-radius: 2px; }
+
+        .upload-section {
+            background: linear-gradient(135deg, #B2C9AD 0%, #91AC8F 50%, #66785F 100%);
+            padding: 60px;
+            border-radius: 25px;
+            margin: 40px auto;
+            max-width: 1200px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .upload-btn {
+            background-color: var(--green-light);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .upload-btn:hover { background-color: var(--green-medium); transform: translateY(-2px); }
+
+        #image-preview { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 20px; }
+
+        .image-item {
+            width: 200px;
+            height: 200px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border: 5px solid var(--green-light);
+            cursor: grab;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:white;
+        }
+
+        .image-item img { width:100%; height:100%; object-fit:cover; display:block; }
+
+        .video-options {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            margin: 40px auto;
+            max-width: 1200px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .option-group { margin-bottom: 20px; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; justify-content:center; }
+        .option-group label { font-weight: 500; }
+        .option-group select, .option-group input[type="number"] {
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--green-light);
+            min-width: 200px;
+        }
+
+        .text-inputs {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .text-inputs input {
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--green-light);
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .display-buttons {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .display-buttons button {
+            background-color: var(--green-light);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            min-width: 220px;
+            position: relative;
+        }
+
+        .display-buttons button:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+
+        .display-buttons button i.fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        #preview-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        #preview-video {
+            max-width: 90%;
+            max-height: 80vh;
+            border: 10px solid var(--green-light);
+            border-radius: 15px;
+            background:black;
+        }
+
+        #close-preview {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: var(--green-light);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .progress-text {
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--green-dark);
+        }
+
+        footer { background-color: var(--green-medium); color: white; text-align: center; padding: 15px; margin-top: 60px; }
+        .logo-link { color: var(--green-pale); text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1><a href="main.html" class="logo-link">WEDÉ</a></h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="#">Gallery</a>
+        <a href="#">Contact</a>
+        <button class="nav-btn">Login</button>
+    </nav>
+</header>
+
+<section class="lux-hero" id="hero">
+    <video autoplay muted loop playsinline>
+        <source src="imgs/aboutus.mp4" type="video/mp4" />
+    </video>
+    <h1>Luxury Video Creation</h1>
+</section>
+
+<section class="lux-content" id="content">
+    <h2>Create Your Dream Wedding Video</h2>
+    <p>For our Luxury package, enjoy a personalized video slideshow with your photos, music, and effects.</p>
+    <div class="divider"></div>
+
+    <div class="upload-section">
+        <h3>Upload Your Photos</h3>
+        <input type="file" id="image-upload" multiple accept="image/*" style="display: none;">
+        <button class="upload-btn" id="open-upload">
+            <i class="fas fa-upload"></i> Upload Photos
+        </button>
+        <p style="margin-top:10px;">Drag and drop to reorder your photos for the video sequence.</p>
+        <div id="image-preview" aria-live="polite"></div>
+    </div>
+
+    <div class="video-options">
+        <h3>Customize Your Video</h3>
+        <div class="option-group">
+            <label for="video-style">Video Style:</label>
+            <select id="video-style">
+                <option value="simple">Simple Slideshow</option>
+                <option value="fade">Fade Transitions</option>
+                <option value="zoom">Zoom + Fade</option>
+            </select>
+        </div>
+        <div class="option-group">
+            <label for="slide-duration">Slide Duration (seconds):</label>
+            <input type="number" id="slide-duration" value="3" min="1" max="10">
+        </div>
+        <div class="option-group">
+            <label for="music-select">Background Music:</label>
+            <select id="music-select">
+                <option value="none">No Music</option>
+                <option value="romantic">Romantic Piano</option>
+                <option value="upbeat">Upbeat Pop</option>
+                <option value="custom">Custom Upload</option>
+            </select>
+            <div class="music-upload" id="music-upload" style="display:none; margin-top:10px;">
+                <input type="file" accept="audio/*" id="audio-upload">
+            </div>
+        </div>
+        <div class="text-inputs">
+            <input type="text" placeholder="Bride's Name" id="bride-name">
+            <input type="text" placeholder="Groom's Name" id="groom-name">
+            <input type="text" placeholder="Wedding Date (e.g. 22/12/2027)" id="wedding-date">
+        </div>
+    </div>
+
+    <div class="display-buttons">
+        <button id="preview-btn"><i class="fas fa-eye"></i> Preview Video</button>
+        <button id="fullscreen-btn"><i class="fas fa-play-circle"></i> Play Fullscreen</button>
+        <button id="download-btn"><i class="fas fa-download"></i> Download Video</button>
+    </div>
+
+    <div class="progress-text" id="progress-text" aria-live="polite"></div>
+</section>
+
+<div id="preview-modal" role="dialog" aria-modal="true">
+    <video id="preview-video" controls></video>
+    <button id="close-preview">Close Preview</button>
+</div>
+
+<footer>
+    <p>© 2025 WEDÉ | All rights reserved</p>
+</footer>
+
+<script>
+    // ====== إعدادات عامة ======
+    window.addEventListener('load', () => {
+        document.querySelector('.lux-hero').classList.add('visible');
+        setTimeout(() => document.querySelector('.lux-content').classList.add('visible'), 700);
+    });
+
+    // عناصر DOM
+    const openUploadBtn = document.getElementById('open-upload');
+    const imageUpload = document.getElementById('image-upload');
+    const previewContainer = document.getElementById('image-preview');
+    const musicSelect = document.getElementById('music-select');
+    const musicUploadWrapper = document.getElementById('music-upload');
+    const audioUpload = document.getElementById('audio-upload');
+
+    const previewBtn = document.getElementById('preview-btn');
+    const fullscreenBtn = document.getElementById('fullscreen-btn');
+    const downloadBtn = document.getElementById('download-btn');
+    const previewModal = document.getElementById('preview-modal');
+    const previewVideo = document.getElementById('preview-video');
+    const closePreviewBtn = document.getElementById('close-preview');
+    const progressText = document.getElementById('progress-text');
+
+    openUploadBtn.addEventListener('click', () => imageUpload.click());
+    musicSelect.addEventListener('change', () => {
+        musicUploadWrapper.style.display = musicSelect.value === 'custom' ? 'block' : 'none';
+    });
+
+    // إعدادات الإخراج (720x1280)
+    const OUT_W = 720;
+    const OUT_H = 1280;
+    const FPS = 24; // استخدم 24 لتسريع قليلاً
+    // ====== مصفوفات الملفات والصور المحمّلة ======
+    let imageFilesOrdered = []; // File objects (بترتب بتغيير drag)
+    let preRenderedCanvases = []; // canvases جاهزة لكل صورة بحجم OUT_W x OUT_H
+
+    // تحميل صورة كـ HTMLImageElement (object URL) ثم revoke
+    function loadImageFromFile(file) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => {
+                URL.revokeObjectURL(img.src);
+                resolve(img);
+            };
+            img.onerror = (e) => { URL.revokeObjectURL(img.src); reject(e); };
+            img.src = URL.createObjectURL(file);
+        });
+    }
+
+    // رسم الصورة كاملة (fit, no crop) على canvas بالحجم المطلوب مع خلفية سوداء letterbox
+    function renderImageToCanvasFit(img, W, H) {
+        const c = document.createElement('canvas');
+        c.width = W; c.height = H;
+        const ctx = c.getContext('2d');
+        // خلفية (optional) - هنا أسود
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0,0,W,H);
+
+        // حساب fit (contain)
+        const ratio = Math.min(W / img.naturalWidth, H / img.naturalHeight);
+        const w = img.naturalWidth * ratio;
+        const h = img.naturalHeight * ratio;
+        const x = (W - w) / 2;
+        const y = (H - h) / 2;
+        ctx.drawImage(img, x, y, w, h);
+        return c;
+    }
+
+    // رندر thumbnails + ترتيب Sortable
+    function renderThumbnails(files) {
+        previewContainer.innerHTML = '';
+        imageFilesOrdered = Array.from(files);
+
+        imageFilesOrdered.forEach((file, idx) => {
+            const url = URL.createObjectURL(file);
+            const div = document.createElement('div');
+            div.className = 'image-item';
+            div.dataset.origIndex = idx; // مرجع للملف الأصلي
+            div.innerHTML = `<img src="${url}" alt="photo-${idx}">`;
+            previewContainer.appendChild(div);
+            const imgEl = div.querySelector('img');
+            // revoke بعد تحميل الصورة الصغيرة حتى لا يتراكم
+            imgEl.onload = () => { URL.revokeObjectURL(url); };
+        });
+
+        // enable Sortable
+        if (previewContainer._sortable) previewContainer._sortable.destroy();
+        previewContainer._sortable = new Sortable(previewContainer, {
+            animation: 150,
+            onEnd: () => {
+                // إعادة ترتيب imageFilesOrdered طبقًا للترتيب الجديد
+                const nodes = Array.from(previewContainer.children);
+                const newOrder = nodes.map(node => {
+                    // نستخدم الindex في الـ node بنّسبة للترتيب الحالي
+                    const img = node.querySelector('img');
+                    // عندم نعيد بناء النمط نأخذ الترتيب الحالي: dataset.origIndex يحافظ الأصلي لكن يمكننا إعادة ترتيب مباشرة عن طريق ترتيب array حسب nodes
+                    // الحل العملي: نحصل على src (object URL محذوف) -> بدلاً من ذلك سنستخدم node.dataset.origindex التي بعناها
+                    const orig = Number(node.dataset.origIndex);
+                    return imageFilesOrdered[orig];
+                });
+                // لكن المشكلة: بعد أول ترتيب، dataset.origIndex عدى ثابت؛ أبسط: نعيد بناء بواسطة عناصر nodes ونتبع ترتيب file references من البداية:
+                // هنا أسهل طريق: map nodes to their current image src attribute and then match to files by name + size (approx)
+                // لكن لتبسيط ولأن files قد تتكرر بنفس الاسم، سنعمل approach ثانية:
+                // نحتفظ بزوج (id, file) عند الإنشاء.
+                // (نقوم بتحسين أدناه بعد تغيير المنطق)
+            }
+        });
+    }
+
+    // تحسين: نحتفظ بمرجع index داخل كل node عند كل ريندرثمل
+    function renderThumbnailsBetter(files) {
+        previewContainer.innerHTML = '';
+        imageFilesOrdered = Array.from(files);
+
+        imageFilesOrdered.forEach((file, idx) => {
+            const url = URL.createObjectURL(file);
+            const div = document.createElement('div');
+            div.className = 'image-item';
+            div.dataset.index = idx; // مرجع مباشر
+            div.innerHTML = `<img src="${url}" alt="photo-${idx}">`;
+            previewContainer.appendChild(div);
+            const imgEl = div.querySelector('img');
+            imgEl.onload = () => { URL.revokeObjectURL(url); };
+        });
+
+        if (previewContainer._sortable) previewContainer._sortable.destroy();
+        previewContainer._sortable = new Sortable(previewContainer, {
+            animation: 150,
+            onEnd: () => {
+                // إعادة ترتيب بناءً على dataset.index الموجودة حالياً (قبل تحديثها)
+                const nodes = Array.from(previewContainer.children);
+                const newFiles = nodes.map(n => {
+                    const idx = Number(n.dataset.index);
+                    return imageFilesOrdered[idx];
+                });
+                // الآن نبدل imageFilesOrdered
+                imageFilesOrdered = newFiles.slice();
+                // وأعد تعيين dataset.index حسب الترتيب الجديد
+                previewContainer.querySelectorAll('.image-item').forEach((n, i) => n.dataset.index = i);
+            }
+        });
+    }
+
+    // عند اختيار ملفات
+    imageUpload.addEventListener('change', async (e) => {
+        const files = e.target.files;
+        if (!files || files.length === 0) return;
+        // render thumbs (better)
+        renderThumbnailsBetter(files);
+
+        // clear previous preRenderedCanvases
+        preRenderedCanvases = [];
+
+        // preload images sequentially and prepare canvases (هذا يسهل الرسم السريع وقت التسجيل)
+        // التحميل التسلسلي أفضل لتقليل الضغط على الذاكرة
+        for (let f of imageFilesOrdered) {
+            try {
+                const img = await loadImageFromFile(f);
+                const pc = renderImageToCanvasFit(img, OUT_W, OUT_H);
+                preRenderedCanvases.push(pc);
+            } catch (err) {
+                console.warn('image preload failed', err);
+            }
+        }
+    });
+
+    // عرض الـ preview السريع (يعرض الصور على canvas داخل modal) — بدون صوت
+    function showPreviewFromPreRendered(blob) {
+        previewVideo.pause();
+        previewVideo.src = URL.createObjectURL(blob);
+        previewModal.style.display = 'flex';
+        previewVideo.play().catch(()=>{});
+    }
+
+    closePreviewBtn.addEventListener('click', () => {
+        previewVideo.pause();
+        try { URL.revokeObjectURL(previewVideo.src); } catch(e){}
+        previewVideo.src = '';
+        previewModal.style.display = 'none';
+    });
+
+    // تهيئة الـ title canvas
+    function renderTitleCanvas(bride, groom, date) {
+        const c = document.createElement('canvas');
+        c.width = OUT_W; c.height = OUT_H;
+        const ctx = c.getContext('2d');
+        // خلفية أنيقة
+        ctx.fillStyle = '#4B5945';
+        ctx.fillRect(0,0,OUT_W,OUT_H);
+
+        ctx.textAlign = 'center';
+        // اسم العروسين
+        const titleSize = Math.min(100, Math.floor(OUT_W / 7));
+        ctx.font = `bold ${titleSize}px Great Vibes, serif`;
+        ctx.fillStyle = '#B2C9AD';
+        ctx.fillText(`${bride} & ${groom}`, OUT_W/2, OUT_H/2 - 60);
+
+        // التاريخ
+        ctx.font = `${Math.min(48, Math.floor(OUT_W / 12))}px Poppins, sans-serif`;
+        ctx.fillStyle = 'white';
+        ctx.fillText(date, OUT_W/2, OUT_H/2 + 60);
+
+        return c;
+    }
+
+    // ===== تسجيل الفيديو (WEBM) =====
+    async function generateVideoBlob() {
+        // تحقق من وجود صور محمّلة ومجهزة
+        if (!imageFilesOrdered.length || !preRenderedCanvases.length) {
+            alert('Please upload at least one photo first!');
+            return null;
+        }
+
+        // ضبط أزرار وحالة إنتاج
+        setGenerating(true, 'Preparing...');
+
+        // slide duration
+        const slideSec = Math.max(1, Number(document.getElementById('slide-duration').value) || 3);
+        const slideFrames = Math.round(FPS * slideSec);
+
+        // إعداد audio (لن نشغله قبل التسجيل)
+        let audio = null;
+        const musicChoice = musicSelect.value;
+        if (musicChoice === 'custom' && audioUpload.files.length > 0) {
+            audio = new Audio(URL.createObjectURL(audioUpload.files[0]));
+        }
+        else if (musicSel === 'romantic') {
+            audio = new Audio('audio/romantic-piano.mp3');
+        }
+        else if (musicSel === 'upbeat') {
+            audio = new Audio('audio/upbeat-pop.mp3');
+        }
+
+        if (audio) {
+            audio.loop = true;
+            // لا نستدعي audio.play() الآن — سيبدأ بعد start التسجيل (هذا يمنع الصوت قبل الفيديو)
+            // ننتظر تحميل المصدر فقط
+            await new Promise(r => { audio.onloadeddata = r; audio.onerror = r; });
+        }
+
+        // canvas التسجيل (720x1280)
+        const recCanvas = document.createElement('canvas');
+        recCanvas.width = OUT_W; recCanvas.height = OUT_H;
+        const recCtx = recCanvas.getContext('2d');
+
+        // stream الفيديو من الـ canvas
+        const videoStream = recCanvas.captureStream(FPS);
+
+        // محاولة التقاط stream صوتي من عنصر audio
+        let finalStream = videoStream;
+        let audioStream = null;
+        if (audio && typeof audio.captureStream === 'function') {
+            try {
+                audioStream = audio.captureStream();
+            } catch (e) {
+                audioStream = null;
+            }
+        }
+
+        if (audioStream && audioStream.getAudioTracks().length) {
+            finalStream = new MediaStream([...videoStream.getVideoTracks(), ...audioStream.getAudioTracks()]);
+        }
+
+        // إعداد MediaRecorder
+        const mime = 'video/webm;codecs=vp9';
+        let recorder;
+        try {
+            recorder = new MediaRecorder(finalStream, { mimeType: mime });
+        } catch (e) {
+            try { recorder = new MediaRecorder(finalStream); }
+            catch (err) { setGenerating(false); alert('Recording not supported in this browser'); return null; }
+        }
+
+        const chunks = [];
+        recorder.ondataavailable = ev => { if (ev.data && ev.data.size) chunks.push(ev.data); };
+
+        // حساب عدد الـ steps (العنوان + الصور) لعرض Rendering X/Y
+        const totalSlides = 1 + preRenderedCanvases.length;
+        let currentSlideIndex = 0;
+
+        // بدء التسجيل
+        recorder.start(200); // يجمع كل 200ms
+        // الآن شغّل الصوت (إذا متوفر) — هذا يضمن الصوت لا يشغّل قبل start
+        if (audio && audioStream && audio.paused) {
+            audio.play().catch(()=>{});
+        } else if (audio && !audioStream) {
+            // لو لم يكن بإمكاننا التقاط audio stream، لا نلعب الصوت حتى بعد التسجيل لأن التسجيل سيكون صامتًا
+            // لذلك لا نقوم بتشغيله هنا
+        }
+
+        // وظيفة تحديث التقدّم نصياً
+        function updateProgressText(i) {
+            progressText.textContent = `Rendering ${i}/${totalSlides}`;
+        }
+
+        // أولاً: رسم شريحة العنوان لعدد الإطارات المطلوب (نحسب slideFrames)
+        currentSlideIndex = 1;
+        updateProgressText(currentSlideIndex);
+
+        const titleCanvas = renderTitleCanvas(
+            document.getElementById('bride-name').value.trim() || 'The Bride',
+            document.getElementById('groom-name').value.trim() || 'The Groom',
+            document.getElementById('wedding-date').value.trim() || 'Forever'
+        );
+
+        // رسم frames للعناون
+        for (let f = 0; f < slideFrames; f++) {
+            recCtx.drawImage(titleCanvas, 0, 0);
+            // لنقوم بإطار واحد per RAF لكن نحن هنا نجري رسم متكرر سريع
+            // بدلاً من الانتظار نتبع requestAnimationFrame لتوفير التوقيت الأصلي
+            await new Promise(r => requestAnimationFrame(r));
+        }
+
+        // الآن كل صورة
+        let prevCanvas = null;
+        for (let i = 0; i < preRenderedCanvases.length; ++i) {
+            currentSlideIndex = i + 2; // لأن العنوان هو 1
+            updateProgressText(currentSlideIndex);
+
+            const pc = preRenderedCanvases[i];
+
+            if (document.getElementById('video-style').value === 'fade' || document.getElementById('video-style').value === 'zoom') {
+                // نطبق transition بسيط (fade) عبر بعض الإطارات لتجميل العرض
+                const transFrames = Math.max(4, Math.round(FPS * 0.15)); // عدد قليل من الإطارات للانتقال
+                // fade from prev to current
+                for (let t = 0; t < transFrames; t++) {
+                    const a = t / (transFrames - 1 || 1);
+                    recCtx.clearRect(0,0,OUT_W,OUT_H);
+                    // رسم prev بخفة
+                    if (prevCanvas) {
+                        recCtx.globalAlpha = 1 - a;
+                        recCtx.drawImage(prevCanvas, 0, 0);
+                    }
+                    // رسم current
+                    recCtx.globalAlpha = a;
+                    // اذا كان zoom: نرسم مع تكبير بسيط عبر قيمة a
+                    if (document.getElementById('video-style').value === 'zoom') {
+                        const scale = 1 + 0.06 * a; // تكبير خفيف
+                        recCtx.save();
+                        recCtx.translate(OUT_W/2, OUT_H/2);
+                        recCtx.scale(scale, scale);
+                        recCtx.translate(-OUT_W/2, -OUT_H/2);
+                        recCtx.drawImage(pc, 0, 0);
+                        recCtx.restore();
+                    } else {
+                        recCtx.drawImage(pc, 0, 0);
+                    }
+                    recCtx.globalAlpha = 1;
+                    await new Promise(r => requestAnimationFrame(r));
+                }
+                // بعد الانتهاء من الانتقال، ارسم frames الأساسية (بدون alpha)
+                for (let f = 0; f < slideFrames; f++) {
+                    // له تأثير zoom لطيف خلال السلايد
+                    if (document.getElementById('video-style').value === 'zoom') {
+                        const prog = f / Math.max(1, slideFrames-1);
+                        const scale = 1 + 0.08 * prog; // تدريجي
+                        recCtx.clearRect(0,0,OUT_W,OUT_H);
+                        recCtx.save();
+                        recCtx.translate(OUT_W/2, OUT_H/2);
+                        recCtx.scale(scale, scale);
+                        recCtx.translate(-OUT_W/2, -OUT_H/2);
+                        recCtx.drawImage(pc, 0, 0);
+                        recCtx.restore();
+                    } else {
+                        recCtx.drawImage(pc, 0, 0);
+                    }
+                    await new Promise(r => requestAnimationFrame(r));
+                }
+            } else {
+                // simple: فقط نرسم نفس الفريمات بدون انتقال
+                for (let f = 0; f < slideFrames; f++) {
+                    recCtx.drawImage(pc, 0, 0);
+                    await new Promise(r => requestAnimationFrame(r));
+                }
+            }
+
+            prevCanvas = pc;
+        }
+
+        // انتهى الرسم، نوقّف التسجيل
+        await new Promise(resolve => {
+            recorder.onstop = () => resolve();
+            recorder.stop();
+        });
+
+        // إيقاف صوت إن بدأ
+        try { if (audio) { audio.pause(); audio.currentTime = 0; } } catch(e){}
+
+        // تركيب الـ blob
+        const outBlob = new Blob(chunks, { type: 'video/webm' });
+
+        // تنظيف المسارات
+        try {
+            finalStream.getTracks().forEach(t => t.stop());
+            videoStream.getTracks().forEach(t => t.stop());
+            if (audioStream) audioStream.getTracks().forEach(t => t.stop());
+        } catch(e){}
+
+        setGenerating(false);
+        progressText.textContent = '';
+
+        return outBlob;
+    }
+
+    // مساعدة لتبديل حالة الأزرار
+    function setGenerating(state, text = 'Generating...') {
+        [previewBtn, fullscreenBtn, downloadBtn].forEach(btn => {
+            btn.disabled = state;
+            if (state) {
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${text}`;
+            } else {
+                if (btn.id === 'preview-btn') btn.innerHTML = '<i class="fas fa-eye"></i> Preview Video';
+                if (btn.id === 'fullscreen-btn') btn.innerHTML = '<i class="fas fa-play-circle"></i> Play Fullscreen';
+                if (btn.id === 'download-btn') btn.innerHTML = '<i class="fas fa-download"></i> Download Video';
+            }
+        });
+    }
+
+    // أحداث الأزرار
+    previewBtn.addEventListener('click', async () => {
+        // generate and show in modal (no autoplay of audio before recording)
+        const blob = await generateVideoBlob();
+        if (!blob) return;
+        showPreviewFromPreRendered(blob);
+    });
+
+    fullscreenBtn.addEventListener('click', async () => {
+        const blob = await generateVideoBlob();
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        const v = document.createElement('video');
+        v.src = url;
+        v.controls = true;
+        v.style = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:black;object-fit:contain;z-index:99999;';
+        document.body.appendChild(v);
+        v.play().catch(()=>{});
+        v.requestFullscreen?.();
+        v.onended = () => { try { v.remove(); } catch(e) {} };
+    });
+
+    downloadBtn.addEventListener('click', async () => {
+        const blob = await generateVideoBlob();
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Wede_Wedding_Video.webm';
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 6000);
+    });
+
+    // إيقاف أي صوت حال وجوده عند مغادرة الصفحة
+    window.addEventListener('beforeunload', () => {
+        document.querySelectorAll('audio[data-generated-audio]').forEach(a => {
+            try { a.pause(); a.currentTime = 0; a.remove(); } catch(e) {}
+        });
+    });
+
+    // تحسين: لو بدّك preview سريع بدون توليد كامل (اختياري) — ممكن نضيف زر لاحقاً
+</script>
+</body>
+</html>
