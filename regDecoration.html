@@ -1,404 +1,544 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Regular Decoration Service – WEDÉ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great_Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <title>WEDÉ – Decoration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
     <style>
         :root {
             --green-dark: #4B5945;
             --green-medium: #66785F;
             --green-light: #91AC8F;
             --green-pale: #B2C9AD;
-            --section-bg: #E8EFE5;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body, html {
+        body {
             font-family: 'Poppins', sans-serif;
-            background: radial-gradient(circle at center, #E8EFE5 0%, #B2C9AD 70%, #8DA187 100%);
+            background-color: var(--green-pale);
             color: var(--green-dark);
-            padding: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-            position: relative;
-            overflow-x: hidden;
-            padding-top: 110px;
+            margin: 0;
         }
 
         header {
             background-color: var(--green-medium);
-            padding: 15px 40px;
+            color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: white;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 20;
-            height: 70px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            padding: 15px 40px;
         }
 
         header h1 {
             font-family: 'Great Vibes', cursive;
-            font-size: 36px;
+            font-size: 32px;
             color: var(--green-pale);
         }
 
-        header a {
-            color: var(--green-pale);
-            text-decoration: none;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-        }
-
-        h2 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            color: var(--green-dark);
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 1s ease-out forwards;
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        p.intro {
-            font-size: 1.1rem;
-            color: var(--green-medium);
-            max-width: 600px;
-            margin: 0 auto 40px auto;
-            line-height: 1.5;
-        }
-
-        #cart {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
+        .btn {
+            background: var(--green-light);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
             cursor: pointer;
-            z-index: 1000;
-            transition: transform 0.3s ease;
+            transition: 0.3s;
         }
 
-        #cart:hover {
-            transform: scale(1.1);
+        .btn:hover {
+            background: var(--green-medium);
         }
 
-        #cart img {
-            width: 100%;
-            height: 100%;
+        main {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
 
-        #cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background-color: var(--green-light);
-            color: white;
-            font-weight: bold;
-            font-size: 14px;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
+        main h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 36px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* THEMES GRID */
+        .themes-grid {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .rotating-image {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin: 0 auto 15px auto;
-            box-shadow: 0 4px 15px rgba(105, 121, 85, 0.4);
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .rotating-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
-            border-radius: 50%;
-        }
-
-        .rotating-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .rotating-image:hover {
-            animation: pulse 1.5s infinite;
-            box-shadow: 0 8px 25px rgba(105, 121, 85, 0.5);
-        }
-
-        section {
-            margin-top: 40px;
-            background: var(--section-bg);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(105, 121, 85, 0.2);
-        }
-
-        section h3 {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 1.8rem;
-            color: var(--green-dark);
-            margin-bottom: 20px;
-        }
-
-        section p {
-            font-size: 1.2rem;
-            color: var(--green-dark);
-            margin-bottom: 40px;
-        }
-
-        .dishes-row {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-bottom: 40px;
             flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
         }
 
-        .dish {
-            width: 200px;
-            flex: 1 1 calc(33% - 25px);
-            max-width: 200px;
+        .theme-card {
+            background: white;
+            width: 300px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 15px;
             text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s ease-out forwards;
         }
 
-        .dish:nth-child(1) { animation-delay: 0.1s; }
-        .dish:nth-child(2) { animation-delay: 0.2s; }
-        .dish:nth-child(3) { animation-delay: 0.3s; }
-
-        .dish:hover .rotating-image {
-            animation: pulse 1.5s infinite;
-            box-shadow: 0 8px 25px rgba(105, 121, 85, 0.5);
-        }
-
-        .dish p {
-            font-size: 1.1rem;
-            color: var(--green-dark);
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .dish-desc {
-            font-size: 0.9rem;
-            color: var(--green-medium);
-            line-height: 1.4;
-            margin-top: 5px;
-        }
-
-        footer {
-            background-color: var(--green-medium);
-            color: white;
-            text-align: center;
-            padding: 15px 0;
-            font-size: 14px;
-            margin-top: 60px;
+        .theme-card img {
             width: 100%;
-            z-index: 5;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+            height: 180px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-bottom: 10px;
         }
 
-        footer span {
-            color: var(--green-pale);
-            font-weight: 500;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        .theme-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
         }
 
-        @media (max-width: 1200px) {
-            body {
-                padding: 20px;
-                padding-top: 110px;
-            }
-
-            .dish {
-                flex: 1 1 calc(50% - 25px);
-                max-width: 200px;
-            }
+        .choose-btn {
+            margin-top: 10px;
+            background: var(--green-light);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
         }
 
-        @media (max-width: 600px) {
-            .dish {
-                flex: 1 1 100%;
-                max-width: 250px;
-            }
+        .choose-btn:hover {
+            background: var(--green-medium);
         }
+
+        /* COLOR PALETTES */
+        .palette {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .color-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid rgba(0,0,0,0.2);
+        }
+
+        /* NOTES SECTION */
+        .notes-section {
+            margin-top: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .notes-section textarea {
+            width: 100%;
+            height: 120px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            resize: none;
+        }
+
+        .save-notes {
+            margin-top: 15px;
+            background: var(--green-light);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .save-notes:hover {
+            background: var(--green-medium);
+        }
+
     </style>
 </head>
+
 <body>
 
 <header>
-    <h1><a href="main.html">WEDÉ</a></h1>
+    <h1>WEDÉ</h1>
+    <button class="btn" onclick="window.location.href='main.html'">← Back Home</button>
+
 </header>
 
-<h2>Regular Decoration Service</h2>
-<p class="intro">Choose beautiful flowers and decorative elements to personalize your wedding. Select from our romantic options for flowers, lighting, accessories, and table centerpieces. All included in your subscription.</p>
+<main>
+    <h2>Choose Your Decoration Theme</h2>
 
-<!-- Cart Icon -->
-<div id="cart">
-    <img src="https://cdn-icons-png.flaticon.com/512/1170/1170576.png" alt="Cart">
-    <div id="cart-count">0</div>
-</div>
+    <div class="themes-grid">
 
-<!-- Flowers Section -->
-<section id="flowers">
-    <h3>Flowers</h3>
-    <p>Choose these beautiful flowers to decorate your wedding tables with romance and elegance.</p>
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/roses-bouquet.jpg" alt="Roses Bouquet" />
+        <!-- 1: Classic White -->
+        <div class="theme-card">
+            <img src="imgs/classicwhite.jpg" alt="Classic White">
+            <div class="theme-name">Classic White</div>
+
+            <div class="palette">
+                <div class="color-box" style="background:#FFFFFF"></div>
+                <div class="color-box" style="background:#F3F3F3"></div>
+                <div class="color-box" style="background:#D5D5D5"></div>
+                <div class="color-box" style="background:#AFAFAF"></div>
             </div>
-            <p>Roses Bouquet</p>
-            <span class="dish-desc">Classic red roses for timeless love and passion.</span>
+
+            <button class="choose-btn" onclick="selectTheme('Classic White')">Choose Theme</button>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/lilies-arrangement.jpg" alt="Lilies Arrangement" />
+
+        <!-- 2: Sage Green -->
+        <div class="theme-card">
+            <img src="imgs/sagegreen.jpg" alt="Sage Green">
+            <div class="theme-name">Sage Green</div>
+
+            <div class="palette">
+                <div class="color-box" style="background:#6E8F6A"></div>
+                <div class="color-box" style="background:#AFC8A7"></div>
+                <div class="color-box" style="background:#DCE7D7"></div>
+                <div class="color-box" style="background:#E9EFE9"></div>
             </div>
-            <p>Lilies Arrangement</p>
-            <span class="dish-desc">Elegant white lilies symbolizing purity and grace.</span>
+
+            <button class="choose-btn" onclick="selectTheme('Sage Green')">Choose Theme</button>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/mixed-wildflowers.jpg" alt="Mixed Wildflowers" />
+
+        <!-- 3: Golden Royal -->
+        <div class="theme-card">
+            <img src="imgs/goldenroyal.jpg" alt="Golden Royal">
+            <div class="theme-name">Golden Royal</div>
+
+            <div class="palette">
+                <div class="color-box" style="background:#E5C16A"></div>
+                <div class="color-box" style="background:#C79C34"></div>
+                <div class="color-box" style="background:#8A692A"></div>
+                <div class="color-box" style="background:#F4E8CA"></div>
             </div>
-            <p>Mixed Wildflowers</p>
-            <span class="dish-desc">Colorful wildflowers for a natural, joyful touch.</span>
+
+            <button class="choose-btn" onclick="selectTheme('Golden Royal')">Choose Theme</button>
+        </div>
+
+        <!-- 4: Blush Pink -->
+        <div class="theme-card">
+            <img src="imgs/blushpink.jpg" alt="Blush Pink">
+            <div class="theme-name">Blush Pink</div>
+
+            <div class="palette">
+                <div class="color-box" style="background:#F7D9D9"></div>
+                <div class="color-box" style="background:#F2B6C1"></div>
+                <div class="color-box" style="background:#D18E99"></div>
+                <div class="color-box" style="background:#F9ECEC"></div>
+            </div>
+
+            <button class="choose-btn" onclick="selectTheme('Blush Pink')">Choose Theme</button>
+        </div>
+
+        <!-- 5: Rustic Garden -->
+        <div class="theme-card">
+            <img src="imgs/dustylavender.jpg" alt="Dusty Lavender">
+            <div class="theme-name">Dusty Lavender</div>
+
+            <div class="palette">
+                <div class="color-box" style="background:#A990A5"></div>
+                <div class="color-box" style="background:#C7B8CC"></div>
+                <div class="color-box" style="background:#E6DFEB"></div>
+                <div class="color-box" style="background:#EDE6F2"></div>
+            </div>
+
+            <button class="choose-btn" onclick="selectTheme('Rustic Garden')">Choose Theme</button>
+        </div>
+
+    </div>
+
+    <!-- second try -->
+
+
+    <h2>Choose Your Decoration Flowers</h2>
+
+    <div class="themes-grid">
+
+        <!-- Lilies -->
+        <div class="theme-card">
+            <img src="imgs/lily.jpg" alt="Lilies">
+            <div class="theme-name">Lilies</div>
+
+            <div class="palette">
+                <div class="color-box" data-image="lilywhite.jpg" style="background:#FFFFFF"></div>
+                <div class="color-box" data-image="lily.jpg" style="background:#F28A90"></div>
+                <div class="color-box" data-image="lilyyellow.jpg" style="background:#FFF700"></div>
+                <div class="color-box" data-image="lilyredd.jpg" style="background:#FF0000"></div>
+            </div>
+
+            <button class="choose-btn" onclick="selectTheme('Lilies')">Choose Flowers</button>
+        </div>
+
+
+
+        <!-- Roses -->
+        <div class="theme-card">
+            <img src="imgs/rosepink.jpg" alt="Roses">
+            <div class="theme-name">Roses</div>
+
+            <div class="palette">
+                <div class="color-box" data-image="whiteroses.jpg" style="background:#FFFFFF"></div>
+                <div class="color-box" data-image="rosepink.jpg" style="background:#FFC0CB"></div>
+                <div class="color-box" data-image="roselavender.jpg" style="background:#DFC5FE"></div>
+                <div class="color-box" data-image="roseredd.jpg" style="background:#C00000"></div>
+            </div>
+
+            <button class="choose-btn" onclick="selectTheme('Roses')">Choose Flowers</button>
+        </div>
+
+
+
+
+        <!-- Tulips -->
+        <div class="theme-card">
+            <img src="imgs/tulippink.jpg" alt="Tulips">
+            <div class="theme-name">Tulips</div>
+
+            <div class="palette">
+                <div class="color-box" data-image="tulipwhite.jpg" style="background:#FFFFFF"></div>
+                <div class="color-box" data-image="tulippink.jpg" style="background:#F4A6C4"></div>
+                <div class="color-box" data-image="tuliporange.jpg" style="background:#FF5C00"></div>
+                <div class="color-box" data-image="tulipred.jpg" style="background:#D10000"></div>
+            </div>
+
+            <button class="choose-btn" onclick="selectTheme('Tulips')">Choose Flowers</button>
         </div>
     </div>
-</section>
 
-<!-- Lighting Section -->
-<section id="lighting">
-    <h3>Lighting</h3>
-    <p>Illuminate your venue with soft, romantic lighting to create magical moments.</p>
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/string-lights.jpg" alt="String Lights" />
-            </div>
-            <p>String Lights</p>
-            <span class="dish-desc">Warm string lights for a cozy, fairy-tale ambiance.</span>
+    <!--new-->
+
+    <h2>Choose Your Lighting Decoration</h2>
+
+    <div class="themes-grid">
+
+        <!-- String Lighting -->
+        <div class="theme-card">
+            <img src="imgs/stringlights.jpg" alt="String Lighting">
+            <div class="theme-name">String Lighting</div>
+            <button class="choose-btn" onclick="selectTheme('String Lighting')">Choose Lighting</button>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Candle Lanterns.jpg" alt="Candle Lanterns" />
-            </div>
-            <p>Candle Lanterns</p>
-            <span class="dish-desc">Glowing lanterns with candles for intimate elegance.</span>
+
+        <!-- Lighting Balls -->
+        <div class="theme-card">
+            <img src="imgs/lightingballs.jpg" alt="Lighting Balls">
+            <div class="theme-name">Lighting Balls</div>
+            <button class="choose-btn" onclick="selectTheme('Lighting Balls')">Choose Lighting</button>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/led-fairy-lights.jpg" alt="LED Fairy Lights" />
-            </div>
-            <p>LED Fairy Lights</p>
-            <span class="dish-desc">Twinkling LED lights for a modern, enchanting glow.</span>
+
+        <!-- Fairy Lighting -->
+        <div class="theme-card">
+            <img src="imgs/fairylights.jpg" alt="Fairy Lighting">
+            <div class="theme-name">Fairy Lighting</div>
+            <button class="choose-btn" onclick="selectTheme('Fairy Lighting')">Choose Lighting</button>
         </div>
+
+        <!-- LED Curtains -->
+        <div class="theme-card">
+            <img src="imgs/ledcurtains.jpg" alt="LED Curtains">
+            <div class="theme-name">LED Curtains</div>
+            <button class="choose-btn" onclick="selectTheme('LED Curtains')">Choose Lighting</button>
+        </div>
+
+        <!--Garden Lights-->
+        <div class="theme-card">
+            <img src="imgs/gardenlights.jpg"  alt="Garden Lights">
+            <div class="theme-name">Garden Lights</div>
+            <button class="choose-btn" onclick="selectTheme('Garden Lights')">Choose Lighting</button>
+        </div>
+
+
     </div>
-</section>
 
-<!-- Decor Accessories Section -->
-<section id="decor-accessories">
-    <h3>Decor Accessories</h3>
-    <p>Add charming details with accessories that enhance the beauty of your wedding.</p>
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/ribbons-bows.jpg" alt="Ribbons and Bows" />
-            </div>
-            <p>Ribbons and Bows</p>
-            <span class="dish-desc">Silk ribbons and bows for a delicate, romantic finish.</span>
+    <!-- newwwwwww -->
+
+
+    <h2>Choose Your Table Centerpieces</h2>
+
+    <div class="themes-grid">
+
+        <!-- Candles -->
+        <div class="theme-card">
+            <img src="imgs/candles.jpg" alt="Candles">
+            <div class="theme-name">Candles</div>
+            <button class="choose-btn" onclick="selectTheme('Candles')">Choose Centerpieces</button>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/crystal-vases.jpg" alt="Crystal Vases" />
-            </div>
-            <p>Crystal Vases</p>
-            <span class="dish-desc">Sparkling crystal vases to hold your flowers beautifully.</span>
+
+        <!-- Flower Vase -->
+        <div class="theme-card">
+            <img src="imgs/flowervases.jpg" alt="Flower Vases">
+            <div class="theme-name">Flower Vases</div>
+            <button class="choose-btn" onclick="selectTheme('Flower Vases')">Choose Centerpieces</button>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/pearl-accents.jpg" alt="Pearl Accents" />
-            </div>
-            <p>Pearl Accents</p>
-            <span class="dish-desc">Elegant pearl details for a touch of luxury and shine.</span>
+
+        <!-- Lantern Centerpieces -->
+        <div class="theme-card">
+            <img src="imgs/lantern.jpg" alt="Lantern Centerpieces">
+            <div class="theme-name">Fairy Lighting</div>
+            <button class="choose-btn" onclick="selectTheme('Lantern Centerpieces')">Choose Centerpieces</button>
         </div>
+
+        <!-- Floating Water -->
+        <div class="theme-card">
+            <img src="imgs/floatingwater.jpg" alt="Floating Water">
+            <div class="theme-name">Floating Water</div>
+            <button class="choose-btn" onclick="selectTheme('Floating Water')">Choose Centerpieces</button>
+        </div>
+
+
+
+
     </div>
-</section>
 
-<!-- Table Centerpieces Section -->
-<section id="table-centerpieces">
-    <h3>Table Centerpieces</h3>
-    <p>Choose centerpieces to make your tables the heart of the celebration.</p>
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/floral-centerpiece.jpg" alt="Floral Centerpiece" />
-            </div>
-            <p>Floral Centerpiece</p>
-            <span class="dish-desc">Fresh flowers in a vase for a simple, natural look.</span>
-        </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/candle-flower-mix.jpg" alt="Candle and Flower Mix" />
-            </div>
-            <p>Candle and Flower Mix</p>
-            <span class="dish-desc">Candles surrounded by flowers for warmth and romance.</span>
-        </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/greenery-arrangement.jpg" alt="Greenery Arrangement" />
-            </div>
-            <p>Greenery Arrangement</p>
-            <span class="dish-desc">Lush greenery with subtle flowers for a fresh vibe.</span>
-        </div>
+
+
+
+
+
+
+
+
+
+
+
+    <div class="notes-section">
+        <h3 style="font-family:'Great Vibes', cursive; font-size:28px; margin-bottom:10px;">Custom Requests</h3>
+
+        <textarea id="userNotes" placeholder="Describe any custom decoration ideas here..."></textarea>
+        <button class="save-notes" onclick="saveNotes()">Save Notes</button>
     </div>
-</section>
 
-<footer>
-    © 2025 <span>WEDÉ</span> | All rights reserved
-</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</main>
+
+<script>
+    // SAVE SELECTION
+    function selectTheme(theme) {
+        localStorage.setItem('wede_decoration', theme);
+        alert("Decoration saved: " + theme);
+    }
+
+    // PALETTE CLICK TO CHANGE IMAGE
+    const colorBoxes = document.querySelectorAll(".theme-card .color-box");
+
+    colorBoxes.forEach(box => {
+        box.addEventListener("click", function() {
+            const imageName = this.getAttribute("data-image");
+            if (!imageName) return;
+
+            const card = this.closest(".theme-card");
+            const imgTag = card.querySelector("img");
+
+            imgTag.src = "imgs/" + imageName;
+        });
+    });
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    function selectTheme(theme) {
+        localStorage.setItem('wede_decoration', theme);
+        alert("Decoration theme saved: " + theme);
+    }
+
+    function saveNotes() {
+        localStorage.setItem('wede_notes', document.getElementById('userNotes').value);
+        alert("Notes saved!");
+    }
+</script>
+
+
+
+
+
+
+
+
 
 </body>
 </html>
