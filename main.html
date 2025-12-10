@@ -4,10 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>WEDÉ – Plan Your Perfect Day</title>
-
     <!-- الخطوط -->
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
-
     <style>
         :root {
             --green-dark: #4B5945;
@@ -206,34 +204,166 @@
             transform: translateY(-2px);
         }
 
-        .about-section {
-            background-color: var(--green-pale);
+        /* --- WEBSITE FEATURE SECTION STYLES (DARK BACKGROUND) --- */
+        .website-feature-section {
+            background-color: var(--green-dark);
             padding: 100px 60px;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
+            min-height: 80vh;
         }
 
-        .about-content {
+        .feature-content {
             display: flex;
-            flex-wrap: wrap;
             align-items: center;
-            gap: 40px;
-            max-width: 1100px;
-            opacity: 0;
-            transform: translateY(60px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
+            gap: 60px;
+            max-width: 1400px;
+            flex-wrap: wrap;
         }
 
-        .about-content.visible {
+        .feature-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+            order: -1; /* ضع الصورة على اليسار */
+        }
+
+        .feature-image img {
+            width: 100%;
+            max-width: 450px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        .feature-image img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+        }
+
+        .feature-text {
+            flex: 1;
+            min-width: 300px;
+            color: white;
+        }
+
+        .feature-text h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 48px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out 0.2s, transform 0.8s ease-out 0.2s;
+        }
+
+        .feature-text p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out 0.5s, transform 0.8s ease-out 0.5s;
+        }
+
+        .feature-buttons {
+            display: flex;
+            gap: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out 0.8s, transform 0.8s ease-out 0.8s;
+        }
+
+        .feature-btn {
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        .feature-btn.primary {
+            background-color: var(--green-pale);
+            color: var(--green-dark);
+        }
+
+        .feature-btn.primary:hover {
+            background-color: white;
+            transform: translateY(-2px);
+        }
+
+        .feature-btn.secondary {
+            background-color: transparent;
+            color: white;
+            border-color: white;
+        }
+
+        .feature-btn.secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .feature-content.visible .feature-text h2,
+        .feature-content.visible .feature-text p,
+        .feature-content.visible .feature-buttons {
             opacity: 1;
             transform: translateY(0);
         }
+        /* --- END WEBSITE FEATURE SECTION STYLES --- */
 
-        .about-text {
-            flex: 1;
-            min-width: 300px;
+        /* --- ABOUT SECTION STYLES --- */
+        .about-section {
+            padding: 100px 60px;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* إضافة فاصل بصري بين الأقسام */
+            margin-bottom: 50px;
+            border-bottom: 5px solid var(--green-medium);
+        }
+
+        .about-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('imgs/PPP1.JPG');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 1;
+        }
+
+        /* إضافة طبقة تراكب خضراء شفافة */
+        .about-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--green-pale); /* اللون الأخضر الفاتح */
+            opacity: 0.6; /* درجة التغبيش/الشفافية */
+        }
+
+        .about-content {
+            position: relative;
+            z-index: 5;
+            max-width: 600px; /* تقليل العرض لجعله يبدو كبورتريه */
+            text-align: center;
+            color: var(--green-dark); /* لون النص الأساسي */
         }
 
         .about-text h2 {
@@ -241,32 +371,36 @@
             font-size: 40px;
             color: var(--green-dark);
             margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out 0.2s, transform 0.8s ease-out 0.2s;
         }
 
         .about-text p {
             font-size: 17px;
-            color: #555;
+            color: var(--green-dark); /* التأكد من أن لون النص واضح */
             line-height: 1.7;
             margin-bottom: 25px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out 0.5s, transform 0.8s ease-out 0.5s;
         }
 
-        .about-image {
-            flex: 1;
-            text-align: center;
+        .about-text .nav-btn {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out 0.8s, transform 0.8s ease-out 0.8s;
+            display: inline-block;
+            margin-left: 0;
         }
 
-        .about-image img {
-            width: 100%;
-            max-width: 500px;
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        .about-content.visible .about-text h2,
+        .about-content.visible .about-text p,
+        .about-content.visible .about-text .nav-btn {
+            opacity: 1;
+            transform: translateY(0);
         }
-
-        .about-image img:hover {
-            transform: scale(1.03);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
+        /* --- END ABOUT SECTION STYLES --- */
 
         .counters {
             display: flex;
@@ -346,10 +480,47 @@
             padding: 15px;
             margin-top: 50px;
         }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .feature-content {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .feature-image {
+                order: 0;
+            }
+
+            .feature-text h2 {
+                font-size: 36px;
+            }
+
+            .feature-buttons {
+                flex-direction: column;
+            }
+
+            .about-section {
+                padding: 80px 30px;
+            }
+
+            .about-text h2 {
+                font-size: 32px;
+            }
+
+            .counters {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .counter-item {
+                border-left: none;
+                padding-left: 0;
+            }
+        }
     </style>
 </head>
 <body>
-
 <header>
     <h1>WEDÉ</h1>
     <nav>
@@ -382,18 +553,33 @@
     </div>
 </section>
 
+<!-- Website Feature Section -->
+<section class="website-feature-section" id="website-feature">
+    <div class="feature-content">
+        <div class="feature-image">
+            <img src="imgs/website_mockup.png" alt="Wedding Website Mockup" />
+        </div>
+        <div class="feature-text">
+            <h2>Share it all on a<br>free wedding website</h2>
+            <p>The easiest, most beautiful way to keep guests in-the-know.</p>
+            <div class="feature-buttons">
+                <a href="#" class="feature-btn primary">Learn more</a>
+                <a href="#" class="feature-btn secondary">Explore designs</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Us Section -->
 <section class="about-section" id="about">
+    <div class="about-background"></div>
     <div class="about-content">
         <div class="about-text">
             <h2>About Us</h2>
             <p>
-                We turn your vision into reality — blending artistry, precision, and heartfelt passion to design the wedding of your dreams.
-                Every detail, from floral arrangements to venue ambiance, is crafted with love to make your day truly magical.
+                We turn your vision into reality — blending artistry, precision, and heartfelt passion to design the wedding of your dreams. Every detail, from floral arrangements to venue ambiance, is crafted with love to make your day truly magical.
             </p>
             <a href="#" class="nav-btn">Learn More</a>
-        </div>
-        <div class="about-image">
-            <img src="imgs/v6.jpg" alt="About WEDÉ" />
         </div>
     </div>
 </section>
@@ -452,19 +638,23 @@
     });
 
     window.addEventListener('scroll', function () {
-        const aboutSection = document.querySelector('.about-content');
+        const featureContent = document.querySelector('.feature-content');
+        const aboutContent = document.querySelector('.about-content');
         const servicesSection = document.querySelector('.services-section');
         const screenPosition = window.innerHeight / 1.3;
 
-        if (aboutSection.getBoundingClientRect().top < screenPosition) {
-            aboutSection.classList.add('visible');
+        if (featureContent && featureContent.getBoundingClientRect().top < screenPosition) {
+            featureContent.classList.add('visible');
         }
 
-        if (servicesSection.getBoundingClientRect().top < screenPosition) {
+        if (aboutContent && aboutContent.getBoundingClientRect().top < screenPosition) {
+            aboutContent.classList.add('visible');
+        }
+
+        if (servicesSection && servicesSection.getBoundingClientRect().top < screenPosition) {
             servicesSection.classList.add('visible');
         }
     });
 </script>
-
 </body>
 </html>
