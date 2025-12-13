@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEDÉ - Contact Us</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+
+    :root{
+        --green-dark: #4B5945;
+        --green-medium: #66785F;
+        --green-light: #91AC8F;
+        --green-pale: #B2C9AD;
+
+    }
+
+    *{
+    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+    }
+
+body{
+   font-family: 'Poppins', sans-serif;
+    background-color: var(--green-pale);
+    color: var(--green-dark);
+}
+
+header{
+    background-color: var(--green-medium);
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-itens: center;
+    color: white;
+}
+header h1{
+    font-family: 'Great Vibes', cursive;
+    font-size : 36px;
+}
+
+p{
+    padding:14px;
+}
+nav a{
+    color:white;
+    text-decoration: none;
+    margin-left: 25px;
+    font-weight: 500;
+}
+
+.contact-section{
+    min-height: 100vh;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 20px;
+}
+
+.contact-box{
+    background-color: white;
+    padding: 40px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+
+}
+
+.contact-box h2{
+    font-family: 'Great Vibes', cursive;
+    font-size: 42px;
+    text-align: center;
+    margin-bottom: 10px;
+
+}
+
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+}
+
+
+input, textarea{
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--green-light);
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+}
+
+textarea{
+    width: 100%;
+    min-height: 140px;
+    padding: 12px 14px;
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: 'Poppins', sans-serif;
+
+    border-radius: 8px;
+    border: 1px solid var(--green-light);
+
+    resize: none;
+    box-sizing: border-box;
+
+    overflow-y: auto;
+
+}
+
+button{
+   background-color: var(--green-light);
+   color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor:pointer;
+    transition: 0.3s;
+}
+
+
+button:hover{
+
+    background-color: var(--green-medium);
+
+}
+
+footer{
+    background-color: var(--green-medium);
+    color:white;
+    text-align: center;
+    padding: 15px;
+}
+
+
+
+
+
+
+
+
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+<header>
+    <h1>WEDÉ</h1>
+    <nav>
+        <a href="main.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="gallery.html"> Gallery</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+</header>
+
+<section class="contact-section">
+<div class="contact-box">
+    <h2>Contact Us</h2>
+<p>We'd love to hear from you - let's plan something beautiful: </p>
+
+    <form>
+      <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message"></textarea>
+        <button type="submit">Send Message</button>
+    </form>
+
+</div>
+
+</section>
+
+<footer>
+    <p>© 2025 WEDÉ | All rights reserved</p>
+</footer>
+
+
+
+
+
+
+
+</body>
+</html>
