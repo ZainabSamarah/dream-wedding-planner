@@ -481,8 +481,71 @@
             margin-top: 50px;
         }
 
+
+        .how-it-works{
+            background: linear-gradient(
+                    to bottom,
+                    var(--green-pale),
+                    #f9faf8
+            );
+            padding: 100px 40px;
+            text-align: center;
+        }
+
+        .how-it-works h2{
+            font-family: 'Great Vibes', cursive;
+            font-size: 40px;
+            margin-bottom: 50px;
+            color:var(--green-dark);
+
+        }
+        .steps{
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1100px;
+            margin: auto;
+            flex-wrap: wrap;
+
+        }
+
+        .step{
+            background-color: var(--green-pale);
+            padding: 30px;
+            border-radius: 15px;
+            width: 240px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transition: transform 0.3s;
+        }
+        .step:hover{
+
+            transform:translateY(-8px);
+
+        }
+        .step span {
+            display: inline-block;
+            width: 45px;
+            height: 45px;
+            background-color: var(--green-medium);
+            color: white;
+            border-radius: 50%;
+            line-height: 45px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .step h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .step p {
+            font-size: 14px;
+            color: #444;
+        }
         /* Responsive Design */
         @media (max-width: 768px) {
+
             .feature-content {
                 flex-direction: column;
                 gap: 30px;
@@ -517,6 +580,9 @@
                 border-left: none;
                 padding-left: 0;
             }
+
+
+
         }
     </style>
 </head>
@@ -550,6 +616,45 @@
         <h2>Plan Your Perfect Day</h2>
         <p>Elegant venues, custom menus, and unforgettable moments — all in one place.</p>
         <a href="services.html" class="nav-btn">Explore Services</a>
+    </div>
+</section>
+
+<section class="how-it-works" id="how-it-works">
+    <h2>How It Works</h2>
+
+    <div class="steps">
+
+          <div class="step">
+              <span>1</span>
+              <h3>Create Your Plan</h3>
+              <p>Set your wedding date and start your journey</p>
+
+          </div>
+
+      <div class="step">
+          <span>2</span>
+          <h3>Choose Services</h3>
+          <p>venues, catering, photography & more.</p>
+
+      </div>
+
+        <div class="step">
+            <span>3</span>
+            <h3>Manage Guests</h3>
+            <p>Track RSVPs, seating and guest details</p>
+
+        </div>
+
+
+
+
+        <div class="step">
+            <span>4</span>
+            <h3>Joy Your Day</h3>
+            <p>Relax while everything is perfectly organized.</p>
+
+        </div>
+
     </div>
 </section>
 
