@@ -3,62 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Luxury Invitation – WEDÉ</title>
+    <title>Design Your Card – WEDÉ</title>
 
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
-
-    <!-- html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         :root {
-            --green-dark: #4B5945;
-            --green-light: #91AC8F;
-            --green-pale: #B2C9AD;
-            --bg: #f8f9f5;
+            --green-dark: #3a5a40;
+            --green-mid: #588157;
+            --green-light: #a3b18a;
+            --bg: #f5f8f4;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f0f7f0, #e8f5e8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: linear-gradient(135deg, #f0f7f2, #eaf2e8);
             min-height: 100vh;
-            padding: 20px;
+            padding: 30px 20px;
+        }
+
+        header {
+            text-align: center;
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 38px;
+            color: var(--green-dark);
+        }
+
+        header p {
+            color: #666;
+            margin-top: 8px;
+            font-size: 15px;
         }
 
         .editor-container {
             display: flex;
             width: 100%;
-            max-width: 1200px;
-            background: #fff;
+            max-width: 1400px;
+            background: white;
             border-radius: 20px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.1);
             overflow: hidden;
+            margin: 0 auto;
         }
 
-        /* Left side (card) */
         .card-section {
-            flex: 1.2;
-            background: #fff;
+            flex: 1;
+            background: white;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 30px;
-            position: relative;
+            padding: 40px;
         }
 
         .card-preview {
             width: 400px;
             height: 600px;
-            border-radius: 20px;
+            border-radius: 18px;
             position: relative;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            border: 3px solid var(--green-pale);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border: 3px solid var(--green-light);
             overflow: hidden;
             background: #fff;
         }
@@ -67,7 +84,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 20px;
             pointer-events: none;
             user-select: none;
         }
@@ -85,14 +101,13 @@
         }
 
         .overlay-text.selected {
-            outline: 2px dashed rgba(145,172,143,0.6);
+            outline: 2px dashed var(--green-light);
             border-radius: 6px;
         }
 
-        /* Right side (controls) */
         .controls {
             flex: 1;
-            background: #fff;
+            background: #f9faf9;
             padding: 40px 30px;
             display: flex;
             flex-direction: column;
@@ -103,11 +118,12 @@
             margin-bottom: 20px;
             font-weight: 600;
             color: var(--green-dark);
+            font-size: 24px;
         }
 
         label {
             display: block;
-            margin-top: 10px;
+            margin-top: 15px;
             font-weight: 600;
             font-size: 13px;
             color: #444;
@@ -130,52 +146,55 @@
             resize: vertical;
         }
 
-        .row { display: flex; gap: 8px; }
+        .row { display: flex; gap: 10px; }
         .col { flex: 1; }
 
         .actions {
             display: flex;
             gap: 10px;
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         .btn {
             flex: 1;
-            padding: 10px 12px;
-            border-radius: 10px;
+            padding: 12px 16px;
+            border-radius: 30px;
             border: none;
             cursor: pointer;
             font-weight: 600;
-            background: var(--green-light);
+            background: var(--green-mid);
             color: white;
-            box-shadow: 0 6px 18px rgba(145,172,143,.16);
+            transition: 0.3s;
         }
 
-        .btn.gray { background: #777; }
-        .btn.ghost {
-            background: transparent;
-            color: var(--green-dark);
-            border: 1px solid #ddd;
+        .btn:hover {
+            background: var(--green-dark);
+            transform: translateY(-2px);
         }
 
         .note {
-            margin-top: 10px;
+            margin-top: 15px;
             font-size: 12px;
             color: #666;
+            text-align: center;
         }
 
         @media(max-width:900px) {
             .editor-container { flex-direction: column; }
             .card-section, .controls { width: 100%; flex: none; }
-            .controls { border-top: 1px solid #eee; }
         }
     </style>
 </head>
 
 <body>
+
+<header>
+    <h1>Design Your Invitation Card</h1>
+    <p>Customize your luxury wedding invitation</p>
+</header>
+
 <div class="editor-container">
 
-    <!-- CARD -->
     <div class="card-section">
         <div class="card-preview" id="card-area">
             <img id="card-bg" src="" alt="Luxury Card" />
@@ -187,7 +206,6 @@
         </div>
     </div>
 
-    <!-- CONTROLS -->
     <div class="controls">
         <h2>Edit Your Card</h2>
 
@@ -204,28 +222,26 @@
                 </select>
             </div>
             <div class="col">
-                <label for="size-input">Font size (px)</label>
+                <label for="size-input">Font Size (px)</label>
                 <input type="text" id="size-input" placeholder="e.g. 18">
             </div>
         </div>
 
         <label for="color-input">Text Color</label>
-        <input type="color" id="color-input" value="#4B5945">
+        <input type="color" id="color-input" value="#3a5a40">
 
         <div class="actions">
-            <button class="btn" id="download-btn">Download</button>
+            <button class="btn" id="download-btn">Download Card</button>
         </div>
 
-        <p class="note">Click any text to edit, move, resize, or recolor it — then download your final card.</p>
+        <p class="note">Click any text to edit, move, resize, or change color — then download your card.</p>
     </div>
 </div>
 
 <script>
-    // Load selected card from localStorage
     window.addEventListener("DOMContentLoaded", () => {
         const selectedCard = localStorage.getItem("selected_card_LX");
         const bg = document.getElementById("card-bg");
-
         if(selectedCard) bg.src = "imgs/" + selectedCard.replace(".png","b.png");
     });
 
@@ -238,7 +254,6 @@
 
     let activeEl = null;
 
-    // Select & edit
     cardArea.querySelectorAll(".overlay-text").forEach(el => {
         makeDraggable(el);
         el.addEventListener("click", () => {
@@ -248,7 +263,7 @@
             textInput.value = el.textContent;
             fontSelect.value = el.style.fontFamily;
             sizeInput.value = parseInt(el.style.fontSize);
-            colorInput.value = el.style.color || "#4B5945";
+            colorInput.value = el.style.color || "#3a5a40";
         });
     });
 
@@ -266,27 +281,23 @@
             if(!dragging) return;
             const dx = e.clientX - startX;
             const dy = e.clientY - startY;
-            const newX = origX + dx;
-            const newY = origY + dy;
-            el.style.left = (newX / cardArea.clientWidth)*100 + "%";
-            el.style.top = (newY / cardArea.clientHeight)*100 + "%";
+            el.style.left = ((origX + dx) / cardArea.clientWidth)*100 + "%";
+            el.style.top = ((origY + dy) / cardArea.clientHeight)*100 + "%";
         });
         el.addEventListener("pointerup", e => { dragging=false; el.releasePointerCapture(e.pointerId); });
     }
 
-    // Live editing
     textInput.addEventListener("input", ()=>{ if(activeEl) activeEl.textContent=textInput.value; });
     fontSelect.addEventListener("change", ()=>{ if(activeEl) activeEl.style.fontFamily=fontSelect.value; });
     sizeInput.addEventListener("input", ()=>{ if(activeEl) activeEl.style.fontSize=sizeInput.value+"px"; });
     colorInput.addEventListener("input", ()=>{ if(activeEl) activeEl.style.color=colorInput.value; });
 
-    // Download
     downloadBtn.addEventListener("click", ()=>{
         cardArea.querySelectorAll(".overlay-text").forEach(x=>x.classList.remove("selected"));
         html2canvas(cardArea,{scale:3,useCORS:true,backgroundColor:null}).then(canvas=>{
             const a=document.createElement("a");
             a.href=canvas.toDataURL("image/png");
-            a.download="WEDÉ_Lux_Invitation.png";
+            a.download="WEDE_Luxury_Invitation.png";
             a.click();
         });
     });

@@ -117,7 +117,7 @@
         <input type="number" id="age" placeholder="Age" required>
         <span id="ageError" class="error"></span>
 
-        <input type="email" id="email" placeholder="Email (Gmail only)" required>
+        <input type="email" id="email" placeholder="Email" required>
         <span id="emailError" class="error"></span>
 
         <input type="password" id="password" placeholder="Password" required>
@@ -157,6 +157,18 @@
     function selectRole(role) {
         selectedRole = role;
         document.getElementById('roleError').textContent = '';
+<<<<<<< HEAD
+
+        // إضافة تأثير بصري للزر المختار
+        document.querySelectorAll('.role-btn').forEach(btn => {
+            btn.style.background = 'transparent';
+            btn.style.color = '#AAB99A';
+        });
+        event.target.style.background = '#AAB99A';
+        event.target.style.color = 'white';
+    }
+
+=======
 
         // إزالة الـ highlight من كل الأزرار
         const buttons = document.querySelectorAll('.role-btn');
@@ -170,6 +182,7 @@
         }
     }
     // Clear errors on input
+>>>>>>> origin/main
     const inputs = ['firstName', 'lastName', 'age', 'email', 'password', 'confirmPassword'];
     inputs.forEach(id => {
         document.getElementById(id).addEventListener('input', function() {
@@ -181,7 +194,6 @@
         e.preventDefault();
         let isValid = true;
 
-        // Clear previous errors
         inputs.forEach(id => {
             document.getElementById(id + 'Error').textContent = '';
         });
@@ -213,9 +225,15 @@
             document.getElementById('emailError').textContent = 'Email is required.';
             isValid = false;
         } else {
+<<<<<<< HEAD
+            // ✅ هون الإصلاح - أي إيميل صحيح
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+=======
             const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
             if (!gmailRegex.test(email)) {
                 document.getElementById('emailError').textContent = 'Please enter a valid Gmail address (e.g., example@gmail.com).';
+>>>>>>> origin/main
                 isValid = false;
             }
         }
@@ -242,6 +260,38 @@
         }
 
         if (isValid) {
+<<<<<<< HEAD
+            const formData = new FormData();
+            formData.append('firstName', firstName);
+            formData.append('lastName', lastName);
+            formData.append('age', age);
+            formData.append('email', email);
+            formData.append('password', password);
+            formData.append('confirmPassword', confirmPassword);
+            formData.append('role', selectedRole);
+
+            fetch('signup_process.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        window.location.href = data.redirect;
+                    } else {
+                        if (data.errors) {
+                            alert('Errors:\n' + data.errors.join('\n'));
+                        } else {
+                            alert(data.message);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Connection error. Please try again.');
+                });
+=======
             // 🔍 جلب المستخدمين الحاليين
             let users = JSON.parse(localStorage.getItem('users')) || [];
 
@@ -276,6 +326,7 @@
             } else if (selectedRole === 'owner') {
                 window.location.href = "admin.html";
             }
+>>>>>>> origin/main
         }
     });
 </script>

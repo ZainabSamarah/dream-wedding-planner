@@ -398,11 +398,17 @@
     <nav>
         <a href="main.html"><i class="fas fa-home"></i> Home</a>
         <a href="services.html"><i class="fas fa-concierge-bell"></i> Services</a>
+<<<<<<< HEAD
+        <button class="nav-btn" onclick="window.location.href='logout.php'">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>    </nav>
+=======
         <button class="nav-btn" onclick="logout()">
             <i class="fas fa-sign-out-alt"></i> Logout
         </button>
 
     </nav>
+>>>>>>> origin/main
 </header>
 
 <div class="profile-container">
@@ -689,6 +695,65 @@
                 `${userData.firstName} ${userData.lastName}`;
             document.querySelector('.email span').textContent = userData.email;
         }
+    });
+    // جلب بيانات المستخدم عند تحميل الصفحة
+    window.addEventListener('load', () => {
+        fetch('get_user_data.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const user = data.user;
+
+                    // تحديث الاسم
+                    document.querySelector('.profile-info h2').textContent =
+                        `${user.first_name} ${user.last_name}`;
+
+                    // تحديث البريد
+                    document.querySelector('.email span').textContent = user.email;
+
+                    // تحديث البيانات الأساسية
+                    document.querySelectorAll('.info-item')[0].querySelector('.value').textContent =
+                        `${user.first_name} ${user.last_name}`;
+                    document.querySelectorAll('.info-item')[1].querySelector('.value').textContent =
+                        `${user.age} years`;
+                    document.querySelectorAll('.info-item')[2].querySelector('.value').textContent =
+                        user.phone || 'Not set';
+                    document.querySelectorAll('.info-item')[3].querySelector('.value').textContent =
+                        user.location || 'Not set';
+
+                    // تحديث تفاصيل الزفاف
+                    if (user.wedding_date) {
+                        document.querySelectorAll('.info-item')[4].querySelector('.value').textContent =
+                            new Date(user.wedding_date).toLocaleDateString();
+                    }
+                    if (user.guest_count) {
+                        document.querySelectorAll('.info-item')[5].querySelector('.value').textContent =
+                            `${user.guest_count} guests`;
+                    }
+                    if (user.theme) {
+                        document.querySelectorAll('.info-item')[6].querySelector('.value').textContent =
+                            user.theme;
+                    }
+                    if (user.budget) {
+                        document.querySelectorAll('.info-item')[7].querySelector('.value').textContent =
+                            `$${user.budget}`;
+                    }
+
+                    // تحديث الصورة الشخصية
+                    if (user.profile_picture && user.profile_picture !== 'default.jpg') {
+                        document.getElementById('avatarImg').src = `uploads/${user.profile_picture}`;
+                    }
+
+                } else {
+                    if (data.redirect) {
+                        alert(data.message);
+                        window.location.href = data.redirect;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     });
 </script>
 
