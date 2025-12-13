@@ -15,6 +15,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            margin: 0;
         }
 
         .login-box {
@@ -40,6 +41,7 @@
             border: 1px solid #ccc;
             border-radius: 10px;
             outline: none;
+            font-size: 14px;
         }
 
         button {
@@ -52,9 +54,13 @@
             font-weight: 500;
             margin-top: 10px;
             transition: 0.3s;
+            width: 100%;
+            font-size: 16px;
         }
 
-        button:hover { background-color: #8f9f8a; }
+        button:hover {
+            background-color: #8f9f8a;
+        }
 
         .link {
             color: #AAB99A;
@@ -64,7 +70,9 @@
             font-size: 14px;
         }
 
-        .link:hover { text-decoration: underline; }
+        .link:hover {
+            text-decoration: underline;
+        }
 
         .signup-text {
             margin-top: 15px;
@@ -83,21 +91,49 @@
         }
     </style>
 </head>
-
 <body>
 <div class="login-box">
     <h2>Login</h2>
-    <form>
-        <input type="email" placeholder="Email" required>
-        <input type="password" placeholder="Password" required>
-        <button type="submit">Login</button>
+    <form id="loginForm">
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Sign In</button>
     </form>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            // هنا يمكنك تغيير البيانات المسموح بها حسب رغبتك
+            // مثال: إيميل واحد أو أكثر مع كلمات سر مختلفة
+
+            const validUsers = [
+                { email: "admin@example.com", password: "123456" },
+                { email: "user@wedding.com", password: "wedding2025" },
+                { email: "test@test.com", password: "test123" }
+                // أضف المزيد إذا أردت
+            ];
+
+            // التحقق من وجود المستخدم
+            const user = validUsers.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                alert("تم تسجيل الدخول بنجاح! مرحباً بك 🎉");
+                window.location.href = "main.html"; // الانتقال إلى الصفحة الرئيسية
+            } else {
+                alert("الإيميل أو كلمة المرور غير صحيحة. حاول مرة أخرى.");
+            }
+        });
+    </script>
 
     <div class="signup-text">
         Don’t have an account? <a href="signup.html">Sign up</a>
     </div>
 
-    <a href="main.html" class="link">← Back to Home</a>
+    <a href="main.html" class="link">← Back to Home (بدون تسجيل دخول)</a>
 </div>
 </body>
 </html>

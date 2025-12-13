@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ceremony Details – Dream Wedding Planner</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #AAB99A;
+            --primary-dark: #8f9f8a;
+            --bg: #D0DDD0;
+            --light: #f8f9f5;
+            --text: #444;
+        }
+
+        body {
+            background-color: var(--bg);
+            font-family: "Poppins", sans-serif;
+            color: var(--text);
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-family: "Great Vibes", cursive;
+            font-size: 38px;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .detail-card {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .detail-card i {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .detail-card h3 {
+            font-size: 16px;
+            margin: 10px 0;
+            color: var(--text);
+        }
+
+        .detail-card p {
+            font-size: 14px;
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .description-box {
+            margin: 30px 0;
+        }
+
+        .description-box label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .upload-area {
+            border: 3px dashed var(--primary);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            background: #f9fbf8;
+            margin: 30px 0;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            background: #f0f5ee;
+        }
+
+        .upload-area i {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .upload-area p {
+            margin: 10px 0;
+            color: #666;
+        }
+
+        .upload-area .limit {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .upload-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        .upload-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .download-pdf {
+            display: block;
+            margin: 40px auto 0;
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            text-align: center;
+            width: fit-content;
+            transition: 0.3s;
+        }
+
+        .download-pdf i {
+            margin-right: 8px;
+        }
+
+        .download-pdf:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 25px; }
+            h1 { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Ceremony Details</h1>
+    <p class="subtitle">Get down to the nitty-gritty and organize the details of your ceremony here. Find and add vendors and services, set date and location, and plan your layout here.</p>
+
+    <div class="details-grid">
+        <div class="detail-card">
+            <i class="fas fa-calendar-alt"></i>
+            <h3>Ceremony Date</h3>
+            <p>Set the day you say I DO</p>
+        </div>
+        <div class="detail-card">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>Ceremony Location</h3>
+            <p>Set location</p>
+        </div>
+        <div class="detail-card">
+            <i class="fas fa-chair"></i>
+            <h3>Ceremony Layout</h3>
+            <p>Plan venue layout</p>
+        </div>
+    </div>
+
+    <div class="description-box">
+        <label for="ceremony-desc">Ceremony description</label>
+        <textarea id="ceremony-desc" placeholder="Write a detailed description of your ceremony..."></textarea>
+    </div>
+
+    <div class="upload-area" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" onclick="document.getElementById('fileInput').click()">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <h3>Upload photos</h3>
+        <p>Drop your photos here, or click below to select a files to upload.</p>
+        <p class="limit">Limit is 30 photos.<br>Photos must be no larger than 20Mb.</p>
+        <button class="upload-btn">Upload</button>
+        <input type="file" id="fileInput" multiple accept="image/*" style="display:none;">
+    </div>
+
+    <a href="#" class="download-pdf">
+        <i class="fas fa-file-download"></i> Download PDF file
+    </a>
+</div>
+
+<script>
+    // Drag & Drop functionality (visual only for now)
+    function dragOverHandler(ev) {
+        ev.preventDefault();
+        ev.currentTarget.style.background = '#e8f0e5';
+    }
+
+    function dropHandler(ev) {
+        ev.preventDefault();
+        ev.currentTarget.style.background = '#f0f5ee';
+        // Here you can add file handling logic later
+        alert('Photos uploaded successfully! (Demo mode)');
+    }
+
+    // Click to open file picker
+    document.querySelector('.upload-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('fileInput').click();
+    });
+
+    document.getElementById('fileInput').addEventListener('change', function() {
+        if (this.files.length > 0) {
+            alert(`Selected ${this.files.length} photo(s). Ready to upload!`);
+        }
+    });
+</script>
+
+</body>
+</html>
