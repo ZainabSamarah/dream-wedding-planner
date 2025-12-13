@@ -17,6 +17,11 @@
             align-items: center;
             height: 100vh;
         }
+        .role-btn.active {
+            background-color: #AAB99A;
+            color: white;
+            border-color: #AAB99A;
+        }
 
         .signup-box {
             background: #fff;
@@ -134,11 +139,25 @@
 </div>
 
 <script>
-    let selectedRole = '';
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    let selectedRole = '';
     function selectRole(role) {
         selectedRole = role;
         document.getElementById('roleError').textContent = '';
+<<<<<<< HEAD
 
         // إضافة تأثير بصري للزر المختار
         document.querySelectorAll('.role-btn').forEach(btn => {
@@ -149,6 +168,21 @@
         event.target.style.color = 'white';
     }
 
+=======
+
+        // إزالة الـ highlight من كل الأزرار
+        const buttons = document.querySelectorAll('.role-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+
+        // إضافة الـ highlight للزر المختار
+        if (role === 'user') {
+            buttons[0].classList.add('active');
+        } else if (role === 'owner') {
+            buttons[1].classList.add('active');
+        }
+    }
+    // Clear errors on input
+>>>>>>> origin/main
     const inputs = ['firstName', 'lastName', 'age', 'email', 'password', 'confirmPassword'];
     inputs.forEach(id => {
         document.getElementById(id).addEventListener('input', function() {
@@ -191,9 +225,15 @@
             document.getElementById('emailError').textContent = 'Email is required.';
             isValid = false;
         } else {
+<<<<<<< HEAD
             // ✅ هون الإصلاح - أي إيميل صحيح
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;            if (!emailRegex.test(email)) {
                 document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+=======
+            const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            if (!gmailRegex.test(email)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid Gmail address (e.g., example@gmail.com).';
+>>>>>>> origin/main
                 isValid = false;
             }
         }
@@ -220,6 +260,7 @@
         }
 
         if (isValid) {
+<<<<<<< HEAD
             const formData = new FormData();
             formData.append('firstName', firstName);
             formData.append('lastName', lastName);
@@ -250,6 +291,42 @@
                     console.error('Error:', error);
                     alert('Connection error. Please try again.');
                 });
+=======
+            // 🔍 جلب المستخدمين الحاليين
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+
+            // ❌ التحقق إذا الإيميل موجود
+            const emailExists = users.some(user => user.email === email);
+
+            if (emailExists) {
+                document.getElementById('emailError').textContent =
+                    'This email is already registered.';
+                return;
+            }
+
+            // ✅ إنشاء مستخدم جديد
+            const userData = {
+                firstName,
+                lastName,
+                age,
+                email,
+                password, // (لاحقاً رح تنعمل hashing)
+                role: selectedRole
+            };
+
+            // 💾 حفظ المستخدم
+            users.push(userData);
+            localStorage.setItem('users', JSON.stringify(users));
+
+            alert("Account created successfully!");
+
+            // 🔁 تحويل حسب الدور
+            if (selectedRole === 'user') {
+                window.location.href = "profile.html";
+            } else if (selectedRole === 'owner') {
+                window.location.href = "admin.html";
+            }
+>>>>>>> origin/main
         }
     });
 </script>
