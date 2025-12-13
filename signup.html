@@ -17,6 +17,11 @@
             align-items: center;
             height: 100vh;
         }
+        .role-btn.active {
+            background-color: #AAB99A;
+            color: white;
+            border-color: #AAB99A;
+        }
 
         .signup-box {
             background: #fff;
@@ -134,13 +139,36 @@
 </div>
 
 <script>
-    let selectedRole = '';
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    let selectedRole = '';
     function selectRole(role) {
         selectedRole = role;
-        document.getElementById('roleError').textContent = ''; // Clear error
-    }
+        document.getElementById('roleError').textContent = '';
 
+        // إزالة الـ highlight من كل الأزرار
+        const buttons = document.querySelectorAll('.role-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+
+        // إضافة الـ highlight للزر المختار
+        if (role === 'user') {
+            buttons[0].classList.add('active');
+        } else if (role === 'owner') {
+            buttons[1].classList.add('active');
+        }
+    }
     // Clear errors on input
     const inputs = ['firstName', 'lastName', 'age', 'email', 'password', 'confirmPassword'];
     inputs.forEach(id => {
@@ -185,7 +213,7 @@
             document.getElementById('emailError').textContent = 'Email is required.';
             isValid = false;
         } else {
-            const gmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.gmail\.com$/;
+            const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
             if (!gmailRegex.test(email)) {
                 document.getElementById('emailError').textContent = 'Please enter a valid Gmail address (e.g., example@gmail.com).';
                 isValid = false;
@@ -214,21 +242,40 @@
         }
 
         if (isValid) {
-            // Save to localStorage as demo for database
+            // 🔍 جلب المستخدمين الحاليين
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+
+            // ❌ التحقق إذا الإيميل موجود
+            const emailExists = users.some(user => user.email === email);
+
+            if (emailExists) {
+                document.getElementById('emailError').textContent =
+                    'This email is already registered.';
+                return;
+            }
+
+            // ✅ إنشاء مستخدم جديد
             const userData = {
-                firstName: firstName,
-                lastName: lastName,
-                age: age,
-                email: email,
-                password: password, // In real app, hash this
+                firstName,
+                lastName,
+                age,
+                email,
+                password, // (لاحقاً رح تنعمل hashing)
                 role: selectedRole
             };
-            localStorage.setItem('user', JSON.stringify(userData));
 
-            alert("Account created successfully! Redirecting to home...");
-            setTimeout(() => {
-                window.location.href = "main.html";
-            }, 1000);
+            // 💾 حفظ المستخدم
+            users.push(userData);
+            localStorage.setItem('users', JSON.stringify(users));
+
+            alert("Account created successfully!");
+
+            // 🔁 تحويل حسب الدور
+            if (selectedRole === 'user') {
+                window.location.href = "profile.html";
+            } else if (selectedRole === 'owner') {
+                window.location.href = "admin.html";
+            }
         }
     });
 </script>

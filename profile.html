@@ -398,7 +398,10 @@
     <nav>
         <a href="main.html"><i class="fas fa-home"></i> Home</a>
         <a href="services.html"><i class="fas fa-concierge-bell"></i> Services</a>
-        <button class="nav-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        <button class="nav-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+
     </nav>
 </header>
 
@@ -478,7 +481,10 @@
                     <span class="label">Location:</span>
                     <span class="value">New York, USA</span>
                 </div>
-                <button class="edit-btn"><i class="fas fa-edit"></i> Edit Information</button>
+                <button class="edit-btn" style="background:#dc3545;margin-top:10px;"
+                        onclick="deleteAccount()">
+                    <i class="fas fa-trash"></i> Delete Account
+                </button>
             </div>
 
             <div class="info-card">
@@ -632,6 +638,26 @@
 
 <script>
     // Tab switching
+    function deleteAccount() {
+        if (!confirm("Are you sure you want to delete your account?")) return;
+
+        const user = JSON.parse(localStorage.getItem("user"));
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+
+        users = users.filter(u => u.email !== user.email);
+
+        localStorage.setItem("users", JSON.stringify(users));
+        localStorage.removeItem("user");
+
+        alert("Account deleted successfully.");
+        window.location.href = "signup.html";
+    }
+
+    function logout() {
+        localStorage.removeItem('user');
+        window.location.href = "login.html";
+    }
+
     function showTab(tabName) {
         const tabs = document.querySelectorAll('.tab-content');
         const btns = document.querySelectorAll('.tab-btn');
