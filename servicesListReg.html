@@ -3,36 +3,29 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Food Services – WEDÉ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great_Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <title>Regular Food Menu – WEDÉ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
             --green-dark: #4B5945;
             --green-medium: #66785F;
             --green-light: #91AC8F;
             --green-pale: #B2C9AD;
-            --section-bg: #E8EFE5; /* لون خلفية الأقسام */
+            --green-extra-pale: #E8F0E5;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body, html {
+        body {
             font-family: 'Poppins', sans-serif;
-            background: radial-gradient(circle at center, #E8EFE5 0%, #B2C9AD 70%, #8DA187 100%);
+            background-color: var(--green-pale);
             color: var(--green-dark);
-            padding: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-            position: relative;
             overflow-x: hidden;
-            padding-top: 110px;
+            padding-top: 90px;
         }
 
+        /* Header مع الخط المزخرف زي الصفحات السابقة */
         header {
             background-color: var(--green-medium);
             padding: 15px 40px;
@@ -42,519 +35,539 @@
             color: white;
             position: fixed;
             top: 0;
-            left: 0;
             width: 100%;
-            z-index: 20;
+            z-index: 10;
             height: 70px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-
         header h1 {
             font-family: 'Great Vibes', cursive;
             font-size: 36px;
             color: var(--green-pale);
-        }
-
-        header a {
-            color: var(--green-pale);
-            text-decoration: none;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
-
-        h2 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            color: var(--green-dark);
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 1s ease-out forwards;
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: 0.3s;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        p.intro {
-            font-size: 1.1rem;
-            color: var(--green-medium);
-            max-width: 600px;
-            margin: 0 auto 40px auto;
-            line-height: 1.5;
-        }
-
-        #cart {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            cursor: pointer;
-            z-index: 1000;
-            transition: transform 0.3s ease;
-        }
-
-        #cart:hover {
-            transform: scale(1.1);
-        }
-
-        #cart img {
-            width: 100%;
-            height: 100%;
-        }
-
-        #cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
+        nav a:hover { opacity: 0.8; }
+        .nav-btn {
+            padding: 10px 20px;
             background-color: var(--green-light);
             color: white;
-            font-weight: bold;
-            font-size: 14px;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
+            border-radius: 25px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            margin-left: 25px;
+            transition: 0.3s;
+        }
+        .nav-btn:hover { background-color: var(--green-dark); transform: translateY(-2px); }
+
+        /* Hero نفس الـLuxury والـMedium */
+        .food-hero {
+            position: relative;
+            height: 80vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            user-select: none;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        @keyframes rotateOnHover {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .rotating-image {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
+            text-align: center;
             overflow: hidden;
-            margin: 0 auto 15px auto;
-            box-shadow: 0 4px 15px rgba(105, 121, 85, 0.4);
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
-        .rotating-image:hover {
-            animation: rotateOnHover 1s linear forwards; /* دوران 360 درجة عند الـ hover */
-            transform: scale(1.1);
-            box-shadow: 0 8px 25px rgba(105, 121, 85, 0.5);
-        }
-
-        .rotating-image::before {
-            content: '';
+        .food-hero video {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
-            border-radius: 50%;
-        }
-
-        .rotating-image img {
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             object-fit: cover;
+            opacity: 0.4;
+            z-index: 1;
         }
-
-        section {
-            margin-top: 40px;
-            background: var(--section-bg);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(105, 121, 85, 0.2);
+        .food-hero .hero-text {
+            background: rgba(255,255,255,0.9);
+            padding: 50px;
+            border-radius: 20px;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 2;
         }
-
-        section h3 {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 1.8rem;
+        .food-hero h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 62px;
             color: var(--green-dark);
             margin-bottom: 20px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .food-hero p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #333;
         }
 
-        section p {
-            font-size: 1.2rem;
-            color: var(--green-dark);
-            margin-bottom: 40px;
-        }
-
-        .dishes-row {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-
-        .dish {
-            width: 150px;
-            flex: 1 1 calc(25% - 30px);
-            max-width: 150px;
+        /* Intro */
+        .food-intro {
+            padding: 80px 60px;
             text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s ease-out forwards;
+            background: linear-gradient(135deg, #f5f8f3, var(--green-pale));
         }
-
-        .dish:nth-child(1) { animation-delay: 0.1s; }
-        .dish:nth-child(2) { animation-delay: 0.2s; }
-        .dish:nth-child(3) { animation-delay: 0.3s; }
-        .dish:nth-child(4) { animation-delay: 0.4s; }
-
-        .dish:hover .rotating-image {
-            transform: scale(1.1);
-            box-shadow: 0 8px 25px rgba(105, 121, 85, 0.5);
-        }
-
-        .dish p {
-            font-size: 1rem;
+        .food-intro p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 18px;
+            line-height: 1.8;
             color: var(--green-dark);
-            margin-bottom: 10px;
         }
 
-        .dish-desc {
-            font-size: 0.9rem;
-            color: var(--green-medium);
-            line-height: 1.4;
-            margin-top: 5px;
+        /* Dishes Sections */
+        .menu-section {
+            padding: 100px 60px;
+            background: white;
+        }
+        .menu-section:nth-child(odd) {
+            background: var(--green-extra-pale);
+        }
+        .menu-section h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--green-dark);
+        }
+        .dishes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .dish-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(75,89,69,0.12);
+            transition: all 0.4s ease;
+            text-align: center;
+        }
+        .dish-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(75,89,69,0.2);
+        }
+        .dish-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .dish-card:hover img {
+            transform: scale(1.1);
+        }
+        .dish-info {
+            padding: 30px;
+        }
+        .dish-info h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: var(--green-dark);
+        }
+        .dish-info p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
         }
 
+        /* CTA */
+        .food-cta {
+            padding: 100px 60px;
+            text-align: center;
+            background: var(--green-dark);
+            color: white;
+        }
+        .food-cta h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .food-cta p {
+            font-size: 18px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            opacity: 0.95;
+        }
+        .food-cta .nav-btn {
+            padding: 15px 40px;
+            font-size: 18px;
+            background: var(--green-light);
+        }
+        .food-cta .nav-btn:hover {
+            background: var(--green-pale);
+            color: var(--green-dark);
+        }
+
+        /* Footer نفس الـLuxury والصفحات السابقة */
         footer {
             background-color: var(--green-medium);
             color: white;
             text-align: center;
-            padding: 15px 0;
-            font-size: 14px;
-            margin-top: 60px;
-            width: 100%;
-            z-index: 5;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+            padding: 40px 20px;
         }
-
-        footer span {
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
             color: var(--green-pale);
             font-weight: 500;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
-
-        @media (max-width: 1200px) {
-            body {
-                padding: 20px;
-                padding-top: 110px;
-            }
-
-            .dish {
-                flex: 1 1 calc(50% - 30px);
-                max-width: 180px;
-            }
+        .footer-column a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 10px;
+            font-size: 14px;
+            transition: 0.3s;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        .footer-column a:hover { color: var(--green-pale); }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 20px;
+            margin-top: 30px;
         }
 
-        @media (max-width: 600px) {
-            .dish {
-                flex: 1 1 100%;
-                max-width: 200px;
-            }
+        @media (max-width: 768px) {
+            .food-hero h1 { font-size: 48px; }
+            .food-hero .hero-text { padding: 30px; }
+            .dishes-grid { grid-template-columns: 1fr; }
+            .dish-card img { height: 200px; }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1><a href="main.html">WEDÉ</a></h1>
+    <h1>WEDÉ</h1>
+    <nav>
+        <a href="#features">Features</a>
+        <a href="#tools">Tools</a>
+        <a href="services.html">Services</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <button id="loginBtn" class="nav-btn">Login</button>
+    </nav>
 </header>
 
-<h2>Food Services</h2>
-<p class="intro">Discover customized food menus and planning options designed to delight your wedding guests and suit your unique celebration style.</p>
-
-<!-- Cart Icon -->
-<div id="cart">
-    <img src="https://cdn-icons-png.flaticon.com/512/1170/1170576.png" alt="Cart">
-    <div id="cart-count">0</div>
-</div>
-
-<!-- Main Dishes Section -->
-<section id="main-dishes">
-    <h3>Main Dishes</h3>
-
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/VegetableStew.jpg" alt="Vegetable Stew" />
-            </div>
-            <p>Vegetable Stew</p>
-            <span class="dish-desc">A hearty mix of fresh vegetables.</span>
-        </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/mulukhiyah.jpg" alt="Mulukhiyah" />
-            </div>
-            <p>Mulukhiyah</p>
-            <span class="dish-desc">Traditional green stew with savory flavor.</span>
-        </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/shawarma.jpg" alt="Shawarma" />
-            </div>
-            <p>Shawarma</p>
-            <span class="dish-desc">Tender meat wrapped in warm pita.</span>
-        </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/pizza.jpg" alt="Pizza" />
-            </div>
-            <p>Pizza</p>
-            <span class="dish-desc">Classic pizza with fresh toppings.</span>
-        </div>
+<section class="food-hero">
+    <video autoplay muted loop playsinline>
+        <source src="imgs/v5.mp4" type="video/mp4">
+    </video>
+    <div class="hero-text">
+        <h1>Regular Food Menu</h1>
+        <p>Discover customized food menus and planning options designed to delight your wedding guests and suit your unique celebration style.</p>
     </div>
+</section>
 
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/friedFish.jpg" alt="Fried Fish" />
-            </div>
-            <p>Fried Fish</p>
-            <span class="dish-desc">Crispy fish fillets with marinade.</span>
-        </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Moussaka.jpg" alt="Moussaka" />
-            </div>
-            <p>Moussaka</p>
-            <span class="dish-desc">Layered eggplant with spiced meat.</span>
-        </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/chicken.jpg" alt="Grilled Chicken" />
-            </div>
-            <p>Grilled Chicken</p>
-            <span class="dish-desc">Juicy chicken grilled to perfection.</span>
-        </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/pasta.jpg" alt="Delicious Pasta" />
-            </div>
-            <p>Delicious Pasta</p>
-            <span class="dish-desc">Creamy pasta with choice of sauces.</span>
-        </div>
-    </div>
+<section class="food-intro">
+    <p>Discover customized food menus and planning options designed to delight your wedding guests and suit your unique celebration style.</p>
+</section>
 
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/tomatoPasta.jpg" alt="Tomato Pasta" />
+<section class="menu-section">
+    <h2>Main Dishes</h2>
+    <div class="dishes-grid">
+        <div class="dish-card">
+            <img src="imgs/VegetableStew.jpg" alt="Vegetable Stew">
+            <div class="dish-info">
+                <h3>Vegetable Stew</h3>
+                <p>A hearty mix of fresh vegetables.</p>
             </div>
-            <p>Tomato Pasta</p>
-            <span class="dish-desc">Pasta in vibrant tomato sauce.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/kufta.jpg" alt="Kufta" />
+        <div class="dish-card">
+            <img src="imgs/mulukhiyah.jpg" alt="Mulukhiyah">
+            <div class="dish-info">
+                <h3>Mulukhiyah</h3>
+                <p>Traditional green stew with savory flavor.</p>
             </div>
-            <p>Kufta</p>
-            <span class="dish-desc">Spiced meatballs grilled to delight.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Stuffedonions.jpg" alt="Stuffed Onions" />
+        <div class="dish-card">
+            <img src="imgs/shawarma.jpg" alt="Shawarma">
+            <div class="dish-info">
+                <h3>Shawarma</h3>
+                <p>Tender meat wrapped in warm pita.</p>
             </div>
-            <p>Stuffed Onions</p>
-            <span class="dish-desc">Onions filled with flavorful rice.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/rice.jpg" alt="Rice with Vegetables" />
+        <div class="dish-card">
+            <img src="imgs/pizza.jpg" alt="Pizza">
+            <div class="dish-info">
+                <h3>Pizza</h3>
+                <p>Classic pizza with fresh toppings.</p>
             </div>
-            <p>Rice with Vegetables</p>
-            <span class="dish-desc">Fragrant rice with colorful veggies.</span>
         </div>
-    </div>
-
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/PulledChicken.jpg" alt="Pulled Chicken" />
+        <div class="dish-card">
+            <img src="imgs/friedFish.jpg" alt="Fried Fish">
+            <div class="dish-info">
+                <h3>Fried Fish</h3>
+                <p>Crispy fish fillets with marinade.</p>
             </div>
-            <p>Pulled Chicken</p>
-            <span class="dish-desc">Tender shredded chicken in sauce.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/RoastedPotatoes.jpg" alt="Roasted Potatoes" />
+        <div class="dish-card">
+            <img src="imgs/Moussaka.jpg" alt="Moussaka">
+            <div class="dish-info">
+                <h3>Moussaka</h3>
+                <p>Layered eggplant with spiced meat.</p>
             </div>
-            <p>Roasted Potatoes</p>
-            <span class="dish-desc">Crispy potatoes with herbs.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/WhiteRice.jpg" alt="White Rice" />
+        <div class="dish-card">
+            <img src="imgs/chicken.jpg" alt="Grilled Chicken">
+            <div class="dish-info">
+                <h3>Grilled Chicken</h3>
+                <p>Juicy chicken grilled to perfection.</p>
             </div>
-            <p>White Rice</p>
-            <span class="dish-desc">Fluffy plain rice, perfectly cooked.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/StuffedZucchini.jpg" alt="Stuffed Zucchini" />
+        <div class="dish-card">
+            <img src="imgs/pasta.jpg" alt="Delicious Pasta">
+            <div class="dish-info">
+                <h3>Delicious Pasta</h3>
+                <p>Creamy pasta with choice of sauces.</p>
             </div>
-            <p>Stuffed Zucchini</p>
-            <span class="dish-desc">Zucchini filled with rice and spices.</span>
         </div>
-    </div>
-
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/ChickenYogurt.jpg" alt="Chicken in Yogurt" />
+        <div class="dish-card">
+            <img src="imgs/tomatoPasta.jpg" alt="Tomato Pasta">
+            <div class="dish-info">
+                <h3>Tomato Pasta</h3>
+                <p>Pasta in vibrant tomato sauce.</p>
             </div>
-            <p>Chicken in Yogurt</p>
-            <span class="dish-desc">Chicken cooked in creamy yogurt sauce.</span>
+        </div>
+        <div class="dish-card">
+            <img src="imgs/kufta.jpg" alt="Kufta">
+            <div class="dish-info">
+                <h3>Kufta</h3>
+                <p>Spiced meatballs grilled to delight.</p>
+            </div>
+        </div>
+        <div class="dish-card">
+            <img src="imgs/Stuffedonions.jpg" alt="Stuffed Onions">
+            <div class="dish-info">
+                <h3>Stuffed Onions</h3>
+                <p>Onions filled with flavorful rice.</p>
+            </div>
+        </div>
+        <div class="dish-card">
+            <img src="imgs/rice.jpg" alt="Rice with Vegetables">
+            <div class="dish-info">
+                <h3>Rice with Vegetables</h3>
+                <p>Fragrant rice with colorful veggies.</p>
+            </div>
+        </div>
+        <div class="dish-card">
+            <img src="imgs/PulledChicken.jpg" alt="Pulled Chicken">
+            <div class="dish-info">
+                <h3>Pulled Chicken</h3>
+                <p>Tender shredded chicken in sauce.</p>
+            </div>
+        </div>
+        <div class="dish-card">
+            <img src="imgs/RoastedPotatoes.jpg" alt="Roasted Potatoes">
+            <div class="dish-info">
+                <h3>Roasted Potatoes</h3>
+                <p>Crispy potatoes with herbs.</p>
+            </div>
+        </div>
+        <div class="dish-card">
+            <img src="imgs/WhiteRice.jpg" alt="White Rice">
+            <div class="dish-info">
+                <h3>White Rice</h3>
+                <p>Fluffy plain rice, perfectly cooked.</p>
+            </div>
+        </div>
+        <div class="dish-card">
+            <img src="imgs/StuffedZucchini.jpg" alt="Stuffed Zucchini">
+            <div class="dish-info">
+                <h3>Stuffed Zucchini</h3>
+                <p>Zucchini filled with rice and spices.</p>
+            </div>
+        </div>
+        <div class="dish-card">
+            <img src="imgs/ChickenYogurt.jpg" alt="Chicken in Yogurt">
+            <div class="dish-info">
+                <h3>Chicken in Yogurt</h3>
+                <p>Chicken cooked in creamy yogurt sauce.</p>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Appetizers Section -->
-<section id="appetizers">
-    <h3>Appetizers</h3>
-
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/stuff.jpg" alt="Hummus" />
+<section class="menu-section">
+    <h2>Appetizers</h2>
+    <div class="dishes-grid">
+        <div class="dish-card">
+            <img src="imgs/stuff.jpg" alt="Hummus">
+            <div class="dish-info">
+                <h3>Hummus</h3>
+                <p>Creamy dips served with warm pita.</p>
             </div>
-            <p>Hummus</p>
-            <span class="dish-desc">Creamy dips served with warm pita.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Tabbouleh.jpg" alt="Tabbouleh" />
+        <div class="dish-card">
+            <img src="imgs/Tabbouleh.jpg" alt="Tabbouleh">
+            <div class="dish-info">
+                <h3>Tabbouleh</h3>
+                <p>Fresh parsley and bulgur salad.</p>
             </div>
-            <p>Tabbouleh</p>
-            <span class="dish-desc">Fresh parsley and bulgur salad.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/salad1.jpg" alt="Green Salad" />
+        <div class="dish-card">
+            <img src="imgs/salad1.jpg" alt="Green Salad">
+            <div class="dish-info">
+                <h3>Green Salad</h3>
+                <p>Crisp greens with a light dressing.</p>
             </div>
-            <p>Green Salad</p>
-            <span class="dish-desc">Crisp greens with a light dressing.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/falafel.jpg" alt="Falafel" />
+        <div class="dish-card">
+            <img src="imgs/falafel.jpg" alt="Falafel">
+            <div class="dish-info">
+                <h3>Falafel</h3>
+                <p>Crispy chickpea patties with tahini.</p>
             </div>
-            <p>Falafel</p>
-            <span class="dish-desc">Crispy chickpea patties with tahini.</span>
         </div>
-    </div>
-
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/dawali.jpg" alt="Stuffed Grape Leaves" />
+        <div class="dish-card">
+            <img src="imgs/dawali.jpg" alt="Stuffed Grape Leaves">
+            <div class="dish-info">
+                <h3>Stuffed Grape Leaves (Dawali)</h3>
+                <p>Rice-filled grape leaves with herbs.</p>
             </div>
-            <p>Stuffed Grape Leaves (Dawali)</p>
-            <span class="dish-desc">Rice-filled grape leaves with herbs.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/stuff.jpg" alt="Labneh, Hummus, and Foul" />
+        <div class="dish-card">
+            <img src="imgs/stuff.jpg" alt="Labneh, Hummus, and Foul">
+            <div class="dish-info">
+                <h3>Labneh, Hummus & Foul</h3>
+                <p>Creamy dips served with warm pita.</p>
             </div>
-            <p>Labneh, Hummus & Foul</p>
-            <span class="dish-desc">Creamy dips served with warm pita.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/letsoup.jpg" alt="Lentil Soup" />
+        <div class="dish-card">
+            <img src="imgs/letsoup.jpg" alt="Lentil Soup">
+            <div class="dish-info">
+                <h3>Lentil Soup</h3>
+                <p>Warm, spiced lentil soup.</p>
             </div>
-            <p>Lentil Soup</p>
-            <span class="dish-desc">Warm, spiced lentil soup.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/vegsoup.jpg" alt="Vegetable Soup" />
+        <div class="dish-card">
+            <img src="imgs/vegsoup.jpg" alt="Vegetable Soup">
+            <div class="dish-info">
+                <h3>Vegetable Soup</h3>
+                <p>Light soup with fresh vegetables.</p>
             </div>
-            <p>Vegetable Soup</p>
-            <span class="dish-desc">Light soup with fresh vegetables.</span>
         </div>
-    </div>
-
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Cabbagesalad.jpg" alt="Cabbage Salad" />
+        <div class="dish-card">
+            <img src="imgs/Cabbagesalad.jpg" alt="Cabbage Salad">
+            <div class="dish-info">
+                <h3>Cabbage Salad</h3>
+                <p>Crunchy cabbage with a tangy dressing.</p>
             </div>
-            <p>Cabbage Salad</p>
-            <span class="dish-desc">Crunchy cabbage with a tangy dressing.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/HummusTahini.jpg" alt="Hummus with Tahini" />
+        <div class="dish-card">
+            <img src="imgs/HummusTahini.jpg" alt="Hummus with Tahini">
+            <div class="dish-info">
+                <h3>Hummus with Tahini</h3>
+                <p>Smooth hummus topped with tahini sauce.</p>
             </div>
-            <p>Hummus with Tahini</p>
-            <span class="dish-desc">Smooth hummus topped with tahini sauce.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Mutabbal.jpg" alt="Mutabbal Eggplant" />
+        <div class="dish-card">
+            <img src="imgs/Mutabbal.jpg" alt="Mutabbal Eggplant">
+            <div class="dish-info">
+                <h3>Mutabbal Eggplant</h3>
+                <p>Smoky eggplant dip with garlic.</p>
             </div>
-            <p>Mutabbal Eggplant</p>
-            <span class="dish-desc">Smoky eggplant dip with garlic.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/ArugulaSalad.jpg" alt="Arugula Salad with Lemon" />
+        <div class="dish-card">
+            <img src="imgs/ArugulaSalad.jpg" alt="Arugula Salad with Lemon">
+            <div class="dish-info">
+                <h3>Arugula Salad with Lemon</h3>
+                <p>Zesty arugula with lemon dressing.</p>
             </div>
-            <p>Arugula Salad with Lemon</p>
-            <span class="dish-desc">Zesty arugula with lemon dressing.</span>
         </div>
-    </div>
-
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/MixedAppetizers.jpg" alt="Mixed Appetizers" />
+        <div class="dish-card">
+            <img src="imgs/MixedAppetizers.jpg" alt="Mixed Appetizers">
+            <div class="dish-info">
+                <h3>Mixed Appetizers</h3>
+                <p>Olives, pickles, and green onions.</p>
             </div>
-            <p>Mixed Appetizers</p>
-            <span class="dish-desc">Olives, pickles, and green onions.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/CucumberYogurt.jpg" alt="Cucumber Yogurt Salad" />
+        <div class="dish-card">
+            <img src="imgs/CucumberYogurt.jpg" alt="Cucumber Yogurt Salad">
+            <div class="dish-info">
+                <h3>Cucumber Yogurt Salad</h3>
+                <p>Refreshing yogurt with cucumber.</p>
             </div>
-            <p>Cucumber Yogurt Salad</p>
-            <span class="dish-desc">Refreshing yogurt with cucumber.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/TahiniSalad.jpg" alt="Tahini Salad" />
+        <div class="dish-card">
+            <img src="imgs/TahiniSalad.jpg" alt="Tahini Salad">
+            <div class="dish-info">
+                <h3>Tahini Salad</h3>
+                <p>Creamy tahini with fresh vegetables.</p>
             </div>
-            <p>Tahini Salad</p>
-            <span class="dish-desc">Creamy tahini with fresh vegetables.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/CornSalad.jpg" alt="Corn Salad" />
+        <div class="dish-card">
+            <img src="imgs/CornSalad.jpg" alt="Corn Salad">
+            <div class="dish-info">
+                <h3>Corn Salad</h3>
+                <p>Sweet corn with a light vinaigrette.</p>
             </div>
-            <p>Corn Salad</p>
-            <span class="dish-desc">Sweet corn with a light vinaigrette.</span>
         </div>
     </div>
+</section>
+
+<section class="food-cta">
+    <h2>Ready to Craft Your Perfect Menu?</h2>
+    <p>Let us create a bespoke dining experience that reflects your taste and vision.</p>
+    <button class="nav-btn" onclick="window.location.href='contact.html'">Book a Consultation</button>
 </section>
 
 <footer>
-    © 2025 <span>WEDÉ</span> | All rights reserved
+    <div class="footer-content">
+        <div class="footer-column">
+            <h3>Plan</h3>
+            <a href="services.html">All Services</a>
+            <a href="rsvp.html">RSVP Manager</a>
+            <a href="budget.html">Budget Tracker</a>
+            <a href="gallery.html">Gallery</a>
+        </div>
+        <div class="footer-column">
+            <h3>Discover</h3>
+            <a href="services.html">Wedding Vendors</a>
+            <a href="gallery.html">Photo Gallery</a>
+            <a href="services.html">Planning Tips</a>
+        </div>
+        <div class="footer-column">
+            <h3>Company</h3>
+            <a href="contact.html">Contact Us</a>
+            <a href="#">About WEDÉ</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+        <div class="footer-column">
+            <h3>Follow Us</h3>
+            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+            <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+            <a href="#"><i class="fab fa-pinterest"></i> Pinterest</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        © 2025 <span style="color: var(--green-pale);">WEDÉ</span> | All rights reserved
+    </div>
 </footer>
+
+<script>
+    document.getElementById('loginBtn').addEventListener('click', function () {
+        window.location.href = 'login.html';
+    });
+</script>
 
 </body>
 </html>
