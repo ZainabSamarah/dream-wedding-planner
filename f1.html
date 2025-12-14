@@ -59,7 +59,7 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            transition: opacity 0.5s ease-out;
+            transition: opacity 0.8s ease-out;
         }
 
         .loading.hidden {
@@ -67,29 +67,48 @@
             pointer-events: none;
         }
 
-        .loading-image {
-            width: 120px;
+        .loading-flower {
+            width: 140px; /* حجم أصغر كما طلبتي */
             height: auto;
-            animation: pulse 1.5s ease-in-out infinite alternate;
+            animation: breathe 3s ease-in-out infinite; /* أبطأ وأنعم */
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.12));
         }
 
-        @keyframes pulse {
-            from { transform: scale(1); opacity: 0.9; }
-            to { transform: scale(1.1); opacity: 1; }
+        @keyframes breathe {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
-        .loading-text {
-            color: var(--green-dark);
-            font-size: 1.2rem;
-            margin-top: 20px;
-            font-weight: 500;
+        .loading-circles {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .circle {
+            width: 12px;
+            height: 12px;
+            background-color: transparent;
+            border: 2px solid var(--green-dark);
+            border-radius: 50%;
+            animation: pulseCircle 1.5s infinite ease-in-out;
+        }
+
+        .circle:nth-child(1) { animation-delay: 0s; }
+        .circle:nth-child(2) { animation-delay: 0.3s; }
+        .circle:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes pulseCircle {
+            0%, 100% { opacity: 0.4; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
         }
 
         /* === المربع: أبيض صلب 100% === */
         .hero {
             text-align: center;
             padding: 50px;
-            background: #ffffff; /* أبيض صلب */
+            background: #ffffff;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(75, 89, 69, 0.3);
             max-width: 600px;
@@ -169,6 +188,8 @@
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
             .hero { padding: 30px; }
+            .loading-flower { width: 110px; }
+            .circle { width: 10px; height: 10px; }
         }
     </style>
 </head>
@@ -177,8 +198,12 @@
 
 <!-- شاشة التحميل -->
 <div class="loading" id="loading">
-    <img src="imgs/tulips1.jpg" alt="Loading Tulips" class="loading-image">
-    <div class="loading-text">Loading your perfect day...</div>
+    <img src="https://static.vecteezy.com/system/resources/thumbnails/065/276/644/small/white-tulip-bouquet-for-special-occasions-and-celebrations-png.png" alt="White Tulip Bouquet" class="loading-flower">
+    <div class="loading-circles">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
 </div>
 
 <!-- الفيديو -->
@@ -205,7 +230,7 @@
     function createHeart() {
         const heart = document.createElement('div');
         heart.className = 'heart';
-        heart.innerHTML = 'Heart';
+        heart.innerHTML = '♡';
         heart.style.left = Math.random() * 100 + 'vw';
         heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
         document.getElementById('hearts').appendChild(heart);
