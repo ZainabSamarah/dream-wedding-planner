@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Luxury Cake Menu – WEDÉ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great_Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
@@ -44,7 +44,6 @@
             font-size: 36px;
             color: var(--green-pale);
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-            letter-spacing: 2px;
         }
         nav a {
             color: white;
@@ -135,7 +134,7 @@
         }
         .dishes-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* صغرت الـminmax عشان 4 كروت في السطر على الشاشات الكبيرة */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 40px;
             max-width: 1400px;
             margin: 0 auto;
@@ -154,9 +153,8 @@
         }
         .dish-card img {
             width: 100%;
-            height: 380px; /* خفضت شوية عشان الكروت تبقى أقصر و4 في السطر */
+            height: 250px;
             object-fit: cover;
-            object-position: center;
             transition: transform 0.5s ease;
         }
         .dish-card:hover img {
@@ -166,14 +164,14 @@
             padding: 30px;
         }
         .dish-info h3 {
-            font-size: 22px;
-            margin-bottom: 10px;
+            font-size: 24px;
+            margin-bottom: 12px;
             color: var(--green-dark);
         }
         .dish-info p {
-            font-size: 15px;
+            font-size: 16px;
             color: #555;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .food-cta {
@@ -240,17 +238,11 @@
             margin-top: 30px;
         }
 
-        @media (max-width: 1024px) {
-            .dishes-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-        }
         @media (max-width: 768px) {
             .food-hero h1 { font-size: 48px; }
             .food-hero .hero-text { padding: 30px; }
-            .dishes-grid { grid-template-columns: repeat(2, 1fr); } /* 2 في السطر على الموبايل */
-            .dish-card img { height: 280px; }
-        }
-        @media (max-width: 480px) {
-            .dishes-grid { grid-template-columns: 1fr; } /* 1 في السطر على الموبايل الصغير */
+            .dishes-grid { grid-template-columns: 1fr; }
+            .dish-card img { height: 200px; }
         }
     </style>
 </head>
@@ -300,14 +292,14 @@
             </div>
         </div>
         <div class="dish-card">
-            <img src="imgs/Pineapple Cake (with dried Pineapple flowers).jpg" alt="Pineapple Cake (with dried Pineapple flowers)">
+            <img src="imgs/Pineapple Cake (with dried Pineapple flowers).jpg" alt="Pineapple Cake">
             <div class="dish-info">
                 <h3>Pineapple Cake (with dried Pineapple flowers)</h3>
                 <p>Tropical pineapple with dried flower decor.</p>
             </div>
         </div>
         <div class="dish-card">
-            <img src="imgs/Raffaello Cake (Coconut Almond Cake).jpg" alt="Raffaello Cake (Coconut Almond Cake)">
+            <img src="imgs/Raffaello Cake (Coconut Almond Cake).jpg" alt="Raffaello Cake">
             <div class="dish-info">
                 <h3>Raffaello Cake (Coconut Almond Cake)</h3>
                 <p>Coconut and almond inspired by Raffaello.</p>
@@ -328,7 +320,7 @@
             </div>
         </div>
         <div class="dish-card">
-            <img src="imgs/Lemon Elderflower Cake (Copycat Royal Wedding Cake).jpg" alt="Lemon Elderflower Cake (Copycat Royal Wedding Cake)">
+            <img src="imgs/Lemon Elderflower Cake (Copycat Royal Wedding Cake).jpg" alt="Lemon Elderflower Cake">
             <div class="dish-info">
                 <h3>Lemon Elderflower Cake (Copycat Royal Wedding Cake)</h3>
                 <p>Light lemon and elderflower royal-inspired.</p>
@@ -341,7 +333,6 @@
                 <p>Classic custard and chocolate ganache.</p>
             </div>
         </div>
-        <!-- باقي الكيكات كاملة (ما حذفت أي واحدة) -->
         <div class="dish-card">
             <img src="imgs/Cotton Candy Cake.jpg" alt="Cotton Candy Cake">
             <div class="dish-info">
@@ -357,7 +348,7 @@
             </div>
         </div>
         <div class="dish-card">
-            <img src="imgs/Nutella Banana Cake with Hazelnut Meringue.jpg" alt="Nutella Banana Cake with Hazelnut Meringue">
+            <img src="imgs/Nutella Banana Cake with Hazelnut Meringue.jpg" alt="Nutella Banana Cake">
             <div class="dish-info">
                 <h3>Nutella Banana Cake with Hazelnut Meringue</h3>
                 <p>Nutella and banana with hazelnut meringue.</p>
@@ -374,21 +365,21 @@
             <img src="imgs/Chocolate Raspberry Cake.jpg" alt="Chocolate Raspberry Cake">
             <div class="dish-info">
                 <h3>Chocolate Raspberry Cake</h3>
-                <p>Two mini cakes decorated with fresh raspberries.</p>
+                <p>Rich chocolate with fresh raspberries.</p>
             </div>
         </div>
         <div class="dish-card">
             <img src="imgs/Raspberry Vanilla Mini Cakes.jpg" alt="Raspberry Vanilla Mini Cakes">
             <div class="dish-info">
                 <h3>Raspberry Vanilla Mini Cakes</h3>
-                <p>Cake on a white cake stand.</p>
+                <p>Delicate vanilla cakes with raspberry.</p>
             </div>
         </div>
         <div class="dish-card">
-            <img src="imgs/Berry Layer Cake Momofuku Birthday Cake.jpg" alt="Berry Layer Cake Momofuku Birthday Cake">
+            <img src="imgs/Berry Layer Cake Momofuku Birthday Cake.jpg" alt="Berry Layer Cake">
             <div class="dish-info">
                 <h3>Berry Layer Cake Momofuku Birthday Cake</h3>
-                <p>Cake on a white cake stand and black background. Candied hazelnuts on top of the cake and chopped hazelnuts along the bottom.</p>
+                <p>Layered berry cake with elegant finish.</p>
             </div>
         </div>
         <div class="dish-card">
@@ -402,112 +393,112 @@
             <img src="imgs/Caramel Apple Cake.jpg" alt="Caramel Apple Cake">
             <div class="dish-info">
                 <h3>Caramel Apple Cake</h3>
-                <p>Blueberry shortcake cake sitting on a green cake stand.</p>
+                <p>Spiced apple cake with caramel drizzle.</p>
             </div>
         </div>
         <div class="dish-card">
             <img src="imgs/Peanut Butter Chocolate Cake.jpg" alt="Peanut Butter Chocolate Cake">
             <div class="dish-info">
                 <h3>Peanut Butter Chocolate Cake</h3>
-                <p>A decorated cake on a cake stand.</p>
+                <p>Rich chocolate with creamy peanut butter.</p>
             </div>
         </div>
         <div class="dish-card">
             <img src="imgs/Nanaimo Bar Cake.jpg" alt="Nanaimo Bar Cake">
             <div class="dish-info">
                 <h3>Nanaimo Bar Cake</h3>
-                <p>A cake sitting on top of a wooden table.</p>
+                <p>Classic Canadian-inspired layered cake.</p>
             </div>
         </div>
         <div class="dish-card">
-            <img src="imgs/French Silk Pie Cake (Copycat Deep’n Delicious Chocolate Cake).jpg" alt="French Silk Pie Cake (Copycat Deep’n Delicious Chocolate Cake)">
+            <img src="imgs/French Silk Pie Cake (Copycat Deep'n Delicious Chocolate Cake).jpg" alt="French Silk Pie Cake">
             <div class="dish-info">
-                <h3>French Silk Pie Cake (Copycat Deep’n Delicious Chocolate Cake)</h3>
-                <p>Naked cake on a cake stand.</p>
+                <h3>French Silk Pie Cake</h3>
+                <p>Silky smooth chocolate indulgence.</p>
             </div>
         </div>
         <div class="dish-card">
             <img src="imgs/Mint Chocolate Chip Cake.jpg" alt="Mint Chocolate Chip Cake">
             <div class="dish-info">
                 <h3>Mint Chocolate Chip Cake</h3>
-                <p>A cake sitting on top of a table.</p>
+                <p>Refreshing mint with chocolate chips.</p>
             </div>
         </div>
         <div class="dish-card">
             <img src="imgs/Chocolate Dulce de Leche Cake.jpg" alt="Chocolate Dulce de Leche Cake">
             <div class="dish-info">
                 <h3>Chocolate Dulce de Leche Cake</h3>
-                <p>A large chocolate cake sitting on top of a table.</p>
+                <p>Decadent chocolate with caramel dulce.</p>
             </div>
         </div>
         <div class="dish-card">
             <img src="imgs/Chocolate Gingerbread Cake.jpg" alt="Chocolate Gingerbread Cake">
             <div class="dish-info">
                 <h3>Chocolate Gingerbread Cake</h3>
-                <p>Cake on a white cake stand with opened Ferreros' in the foreground.</p>
+                <p>Spiced gingerbread with chocolate twist.</p>
             </div>
         </div>
         <div class="dish-card">
             <img src="imgs/Ferrero Rocher Cake.jpg" alt="Ferrero Rocher Cake">
             <div class="dish-info">
                 <h3>Ferrero Rocher Cake</h3>
-                <p>A decorated cake on a table.</p>
+                <p>Hazelnut chocolate luxury inspired by Ferrero.</p>
             </div>
         </div>
         <div class="dish-card">
             <img src="imgs/Chocolate Mocha Cake.jpg" alt="Chocolate Mocha Cake">
             <div class="dish-info">
                 <h3>Chocolate Mocha Cake</h3>
-                <p>Cake on a cake stand.</p>
+                <p>Rich chocolate with coffee essence.</p>
             </div>
         </div>
         <div class="dish-card">
             <img src="imgs/Nutella Cake.jpg" alt="Nutella Cake">
             <div class="dish-info">
                 <h3>Nutella Cake</h3>
-                <p>Cake on a cake stand.</p>
+                <p>Pure Nutella bliss in every bite.</p>
             </div>
         </div>
         <div class="dish-card">
             <img src="imgs/Black Forest Cake.jpg" alt="Black Forest Cake">
             <div class="dish-info">
                 <h3>Black Forest Cake</h3>
-                <p>A decorated cake on a cake stand.</p>
+                <p>Classic chocolate with cherry filling.</p>
             </div>
         </div>
         <div class="dish-card">
             <img src="imgs/Chocolate Truffle Cake.jpg" alt="Chocolate Truffle Cake">
             <div class="dish-info">
                 <h3>Chocolate Truffle Cake</h3>
-                <p>A cake sitting on top of a table.</p>
+                <p>Ultra-rich chocolate truffle layers.</p>
             </div>
         </div>
         <div class="dish-card">
-            <img src="imgs/Chocolate Strawberry Cake Hot Chocolate Cake With Marshmallow Filling.jpg" alt="Chocolate Strawberry Cake Hot Chocolate Cake With Marshmallow Filling">
+            <img src="imgs/Chocolate Strawberry Cake Hot Chocolate Cake With Marshmallow Filling.jpg" alt="Hot Chocolate Cake">
             <div class="dish-info">
-                <h3>Chocolate Strawberry Cake Hot Chocolate Cake With Marshmallow Filling</h3>
-                <p>Chocolate cake with honeycomb shards on the top.</p>
+                <h3>Hot Chocolate Cake With Marshmallow Filling</h3>
+                <p>Warm chocolate with fluffy marshmallow.</p>
             </div>
         </div>
         <div class="dish-card">
             <img src="imgs/Dark Chocolate Honeycomb Cake.jpg" alt="Dark Chocolate Honeycomb Cake">
             <div class="dish-info">
                 <h3>Dark Chocolate Honeycomb Cake</h3>
-                <p>A cake sitting on top of a white cake stand.</p>
+                <p>Dark chocolate with crunchy honeycomb.</p>
             </div>
         </div>
         <div class="dish-card">
             <img src="imgs/Turtles Cake.jpg" alt="Turtles Cake">
             <div class="dish-info">
                 <h3>Turtles Cake</h3>
-                <p>Naked style chocolate cake with a ganache drip on a white cake stand. Cookies in the background.</p>
+                <p>Caramel pecan chocolate delight.</p>
             </div>
         </div>
         <div class="dish-card">
             <img src="imgs/Cookie Dough Cake.jpg" alt="Cookie Dough Cake">
             <div class="dish-info">
                 <h3>Cookie Dough Cake</h3>
-                <p>Naked style chocolate cake with a ganache drip on a white cake stand. Cookies in the background.</p>
+                <p>Cookie dough lovers' dream cake.</p>
             </div>
         </div>
         <div class="dish-card">

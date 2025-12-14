@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Photography Mini Session – WEDÉ</title>
-
-    <!-- الخطوط -->
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
         :root {
@@ -14,6 +13,7 @@
             --green-medium: #66785F;
             --green-light: #91AC8F;
             --green-pale: #B2C9AD;
+            --green-extra-pale: #E8F0E5;
         }
 
         * { margin:0; padding:0; box-sizing:border-box; }
@@ -22,8 +22,8 @@
             font-family: 'Poppins', sans-serif;
             background-color: var(--green-pale);
             color: var(--green-dark);
-            transition: opacity 0.1s ease-in-out;
             overflow-x: hidden;
+            padding-top: 70px;
         }
 
         header {
@@ -38,13 +38,22 @@
             width: 100%;
             z-index: 10;
             height: 70px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         header h1 {
             font-family: 'Great Vibes', cursive;
-            font-size: 36px;
+            font-size: 34px;
             color: var(--green-pale);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
         }
+
+        .logo-link {
+            color: var(--green-pale);
+            text-decoration: none;
+        }
+
+        .logo-link:hover { opacity: 0.8; }
 
         nav a {
             color: white;
@@ -52,38 +61,38 @@
             margin-left: 25px;
             font-weight: 500;
             transition: 0.3s;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
         nav a:hover { opacity: 0.8; }
 
         .nav-btn {
-            padding: 10px 20px;
+            padding: 10px 30px;
             background-color: var(--green-light);
             color: white;
-            border-radius: 25px;
-            text-decoration: none;
+            border-radius: 50px;
             font-weight: 600;
-            transition: 0.3s;
             border: none;
             cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
             margin-left: 25px;
         }
 
         .nav-btn:hover {
-            background-color: var(--green-medium);
+            background-color: var(--green-dark);
             transform: translateY(-2px);
         }
 
         /* === Hero Section === */
         .hero {
             position: relative;
-            height: 70vh; /* أقل من طول الشاشة */
+            height: 80vh;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            margin-top: 70px; /* header offset */
         }
 
         .hero::after {
@@ -91,7 +100,7 @@
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.7); /* غمق الفيديو أكثر */
+            background-color: rgba(0,0,0,0.5);
             z-index:2;
         }
 
@@ -103,82 +112,305 @@
             z-index:1;
         }
 
-        /* نصوص تظهر تدريجيًا من اليسار لليمين */
         .hero-text {
             position: relative;
             z-index: 3;
-            color: #E6D7C5; /* بني فاتح */
-            text-align: center;
+            background: rgba(255,255,255,0.95);
+            padding: 50px 60px;
+            border-radius: 20px;
             max-width: 900px;
-            padding: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            color: var(--green-dark);
         }
 
-        .hero-text h1, .hero-text h2, .hero-text p {
-            opacity: 0;
-            transform: translateX(-50px);
-            animation: slideIn 1s forwards;
+        .hero-text h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 56px;
+            color: var(--green-dark);
+            margin-bottom: 15px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            animation: fadeInDown 1s ease-out;
         }
 
-        .hero-text h1 { animation-delay: 0.3s; font-size: 52px; text-shadow: 2px 4px 10px rgba(0,0,0,0.7); }
-        .hero-text h2 { animation-delay: 0.6s; font-size: 36px; text-shadow: 2px 4px 10px rgba(0,0,0,0.6); margin-bottom: 15px; }
-        .hero-text p { animation-delay: 0.9s; font-size: 18px; line-height: 1.8; text-shadow: 1px 2px 6px rgba(0,0,0,0.5); }
+        .hero-text h2 {
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--green-medium);
+            margin-bottom: 20px;
+            animation: fadeInDown 1.2s ease-out;
+        }
 
-        @keyframes slideIn {
-            0% { opacity: 0; transform: translateX(-50px); }
-            100% { opacity: 1; transform: translateX(0); }
+        .hero-text p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #555;
+            animation: fadeInUp 1.4s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === Package Info Section === */
+        .package-info {
+            padding: 80px 40px;
+            background: linear-gradient(135deg, #f5f8f3, var(--green-pale));
+            text-align: center;
+        }
+
+        .package-info h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 48px;
+            color: var(--green-dark);
+            margin-bottom: 30px;
+        }
+
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto 0;
+        }
+
+        .info-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(75,89,69,0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(75,89,69,0.25);
+        }
+
+        .info-card i {
+            font-size: 48px;
+            color: var(--green-light);
+            margin-bottom: 20px;
+        }
+
+        .info-card h3 {
+            font-size: 24px;
+            color: var(--green-dark);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .info-card p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
         }
 
         /* === Mini Session Form === */
-        .section {
+        .form-section {
             padding: 80px 40px;
+            background: white;
             text-align: center;
         }
 
-        .section h2 {
+        .form-section h2 {
             font-family: 'Great Vibes', cursive;
-            font-size: 42px;
+            font-size: 48px;
             color: var(--green-dark);
             margin-bottom: 20px;
         }
 
-        .section p {
+        .form-section > p {
             max-width: 750px;
-            margin: 0 auto 25px;
+            margin: 0 auto 40px;
             font-size: 18px;
-            color: #444;
+            color: #555;
             line-height: 1.8;
         }
 
-        form {
-            max-width: 500px;
-            margin: 30px auto 0;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        form input, form textarea {
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid var(--green-dark);
-            font-size: 16px;
-            width: 100%;
-        }
-
-        form button {
-            padding: 12px 20px;
+        .session-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--green-extra-pale);
+            padding: 50px;
             border-radius: 25px;
-            background-color: var(--green-light);
+            box-shadow: 0 10px 30px rgba(75,89,69,0.15);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--green-dark);
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .form-group label i {
+            margin-right: 8px;
+            color: var(--green-light);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid var(--green-pale);
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--green-light);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 25px;
+            background: linear-gradient(135deg, var(--green-light), var(--green-medium));
             color: white;
             border: none;
             font-weight: 600;
+            font-size: 18px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s;
+            margin-top: 10px;
         }
 
-        form button:hover {
-            background-color: var(--green-medium);
-            transform: translateY(-2px);
+        .submit-btn:hover {
+            background: linear-gradient(135deg, var(--green-medium), var(--green-dark));
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .saved-msg {
+            color: #28a745;
+            margin-top: 15px;
+            font-weight: 600;
+            font-size: 16px;
+            display: none;
+        }
+
+        .saved-msg.show {
+            display: block;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        /* === Benefits Section === */
+        .benefits {
+            padding: 80px 40px;
+            background: var(--green-extra-pale);
+        }
+
+        .benefits h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 48px;
+            color: var(--green-dark);
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .benefit-item {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(75,89,69,0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: transform 0.3s;
+        }
+
+        .benefit-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .benefit-item i {
+            font-size: 32px;
+            color: var(--green-light);
+            flex-shrink: 0;
+        }
+
+        .benefit-content h4 {
+            font-size: 20px;
+            color: var(--green-dark);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .benefit-content p {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* === CTA Section === */
+        .cta-section {
+            padding: 80px 40px;
+            background: var(--green-dark);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.8;
+        }
+
+        .cta-btn {
+            padding: 15px 40px;
+            background: var(--green-light);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-btn:hover {
+            background: var(--green-pale);
+            color: var(--green-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
 
         /* === Footer === */
@@ -186,17 +418,65 @@
             background-color: var(--green-medium);
             color: white;
             text-align: center;
-            padding: 15px;
-            margin-top: 60px;
+            padding: 40px 20px;
         }
 
-        .logo-link { color: var(--green-pale); text-decoration: none; }
-        .logo-link:hover { opacity: 0.8; }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
 
-        .saved-msg {
-            color: var(--green-dark);
-            margin-top: 10px;
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--green-pale);
             font-weight: 500;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .footer-column a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 10px;
+            font-size: 14px;
+            transition: 0.3s;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .footer-column a:hover { color: var(--green-pale); }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 20px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-text {
+                padding: 30px;
+            }
+
+            .hero-text h1 {
+                font-size: 42px;
+            }
+
+            .hero-text h2 {
+                font-size: 26px;
+            }
+
+            .session-form {
+                padding: 30px 20px;
+            }
+
+            .info-cards,
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -206,10 +486,11 @@
 <header>
     <h1><a href="main.html" class="logo-link">WEDÉ</a></h1>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="services.html" style="text-decoration: underline;">Services</a>
-        <a href="#">Gallery</a>
-        <a href="#">Contact</a>
+        <a href="#features">Features</a>
+        <a href="#tools">Tools</a>
+        <a href="services.html">Services</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
         <button id="loginBtn" class="nav-btn">Login</button>
     </nav>
 </header>
@@ -223,41 +504,149 @@
     <div class="hero-text">
         <h1>Photography Sessions</h1>
         <h2>Photography Mini Session</h2>
-        <p>This package includes wedding day photography inside the venue for all users.<br>
-            The Mini Session outside the venue is optional for users who want a private external shoot.<br>
-            Choose your preferred date, time, and location if you want an outside session.</p>
+        <p>This package includes wedding day photography inside the venue for all users. The Mini Session outside the venue is optional for users who want a private external shoot. Choose your preferred date, time, and location if you want an outside session.</p>
     </div>
 </section>
 
-<!-- Mini Session -->
-<section class="section">
-    <h2>Photography Mini Session</h2>
-    <p>Enjoy a special mini session outside the wedding venue, included as part of your package. Choose your preferred date, time, and location.</p>
+<!-- Package Info -->
+<section class="package-info">
+    <h2>What's Included</h2>
+    <div class="info-cards">
+        <div class="info-card">
+            <i class="fas fa-camera"></i>
+            <h3>Wedding Day Coverage</h3>
+            <p>Full photography coverage inside your wedding venue, capturing every precious moment of your special day.</p>
+        </div>
+        <div class="info-card">
+            <i class="fas fa-mountain-sun"></i>
+            <h3>Mini Session Option</h3>
+            <p>Optional outdoor mini session at your chosen location - park, beach, studio, or any scenic spot you prefer.</p>
+        </div>
+        <div class="info-card">
+            <i class="fas fa-images"></i>
+            <h3>Professional Editing</h3>
+            <p>All photos professionally edited and delivered in high resolution, ready for prints and albums.</p>
+        </div>
+    </div>
+</section>
 
-    <form id="miniSessionForm">
-        <input type="date" id="date" required>
-        <input type="time" id="time" required>
-        <input type="text" id="location" placeholder="Enter location (Park, Studio, Beach...)" required>
-        <textarea id="notes" placeholder="Additional notes (optional)"></textarea>
-        <button type="submit">Confirm Session</button>
-        <div class="saved-msg" id="savedMsg"></div>
-    </form>
+<!-- Mini Session Form -->
+<section class="form-section">
+    <h2>Book Your Mini Session</h2>
+    <p>Schedule your optional outdoor photography session. Choose your perfect date, time, and location to create beautiful memories.</p>
+
+    <div class="session-form">
+        <form id="miniSessionForm">
+            <div class="form-group">
+                <label for="date"><i class="fas fa-calendar"></i> Session Date</label>
+                <input type="date" id="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="time"><i class="fas fa-clock"></i> Preferred Time</label>
+                <input type="time" id="time" required>
+            </div>
+
+            <div class="form-group">
+                <label for="location"><i class="fas fa-map-marker-alt"></i> Location</label>
+                <input type="text" id="location" placeholder="Enter location (Park, Studio, Beach...)" required>
+            </div>
+
+            <div class="form-group">
+                <label for="notes"><i class="fas fa-sticky-note"></i> Additional Notes (Optional)</label>
+                <textarea id="notes" placeholder="Any special requests or preferences..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-check-circle"></i> Confirm Session
+            </button>
+            <div class="saved-msg" id="savedMsg">
+                <i class="fas fa-check-circle"></i> Session Saved Successfully!
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Benefits -->
+<section class="benefits">
+    <h2>Why Choose Our Photography</h2>
+    <div class="benefits-grid">
+        <div class="benefit-item">
+            <i class="fas fa-user-check"></i>
+            <div class="benefit-content">
+                <h4>Experienced Photographers</h4>
+                <p>Our team consists of award-winning professionals with years of wedding photography experience.</p>
+            </div>
+        </div>
+        <div class="benefit-item">
+            <i class="fas fa-bolt"></i>
+            <div class="benefit-content">
+                <h4>Quick Turnaround</h4>
+                <p>Receive your edited photos within 2-3 weeks after your wedding day.</p>
+            </div>
+        </div>
+        <div class="benefit-item">
+            <i class="fas fa-shield-alt"></i>
+            <div class="benefit-content">
+                <h4>Backup & Security</h4>
+                <p>All photos are backed up immediately with multiple redundancies for complete peace of mind.</p>
+            </div>
+        </div>
+        <div class="benefit-item">
+            <i class="fas fa-palette"></i>
+            <div class="benefit-content">
+                <h4>Custom Editing Style</h4>
+                <p>Choose from various editing styles to match your wedding theme and personal preferences.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <h2>Ready to Capture Your Moments?</h2>
+    <p>Let us help you create timeless memories that you'll cherish forever. Book your photography package today!</p>
+    <a href="contact.html" class="cta-btn">Contact Us Now</a>
 </section>
 
 <footer>
-    <p>© 2025 WEDÉ | All rights reserved</p>
+    <div class="footer-content">
+        <div class="footer-column">
+            <h3>Plan</h3>
+            <a href="services.html">All Services</a>
+            <a href="rsvp.html">RSVP Manager</a>
+            <a href="budget.html">Budget Tracker</a>
+            <a href="gallery.html">Gallery</a>
+        </div>
+        <div class="footer-column">
+            <h3>Discover</h3>
+            <a href="services.html">Wedding Vendors</a>
+            <a href="gallery.html">Photo Gallery</a>
+            <a href="services.html">Planning Tips</a>
+        </div>
+        <div class="footer-column">
+            <h3>Company</h3>
+            <a href="contact.html">Contact Us</a>
+            <a href="#">About WEDÉ</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+        <div class="footer-column">
+            <h3>Follow Us</h3>
+            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+            <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+            <a href="#"><i class="fab fa-pinterest"></i> Pinterest</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        © 2025 <span style="color: var(--green-pale);">WEDÉ</span> | All rights reserved
+    </div>
 </footer>
 
 <script>
     // Login button
     document.getElementById('loginBtn').addEventListener('click', function () {
-        document.body.style.opacity = '0';
-        setTimeout(() => { window.location.href = 'login.html'; }, 400);
-    });
-
-    // Hero animation
-    window.addEventListener('load', () => {
-        document.querySelector('.hero').style.opacity = '1';
+        window.location.href = 'login.html';
     });
 
     // Mini Session Form Logic
@@ -270,8 +659,10 @@
     function saveSession(data) {
         localStorage.setItem(FORM_KEY, JSON.stringify(data));
         const msg = document.getElementById('savedMsg');
-        msg.textContent = 'Session Saved!';
-        setTimeout(() => { msg.textContent = ''; }, 2000);
+        msg.classList.add('show');
+        setTimeout(() => {
+            msg.classList.remove('show');
+        }, 3000);
     }
 
     document.getElementById('miniSessionForm').addEventListener('submit', function(e){
@@ -285,6 +676,7 @@
         saveSession(data);
     });
 
+    // Load saved data on page load
     window.addEventListener('load', () => {
         const data = loadSession();
         if(data.date) document.getElementById('date').value = data.date;

@@ -4,33 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Medium Cake Menu – WEDÉ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great_Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
             --green-dark: #4B5945;
             --green-medium: #66785F;
             --green-light: #91AC8F;
             --green-pale: #B2C9AD;
-            --section-bg: #E8EFE5;
+            --green-extra-pale: #E8F0E5;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body, html {
+        body {
             font-family: 'Poppins', sans-serif;
-            background: radial-gradient(circle at center, #E8EFE5 0%, #B2C9AD 70%, #8DA187 100%);
+            background-color: var(--green-pale);
             color: var(--green-dark);
-            padding: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-            position: relative;
             overflow-x: hidden;
-            padding-top: 110px;
+            padding-top: 90px;
         }
 
         header {
@@ -42,453 +34,485 @@
             color: white;
             position: fixed;
             top: 0;
-            left: 0;
             width: 100%;
-            z-index: 20;
+            z-index: 10;
             height: 70px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-
         header h1 {
             font-family: 'Great Vibes', cursive;
             font-size: 36px;
             color: var(--green-pale);
-        }
-
-        header a {
-            color: var(--green-pale);
-            text-decoration: none;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
-
-        h2 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            color: var(--green-dark);
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 1s ease-out forwards;
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: 0.3s;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        p.intro {
-            font-size: 1.1rem;
-            color: var(--green-medium);
-            max-width: 600px;
-            margin: 0 auto 40px auto;
-            line-height: 1.5;
-        }
-
-        #cart {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            cursor: pointer;
-            z-index: 1000;
-            transition: transform 0.3s ease;
-        }
-
-        #cart:hover {
-            transform: scale(1.1);
-        }
-
-        #cart img {
-            width: 100%;
-            height: 100%;
-        }
-
-        #cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
+        nav a:hover { opacity: 0.8; }
+        .nav-btn {
+            padding: 10px 20px;
             background-color: var(--green-light);
             color: white;
-            font-weight: bold;
-            font-size: 14px;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
+            border-radius: 25px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            margin-left: 25px;
+            transition: 0.3s;
+        }
+        .nav-btn:hover { background-color: var(--green-dark); transform: translateY(-2px); }
+
+        .food-hero {
+            position: relative;
+            height: 80vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            user-select: none;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .rotating-image {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
+            text-align: center;
             overflow: hidden;
-            margin: 0 auto 15px auto;
-            box-shadow: 0 4px 15px rgba(105, 121, 85, 0.4);
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
-        .rotating-image::before {
-            content: '';
+        .food-hero video {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
-            border-radius: 50%;
-        }
-
-        .rotating-image img {
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             object-fit: cover;
+            opacity: 0.4;
+            z-index: 1;
         }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        .food-hero .hero-text {
+            background: rgba(255,255,255,0.9);
+            padding: 50px;
+            border-radius: 20px;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 2;
         }
-
-        .rotating-image:hover {
-            animation: pulse 1.5s infinite;
-            box-shadow: 0 8px 25px rgba(105, 121, 85, 0.5);
-        }
-
-        section {
-            margin-top: 40px;
-            background: var(--section-bg);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(105, 121, 85, 0.2);
-        }
-
-        section h3 {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 1.8rem;
+        .food-hero h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 62px;
             color: var(--green-dark);
             margin-bottom: 20px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .food-hero p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #333;
         }
 
-        section p {
-            font-size: 1.2rem;
-            color: var(--green-dark);
-            margin-bottom: 40px;
-        }
-
-        .dishes-row {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-
-        .dish {
-            width: 150px;
-            flex: 1 1 calc(25% - 15px);
-            max-width: 150px;
+        .food-intro {
+            padding: 80px 60px;
             text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s ease-out forwards;
+            background: linear-gradient(135deg, #f5f8f3, var(--green-pale));
         }
-
-        .dish:nth-child(1) { animation-delay: 0.1s; }
-        .dish:nth-child(2) { animation-delay: 0.2s; }
-        .dish:nth-child(3) { animation-delay: 0.3s; }
-        .dish:nth-child(4) { animation-delay: 0.4s; }
-
-        .dish:hover .rotating-image {
-            animation: pulse 1.5s infinite;
-            box-shadow: 0 8px 25px rgba(105, 121, 85, 0.5);
-        }
-
-        .dish p {
-            font-size: 1rem;
+        .food-intro p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 18px;
+            line-height: 1.8;
             color: var(--green-dark);
-            margin-bottom: 10px;
         }
 
-        .dish-desc {
-            font-size: 0.9rem;
-            color: var(--green-medium);
-            line-height: 1.4;
-            margin-top: 5px;
+        .menu-section {
+            padding: 100px 60px;
+            background: white;
+        }
+        .menu-section:nth-child(odd) {
+            background: var(--green-extra-pale);
+        }
+        .menu-section h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--green-dark);
+        }
+        .dishes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .dish-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(75,89,69,0.12);
+            transition: all 0.4s ease;
+            text-align: center;
+        }
+        .dish-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(75,89,69,0.2);
+        }
+        .dish-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .dish-card:hover img {
+            transform: scale(1.1);
+        }
+        .dish-info {
+            padding: 30px;
+        }
+        .dish-info h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: var(--green-dark);
+        }
+        .dish-info p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .food-cta {
+            padding: 100px 60px;
+            text-align: center;
+            background: var(--green-dark);
+            color: white;
+        }
+        .food-cta h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .food-cta p {
+            font-size: 18px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            opacity: 0.95;
+        }
+        .food-cta .nav-btn {
+            padding: 15px 40px;
+            font-size: 18px;
+            background: var(--green-light);
+        }
+        .food-cta .nav-btn:hover {
+            background: var(--green-pale);
+            color: var(--green-dark);
         }
 
         footer {
             background-color: var(--green-medium);
             color: white;
             text-align: center;
-            padding: 15px 0;
-            font-size: 14px;
-            margin-top: 60px;
-            width: 100%;
-            z-index: 5;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+            padding: 40px 20px;
         }
-
-        footer span {
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
             color: var(--green-pale);
             font-weight: 500;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
-
-        @media (max-width: 1200px) {
-            body {
-                padding: 20px;
-                padding-top: 110px;
-            }
-
-            .dish {
-                flex: 1 1 calc(33.33% - 20px);
-                max-width: 180px;
-            }
+        .footer-column a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 10px;
+            font-size: 14px;
+            transition: 0.3s;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        .footer-column a:hover { color: var(--green-pale); }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 20px;
+            margin-top: 30px;
         }
 
-        @media (max-width: 600px) {
-            .dish {
-                flex: 1 1 100%;
-                max-width: 200px;
-            }
+        @media (max-width: 768px) {
+            .food-hero h1 { font-size: 48px; }
+            .food-hero .hero-text { padding: 30px; }
+            .dishes-grid { grid-template-columns: 1fr; }
+            .dish-card img { height: 200px; }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1><a href="main.html">WEDÉ</a></h1>
+    <h1>WEDÉ</h1>
+    <nav>
+        <a href="#features">Features</a>
+        <a href="#tools">Tools</a>
+        <a href="services.html">Services</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <button id="loginBtn" class="nav-btn">Login</button>
+    </nav>
 </header>
 
-<h2>Medium Cake Menu</h2>
-<p class="intro">Explore our selection of flavorful cakes with unique combinations, perfect for elevating your celebration with WEDÉ.</p>
+<section class="food-hero">
+    <video autoplay muted loop playsinline>
+        <source src="imgs/v5.mp4" type="video/mp4">
+    </video>
+    <div class="hero-text">
+        <h1>Medium Cake Menu</h1>
+        <p>Explore our selection of flavorful cakes with unique combinations, perfect for elevating your celebration with WEDÉ.</p>
+    </div>
+</section>
 
-<!-- Cart Icon -->
-<div id="cart">
-    <img src="https://cdn-icons-png.flaticon.com/512/1170/1170576.png" alt="Cart">
-    <div id="cart-count">0</div>
-</div>
+<section class="food-intro">
+    <p>Explore our selection of flavorful cakes with unique combinations, perfect for elevating your celebration with WEDÉ.</p>
+</section>
 
-<!-- Medium Cake Menu Section -->
-<section id="medium-cake-menu">
-    <h3>Medium Cakes</h3>
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Coffee & Baileys Cake.jpg" alt="Coffee & Baileys Cake" />
+<section class="menu-section">
+    <h2>Medium Cakes</h2>
+    <div class="dishes-grid">
+        <div class="dish-card">
+            <img src="imgs/Coffee & Baileys Cake.jpg" alt="Coffee & Baileys Cake">
+            <div class="dish-info">
+                <h3>Coffee & Baileys Cake</h3>
+                <p>Rich coffee cake with a Baileys kick.</p>
             </div>
-            <p>Coffee & Baileys Cake</p>
-            <span class="dish-desc">Rich coffee cake with a Baileys kick.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/White Chocolate Candy Cane Cake.jpg" alt="White Chocolate Candy Cane Cake" />
+        <div class="dish-card">
+            <img src="imgs/White Chocolate Candy Cane Cake.jpg" alt="White Chocolate Candy Cane Cake">
+            <div class="dish-info">
+                <h3>White Chocolate Candy Cane Cake</h3>
+                <p>Decadent white chocolate with candy cane.</p>
             </div>
-            <p>White Chocolate Candy Cane Cake</p>
-            <span class="dish-desc">Decadent white chocolate with candy cane.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Eggnog Latte Cake.jpg" alt="Eggnog Latte Cake" />
+        <div class="dish-card">
+            <img src="imgs/Eggnog Latte Cake.jpg" alt="Eggnog Latte Cake">
+            <div class="dish-info">
+                <h3>Eggnog Latte Cake</h3>
+                <p>A festive blend of eggnog and latte flavors.</p>
             </div>
-            <p>Eggnog Latte Cake</p>
-            <span class="dish-desc">A festive blend of eggnog and latte flavors.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Pear & Walnut Cake with Honey Buttercream.jpg" alt="Pear & Walnut Cake with Honey Buttercream" />
+        <div class="dish-card">
+            <img src="imgs/Pear & Walnut Cake with Honey Buttercream.jpg" alt="Pear & Walnut Cake">
+            <div class="dish-info">
+                <h3>Pear & Walnut Cake with Honey Buttercream</h3>
+                <p>A fall-inspired cake with honey buttercream.</p>
             </div>
-            <p>Pear & Walnut Cake with Honey Buttercream</p>
-            <span class="dish-desc">A fall-inspired cake with honey buttercream.</span>
         </div>
-    </div>
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Pecan Pie Cake.jpg" alt="Pecan Pie Cake" />
+        <div class="dish-card">
+            <img src="imgs/Pecan Pie Cake.jpg" alt="Pecan Pie Cake">
+            <div class="dish-info">
+                <h3>Pecan Pie Cake</h3>
+                <p>Rich pecan pie filling in cake layers.</p>
             </div>
-            <p>Pecan Pie Cake</p>
-            <span class="dish-desc">Rich pecan pie filling in cake layers.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Biscoff Cake (Cookie Butter Cake).jpg" alt="Biscoff Cake (Cookie Butter Cake)" />
+        <div class="dish-card">
+            <img src="imgs/Biscoff Cake (Cookie Butter Cake).jpg" alt="Biscoff Cake">
+            <div class="dish-info">
+                <h3>Biscoff Cake (Cookie Butter Cake)</h3>
+                <p>Elegant Biscoff cake displayed on a stand.</p>
             </div>
-            <p>Biscoff Cake (Cookie Butter Cake)</p>
-            <span class="dish-desc">Elegant Biscoff cake displayed on a stand.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Vanilla Latte Cake.jpg" alt="Vanilla Latte Cake" />
+        <div class="dish-card">
+            <img src="imgs/Vanilla Latte Cake.jpg" alt="Vanilla Latte Cake">
+            <div class="dish-info">
+                <h3>Vanilla Latte Cake</h3>
+                <p>Smooth vanilla with a coffee latte twist.</p>
             </div>
-            <p>Vanilla Latte Cake</p>
-            <span class="dish-desc">Smooth vanilla with a coffee latte twist.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/White Chocolate Mocha Cake.jpg" alt="White Chocolate Mocha Cake" />
+        <div class="dish-card">
+            <img src="imgs/White Chocolate Mocha Cake.jpg" alt="White Chocolate Mocha Cake">
+            <div class="dish-info">
+                <h3>White Chocolate Mocha Cake</h3>
+                <p>Creamy white chocolate with mocha notes.</p>
             </div>
-            <p>White Chocolate Mocha Cake</p>
-            <span class="dish-desc">Creamy white chocolate with mocha notes.</span>
         </div>
-    </div>
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/White Chocolate Cake.jpg" alt="White Chocolate Cake" />
+        <div class="dish-card">
+            <img src="imgs/White Chocolate Cake.jpg" alt="White Chocolate Cake">
+            <div class="dish-info">
+                <h3>White Chocolate Cake</h3>
+                <p>Decadent white chocolate in layers and drip.</p>
             </div>
-            <p>White Chocolate Cake</p>
-            <span class="dish-desc">Decadent white chocolate in layers and drip.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Bakewell Cake (Raspberry Almond Cake).jpg" alt="Bakewell Cake (Raspberry Almond Cake)" />
+        <div class="dish-card">
+            <img src="imgs/Bakewell Cake (Raspberry Almond Cake).jpg" alt="Bakewell Cake">
+            <div class="dish-info">
+                <h3>Bakewell Cake (Raspberry Almond Cake)</h3>
+                <p>Raspberry and almond in a traditional style.</p>
             </div>
-            <p>Bakewell Cake (Raspberry Almond Cake)</p>
-            <span class="dish-desc">Raspberry and almond in a traditional style.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Lime & Coconut Cake.jpg" alt="Lime & Coconut Cake" />
+        <div class="dish-card">
+            <img src="imgs/Lime & Coconut Cake.jpg" alt="Lime & Coconut Cake">
+            <div class="dish-info">
+                <h3>Lime & Coconut Cake</h3>
+                <p>Zesty lime paired with coconut layers.</p>
             </div>
-            <p>Lime & Coconut Cake</p>
-            <span class="dish-desc">Zesty lime paired with coconut layers.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Chai Cake with Cream Cheese Frosting.jpg" alt="Chai Cake with Cream Cheese Frosting" />
+        <div class="dish-card">
+            <img src="imgs/Chai Cake with Cream Cheese Frosting.jpg" alt="Chai Cake">
+            <div class="dish-info">
+                <h3>Chai Cake with Cream Cheese Frosting</h3>
+                <p>Spiced chai with creamy frosting.</p>
             </div>
-            <p>Chai Cake with Cream Cheese Frosting</p>
-            <span class="dish-desc">Spiced chai with creamy frosting.</span>
         </div>
-    </div>
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Almond Amaretto Cake.jpg" alt="Almond Amaretto Cake" />
+        <div class="dish-card">
+            <img src="imgs/Almond Amaretto Cake.jpg" alt="Almond Amaretto Cake">
+            <div class="dish-info">
+                <h3>Almond Amaretto Cake</h3>
+                <p>Almond cake with amaretto liqueur.</p>
             </div>
-            <p>Almond Amaretto Cake</p>
-            <span class="dish-desc">Almond cake with amaretto liqueur.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Earl Grey Cake With Vanilla Bean Buttercream.jpg" alt="Earl Grey Cake With Vanilla Bean Buttercream" />
+        <div class="dish-card">
+            <img src="imgs/Earl Grey Cake With Vanilla Bean Buttercream.jpg" alt="Earl Grey Cake">
+            <div class="dish-info">
+                <h3>Earl Grey Cake With Vanilla Bean Buttercream</h3>
+                <p>Earl Grey tea with vanilla bean frosting.</p>
             </div>
-            <p>Earl Grey Cake With Vanilla Bean Buttercream</p>
-            <span class="dish-desc">Earl Grey tea with vanilla bean frosting.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Froot Loops Cake.jpg" alt="Froot Loops Cake" />
+        <div class="dish-card">
+            <img src="imgs/Froot Loops Cake.jpg" alt="Froot Loops Cake">
+            <div class="dish-info">
+                <h3>Froot Loops Cake</h3>
+                <p>Colorful cereal-inspired cake.</p>
             </div>
-            <p>Froot Loops Cake</p>
-            <span class="dish-desc">Colorful cereal-inspired cake.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Spice Cake with Cinnamon Streusel.jpg" alt="Spice Cake with Cinnamon Streusel" />
+        <div class="dish-card">
+            <img src="imgs/Spice Cake with Cinnamon Streusel.jpg" alt="Spice Cake">
+            <div class="dish-info">
+                <h3>Spice Cake with Cinnamon Streusel</h3>
+                <p>Spiced cake with cinnamon topping.</p>
             </div>
-            <p>Spice Cake with Cinnamon Streusel</p>
-            <span class="dish-desc">Spiced cake with cinnamon topping.</span>
         </div>
-    </div>
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Blueberry Banana Cake with Cream Cheese Frosting.jpg" alt="Blueberry Banana Cake with Cream Cheese Frosting" />
+        <div class="dish-card">
+            <img src="imgs/Blueberry Banana Cake with Cream Cheese Frosting.jpg" alt="Blueberry Banana Cake">
+            <div class="dish-info">
+                <h3>Blueberry Banana Cake with Cream Cheese Frosting</h3>
+                <p>Blueberry and banana with creamy frosting.</p>
             </div>
-            <p>Blueberry Banana Cake with Cream Cheese Frosting</p>
-            <span class="dish-desc">Blueberry and banana with creamy frosting.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Chocolate Chip Cake With Whipped Chocolate Buttercream.jpg" alt="Chocolate Chip Cake With Whipped Chocolate Buttercream" />
+        <div class="dish-card">
+            <img src="imgs/Chocolate Chip Cake With Whipped Chocolate Buttercream.jpg" alt="Chocolate Chip Cake">
+            <div class="dish-info">
+                <h3>Chocolate Chip Cake With Whipped Chocolate Buttercream</h3>
+                <p>Chocolate chips with whipped frosting.</p>
             </div>
-            <p>Chocolate Chip Cake With Whipped Chocolate Buttercream</p>
-            <span class="dish-desc">Chocolate chips with whipped frosting.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Peanut Butter & Jelly Cake.jpg" alt="Peanut Butter & Jelly Cake" />
+        <div class="dish-card">
+            <img src="imgs/Peanut Butter & Jelly Cake.jpg" alt="Peanut Butter & Jelly Cake">
+            <div class="dish-info">
+                <h3>Peanut Butter & Jelly Cake</h3>
+                <p>Classic PB&J sandwich in cake form.</p>
             </div>
-            <p>Peanut Butter & Jelly Cake</p>
-            <span class="dish-desc">Classic PB&J sandwich in cake form.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Chocolate Orange Cake.jpg" alt="Chocolate Orange Cake" />
+        <div class="dish-card">
+            <img src="imgs/Chocolate Orange Cake.jpg" alt="Chocolate Orange Cake">
+            <div class="dish-info">
+                <h3>Chocolate Orange Cake</h3>
+                <p>Rich chocolate with zesty orange.</p>
             </div>
-            <p>Chocolate Orange Cake</p>
-            <span class="dish-desc">Rich chocolate with zesty orange.</span>
         </div>
-    </div>
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Walnut Cake With Brown Sugar Buttercream.jpg" alt="Walnut Cake With Brown Sugar Buttercream" />
+        <div class="dish-card">
+            <img src="imgs/Walnut Cake With Brown Sugar Buttercream.jpg" alt="Walnut Cake">
+            <div class="dish-info">
+                <h3>Walnut Cake With Brown Sugar Buttercream</h3>
+                <p>Walnut cake with brown sugar frosting.</p>
             </div>
-            <p>Walnut Cake With Brown Sugar Buttercream</p>
-            <span class="dish-desc">Walnut cake with brown sugar frosting.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/Apple Pie Cake.jpg" alt="Apple Pie Cake" />
+        <div class="dish-card">
+            <img src="imgs/Apple Pie Cake.jpg" alt="Apple Pie Cake">
+            <div class="dish-info">
+                <h3>Apple Pie Cake</h3>
+                <p>Apple pie filling in cake layers.</p>
             </div>
-            <p>Apple Pie Cake</p>
-            <span class="dish-desc">Apple pie filling in cake layers.</span>
         </div>
     </div>
 </section>
 
-<!-- Drinks Menu Section -->
-<section id="drinks-menu">
-    <h3>Drinks</h3>
-    <div class="dishes-row">
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/water (2).jpg" alt="Water" />
+<section class="menu-section">
+    <h2>Drinks</h2>
+    <div class="dishes-grid">
+        <div class="dish-card">
+            <img src="imgs/water (2).jpg" alt="Water">
+            <div class="dish-info">
+                <h3>Water</h3>
+                <p>Pure and refreshing hydration.</p>
             </div>
-            <p>Water</p>
-            <span class="dish-desc">Pure and refreshing hydration.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/IcedShakenEspresso.jpg" alt="Iced Shaken Espresso" />
+        <div class="dish-card">
+            <img src="imgs/IcedShakenEspresso.jpg" alt="Iced Shaken Espresso">
+            <div class="dish-info">
+                <h3>Iced Shaken Espresso</h3>
+                <p>Bold espresso shaken with ice.</p>
             </div>
-            <p>Iced Shaken Espresso</p>
-            <span class="dish-desc">Bold espresso shaken with ice.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/IcedPassionTangoTea.jpg" alt="Iced Passion Tango Tea" />
+        <div class="dish-card">
+            <img src="imgs/IcedPassionTangoTea.jpg" alt="Iced Passion Tango Tea">
+            <div class="dish-info">
+                <h3>Iced Passion Tango Tea</h3>
+                <p>Vibrant passion fruit tea with ice.</p>
             </div>
-            <p>Iced Passion Tango Tea</p>
-            <span class="dish-desc">Vibrant passion fruit tea with ice.</span>
         </div>
-        <div class="dish">
-            <div class="rotating-image">
-                <img src="imgs/SBX20211210_StrawberryAcaiLemonadeRefreshers.jpg" alt="Strawberry Acai Lemonade Refresher" />
+        <div class="dish-card">
+            <img src="imgs/SBX20211210_StrawberryAcaiLemonadeRefreshers.jpg" alt="Strawberry Acai Lemonade">
+            <div class="dish-info">
+                <h3>Strawberry Acai Lemonade Refresher</h3>
+                <p>Refreshing strawberry and acai blend.</p>
             </div>
-            <p>Strawberry Acai Lemonade Refresher</p>
-            <span class="dish-desc">Refreshing strawberry and acai blend.</span>
         </div>
     </div>
+</section>
+
+<section class="food-cta">
+    <h2>Ready to Elevate Your Celebration?</h2>
+    <p>Choose your unique medium cakes and refreshing drinks for an unforgettable wedding experience.</p>
+    <button class="nav-btn" onclick="window.location.href='contact.html'">Book a Consultation</button>
 </section>
 
 <footer>
-    © 2025 <span>WEDÉ</span> | All rights reserved
+    <div class="footer-content">
+        <div class="footer-column">
+            <h3>Plan</h3>
+            <a href="services.html">All Services</a>
+            <a href="rsvp.html">RSVP Manager</a>
+            <a href="budget.html">Budget Tracker</a>
+            <a href="gallery.html">Gallery</a>
+        </div>
+        <div class="footer-column">
+            <h3>Discover</h3>
+            <a href="services.html">Wedding Vendors</a>
+            <a href="gallery.html">Photo Gallery</a>
+            <a href="services.html">Planning Tips</a>
+        </div>
+        <div class="footer-column">
+            <h3>Company</h3>
+            <a href="contact.html">Contact Us</a>
+            <a href="#">About WEDÉ</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+        <div class="footer-column">
+            <h3>Follow Us</h3>
+            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+            <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+            <a href="#"><i class="fab fa-pinterest"></i> Pinterest</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        © 2025 <span style="color: var(--green-pale);">WEDÉ</span> | All rights reserved
+    </div>
 </footer>
+
+<script>
+    document.getElementById('loginBtn').addEventListener('click', function () {
+        window.location.href = 'login.html';
+    });
+</script>
 
 </body>
 </html>

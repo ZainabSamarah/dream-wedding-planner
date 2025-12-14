@@ -13,19 +13,16 @@
             --green-medium: #66785F;
             --green-light: #91AC8F;
             --green-pale: #B2C9AD;
-            --bg-gradient: linear-gradient(135deg, #B2C9AD, #91AC8F);
-            --card-bg: #FFFFFFCC;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: var(--bg-gradient);
+            background: linear-gradient(135deg, #B2C9AD 0%, #91AC8F 100%);
             color: var(--green-dark);
             min-height: 100vh;
             padding-top: 90px;
-            padding-bottom: 60px;
         }
 
         /* HEADER */
@@ -51,15 +48,28 @@
             color: var(--green-pale);
         }
 
-        header a {
+        header h1 a {
             color: var(--green-pale);
             text-decoration: none;
-            margin-left: 25px;
-            font-weight: 500;
-            transition: opacity 0.3s;
         }
 
-        header a:hover { opacity: 0.8; }
+        header nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        header nav a:hover { opacity: 0.8; }
 
         .nav-btn {
             padding: 10px 20px;
@@ -70,7 +80,9 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s;
-            margin-left: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .nav-btn:hover {
@@ -78,80 +90,78 @@
             transform: translateY(-2px);
         }
 
-        /* PROFILE CONTAINER */
-        .profile-container {
+        /* MAIN CONTAINER */
+        .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 40px 20px;
         }
 
-        /* HERO CARD */
-        .hero-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
+        /* PROFILE HEADER */
+        .profile-header {
+            background: white;
             border-radius: 25px;
             padding: 40px;
-            box-shadow: 0 10px 30px rgba(105,121,85,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             display: flex;
-            gap: 40px;
             align-items: center;
+            gap: 40px;
             margin-bottom: 30px;
-            animation: slideIn 0.8s ease-out;
+            animation: fadeInDown 0.6s ease;
         }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(30px); }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .profile-avatar {
+        .profile-pic {
             position: relative;
-            width: 180px;
-            height: 180px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
             overflow: hidden;
-            border: 5px solid var(--green-light);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            border: 4px solid var(--green-light);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
             flex-shrink: 0;
         }
 
-        .profile-avatar img {
+        .profile-pic img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .avatar-upload {
+        .upload-overlay {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(75, 89, 69, 0.9);
+            background: rgba(0,0,0,0.7);
             color: white;
             text-align: center;
-            padding: 8px;
+            padding: 10px;
             cursor: pointer;
             opacity: 0;
             transition: opacity 0.3s;
-            font-size: 12px;
         }
 
-        .profile-avatar:hover .avatar-upload {
+        .profile-pic:hover .upload-overlay {
             opacity: 1;
         }
 
-        .profile-info {
+        .profile-details {
             flex: 1;
         }
 
-        .profile-info h2 {
+        .profile-details h2 {
             font-family: 'Great Vibes', cursive;
             font-size: 42px;
             color: var(--green-dark);
             margin-bottom: 10px;
         }
 
-        .profile-info .email {
+        .profile-email {
             color: var(--green-medium);
             font-size: 16px;
             margin-bottom: 20px;
@@ -160,66 +170,36 @@
             gap: 8px;
         }
 
-        .stats {
+        .profile-stats {
             display: flex;
-            gap: 30px;
+            gap: 40px;
             margin-top: 20px;
         }
 
-        .stat-item {
+        .stat-box {
             text-align: center;
         }
 
-        .stat-item .number {
-            font-size: 28px;
-            font-weight: 600;
+        .stat-box .number {
+            font-size: 32px;
+            font-weight: 700;
             color: var(--green-dark);
+            display: block;
         }
 
-        .stat-item .label {
+        .stat-box .label {
             font-size: 13px;
             color: var(--green-medium);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        /* TABS */
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 25px;
-            background: rgba(255,255,255,0.8);
-            color: var(--green-dark);
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .tab-btn.active {
-            background: var(--green-medium);
-            color: white;
-        }
-
-        .tab-btn:hover {
-            background: var(--green-light);
-            color: white;
-        }
-
-        /* TAB CONTENT */
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .tab-content.active {
-            display: block;
+        /* GRID LAYOUT */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            animation: fadeIn 0.8s ease;
         }
 
         @keyframes fadeIn {
@@ -227,166 +207,195 @@
             to { opacity: 1; }
         }
 
-        /* CARDS GRID */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .info-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
+        .card {
+            background: white;
             border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 8px 25px rgba(105,121,85,0.2);
-            transition: transform 0.3s;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .info-card:hover {
+        .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(105,121,85,0.3);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
         }
 
-        .info-card h3 {
+        .card h3 {
             font-family: 'Great Vibes', cursive;
-            font-size: 28px;
+            font-size: 32px;
             color: var(--green-dark);
-            margin-bottom: 15px;
-        }
-
-        .info-item {
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-            padding: 10px;
-            background: rgba(145, 172, 143, 0.1);
-            border-radius: 10px;
+            gap: 10px;
         }
 
-        .info-item i {
+        .card h3 i {
+            font-size: 28px;
+            color: var(--green-light);
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(145, 172, 143, 0.08);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            transition: background 0.3s;
+        }
+
+        .info-row:hover {
+            background: rgba(145, 172, 143, 0.15);
+        }
+
+        .info-row i {
             color: var(--green-light);
             font-size: 18px;
-            width: 25px;
+            width: 30px;
+            margin-right: 12px;
         }
 
-        .info-item .label {
+        .info-row .label {
             font-weight: 600;
             color: var(--green-medium);
-            min-width: 100px;
+            min-width: 120px;
         }
 
-        .info-item .value {
+        .info-row .value {
             color: var(--green-dark);
+            flex: 1;
         }
 
-        .edit-btn {
+        /* BUTTONS */
+        .btn {
             width: 100%;
-            padding: 12px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 15px;
-            background: var(--green-light);
-            color: white;
+            border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 15px;
             transition: all 0.3s;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .edit-btn:hover {
-            background: var(--green-dark);
+        .btn-primary {
+            background: var(--green-light);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--green-medium);
             transform: translateY(-2px);
         }
 
-        /* BOOKINGS LIST */
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        /* BOOKINGS */
         .booking-item {
-            background: rgba(255,255,255,0.9);
+            background: #f8f9fa;
             padding: 20px;
             border-radius: 15px;
             margin-bottom: 15px;
-            border-left: 5px solid var(--green-light);
+            border-left: 4px solid var(--green-light);
             transition: all 0.3s;
         }
 
         .booking-item:hover {
             transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(105,121,85,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .booking-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .booking-title {
             font-weight: 600;
-            font-size: 18px;
+            font-size: 17px;
             color: var(--green-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .booking-status {
-            padding: 5px 15px;
-            border-radius: 20px;
+            padding: 5px 12px;
+            border-radius: 15px;
             font-size: 12px;
             font-weight: 600;
-            background: var(--green-pale);
-            color: var(--green-dark);
         }
 
-        .booking-status.confirmed {
-            background: #90EE90;
+        .status-confirmed {
+            background: #d4edda;
+            color: #155724;
         }
 
-        .booking-status.pending {
-            background: #FFE4B5;
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
         }
 
-        .booking-details {
-            color: var(--green-medium);
+        .booking-info {
+            color: #6c757d;
             font-size: 14px;
-            line-height: 1.6;
+            line-height: 1.8;
         }
 
+        /* FOOTER */
         footer {
             background: var(--green-medium);
             color: white;
             text-align: center;
-            padding: 15px 0;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+            padding: 30px 20px;
+            margin-top: 60px;
         }
 
         footer span {
             color: var(--green-pale);
-            font-weight: 500;
+            font-weight: 600;
         }
 
+        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .hero-card {
+            .profile-header {
                 flex-direction: column;
                 text-align: center;
             }
 
-            .stats {
+            .profile-stats {
                 justify-content: center;
             }
 
-            .profile-info h2 {
-                font-size: 32px;
+            .content-grid {
+                grid-template-columns: 1fr;
             }
 
             header {
                 padding: 10px 20px;
             }
 
-            header h1 {
-                font-size: 28px;
+            header nav {
+                gap: 10px;
+            }
+
+            header nav a span {
+                display: none;
             }
         }
     </style>
@@ -396,245 +405,227 @@
 <header>
     <h1><a href="main.html">WEDÉ</a></h1>
     <nav>
-        <a href="main.html"><i class="fas fa-home"></i> Home</a>
-        <a href="services.html"><i class="fas fa-concierge-bell"></i> Services</a>
-<<<<<<< HEAD
-        <button class="nav-btn" onclick="window.location.href='logout.php'">
-            <i class="fas fa-sign-out-alt"></i> Logout
-        </button>    </nav>
-=======
+        <a href="main.html">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="services.html">
+            <i class="fas fa-concierge-bell"></i>
+            <span>Services</span>
+        </a>
         <button class="nav-btn" onclick="logout()">
-            <i class="fas fa-sign-out-alt"></i> Logout
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
         </button>
-
     </nav>
->>>>>>> origin/main
 </header>
 
-<div class="profile-container">
-    <!-- HERO CARD -->
-    <div class="hero-card">
-        <div class="profile-avatar">
-            <img src="https://via.placeholder.com/180" alt="Profile Picture" id="avatarImg">
-            <div class="avatar-upload" onclick="document.getElementById('avatarInput').click()">
-                <i class="fas fa-camera"></i> Change Photo
+<div class="container">
+    <!-- PROFILE HEADER -->
+    <div class="profile-header">
+        <div class="profile-pic">
+            <img src="https://via.placeholder.com/150" alt="Profile" id="profileImage">
+            <div class="upload-overlay" onclick="document.getElementById('fileInput').click()">
+                <i class="fas fa-camera"></i> Change
             </div>
-            <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+            <input type="file" id="fileInput" accept="image/*" style="display:none;">
         </div>
 
-        <div class="profile-info">
-            <h2>Sarah Johnson</h2>
-            <div class="email">
+        <div class="profile-details">
+            <h2 id="userName">Loading...</h2>
+            <div class="profile-email">
                 <i class="fas fa-envelope"></i>
-                <span>sarah.johnson@gmail.com</span>
+                <span id="userEmail">Loading...</span>
             </div>
 
-            <div class="stats">
-                <div class="stat-item">
-                    <div class="number">3</div>
-                    <div class="label">Bookings</div>
+            <div class="profile-stats">
+                <div class="stat-box">
+                    <span class="number">3</span>
+                    <span class="label">Bookings</span>
                 </div>
-                <div class="stat-item">
-                    <div class="number">1</div>
-                    <div class="label">Upcoming</div>
+                <div class="stat-box">
+                    <span class="number">1</span>
+                    <span class="label">Upcoming</span>
                 </div>
-                <div class="stat-item">
-                    <div class="number">2</div>
-                    <div class="label">Completed</div>
+                <div class="stat-box">
+                    <span class="number">2</span>
+                    <span class="label">Completed</span>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TABS -->
-    <div class="tabs">
-        <button class="tab-btn active" onclick="showTab('personal')">
-            <i class="fas fa-user"></i> Personal Info
-        </button>
-        <button class="tab-btn" onclick="showTab('bookings')">
-            <i class="fas fa-calendar-check"></i> My Bookings
-        </button>
-        <button class="tab-btn" onclick="showTab('preferences')">
-            <i class="fas fa-heart"></i> Preferences
-        </button>
-        <button class="tab-btn" onclick="showTab('settings')">
-            <i class="fas fa-cog"></i> Settings
-        </button>
-    </div>
-
-    <!-- PERSONAL INFO TAB -->
-    <div class="tab-content active" id="personal">
-        <div class="cards-grid">
-            <div class="info-card">
-                <h3>Basic Information</h3>
-                <div class="info-item">
-                    <i class="fas fa-user"></i>
-                    <span class="label">Full Name:</span>
-                    <span class="value">Sarah Johnson</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-birthday-cake"></i>
-                    <span class="label">Age:</span>
-                    <span class="value">28 years</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-phone"></i>
-                    <span class="label">Phone:</span>
-                    <span class="value">+1 234 567 8900</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span class="label">Location:</span>
-                    <span class="value">New York, USA</span>
-                </div>
-                <button class="edit-btn" style="background:#dc3545;margin-top:10px;"
-                        onclick="deleteAccount()">
-                    <i class="fas fa-trash"></i> Delete Account
-                </button>
-            </div>
-
-            <div class="info-card">
-                <h3>Wedding Details</h3>
-                <div class="info-item">
-                    <i class="fas fa-calendar-heart"></i>
-                    <span class="label">Wedding Date:</span>
-                    <span class="value">June 15, 2026</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-users"></i>
-                    <span class="label">Guest Count:</span>
-                    <span class="value">150 guests</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-palette"></i>
-                    <span class="label">Theme:</span>
-                    <span class="value">Garden Romance</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-dollar-sign"></i>
-                    <span class="label">Budget:</span>
-                    <span class="value">$25,000</span>
-                </div>
-                <button class="edit-btn"><i class="fas fa-edit"></i> Update Details</button>
             </div>
         </div>
     </div>
 
-    <!-- BOOKINGS TAB -->
-    <div class="tab-content" id="bookings">
-        <div class="info-card">
-            <h3>My Bookings</h3>
+    <!-- CONTENT GRID -->
+    <div class="content-grid">
+
+        <!-- PERSONAL INFO -->
+        <div class="card">
+            <h3><i class="fas fa-user-circle"></i> Personal Information</h3>
+
+            <div class="info-row">
+                <i class="fas fa-user"></i>
+                <span class="label">Full Name:</span>
+                <span class="value" id="fullName">Loading...</span>
+            </div>
+
+            <div class="info-row">
+                <i class="fas fa-envelope"></i>
+                <span class="label">Email:</span>
+                <span class="value" id="email">Loading...</span>
+            </div>
+
+            <div class="info-row">
+                <i class="fas fa-phone"></i>
+                <span class="label">Phone:</span>
+                <span class="value" id="phone">Not set</span>
+            </div>
+
+            <div class="info-row">
+                <i class="fas fa-map-marker-alt"></i>
+                <span class="label">Location:</span>
+                <span class="value" id="location">Not set</span>
+            </div>
+
+            <button class="btn btn-primary">
+                <i class="fas fa-edit"></i> Edit Profile
+            </button>
+        </div>
+
+        <!-- WEDDING DETAILS -->
+        <div class="card">
+            <h3><i class="fas fa-ring"></i> Wedding Details</h3>
+
+            <div class="info-row">
+                <i class="fas fa-calendar-heart"></i>
+                <span class="label">Wedding Date:</span>
+                <span class="value" id="weddingDate">Not set</span>
+            </div>
+
+            <div class="info-row">
+                <i class="fas fa-users"></i>
+                <span class="label">Guest Count:</span>
+                <span class="value" id="guestCount">Not set</span>
+            </div>
+
+            <div class="info-row">
+                <i class="fas fa-palette"></i>
+                <span class="label">Theme:</span>
+                <span class="value" id="theme">Not set</span>
+            </div>
+
+            <div class="info-row">
+                <i class="fas fa-dollar-sign"></i>
+                <span class="label">Budget:</span>
+                <span class="value" id="budget">Not set</span>
+            </div>
+
+            <button class="btn btn-primary">
+                <i class="fas fa-edit"></i> Update Details
+            </button>
+        </div>
+
+        <!-- MY BOOKINGS -->
+        <div class="card" style="grid-column: span 2;">
+            <h3><i class="fas fa-calendar-check"></i> My Bookings</h3>
 
             <div class="booking-item">
                 <div class="booking-header">
                     <div class="booking-title">
-                        <i class="fas fa-camera"></i> Photography Package
+                        <i class="fas fa-camera"></i>
+                        Photography Package
                     </div>
-                    <div class="booking-status confirmed">Confirmed</div>
+                    <span class="booking-status status-confirmed">Confirmed</span>
                 </div>
-                <div class="booking-details">
-                    📅 June 15, 2026<br>
-                    💰 $2,800<br>
-                    📍 Central Park, New York
+                <div class="booking-info">
+                    📅 June 15, 2026 | 💰 $2,800 | 📍 Central Park, New York
                 </div>
             </div>
 
             <div class="booking-item">
                 <div class="booking-header">
                     <div class="booking-title">
-                        <i class="fas fa-cake"></i> Luxury Cake Package
+                        <i class="fas fa-cake"></i>
+                        Luxury Cake Package
                     </div>
-                    <div class="booking-status pending">Pending</div>
+                    <span class="booking-status status-pending">Pending</span>
                 </div>
-                <div class="booking-details">
-                    📅 June 15, 2026<br>
-                    💰 $850<br>
-                    📍 To be delivered
+                <div class="booking-info">
+                    📅 June 15, 2026 | 💰 $850 | 📍 To be delivered
                 </div>
             </div>
 
             <div class="booking-item">
                 <div class="booking-header">
                     <div class="booking-title">
-                        <i class="fas fa-music"></i> Wedding DJ Services
+                        <i class="fas fa-music"></i>
+                        Wedding DJ Services
                     </div>
-                    <div class="booking-status confirmed">Confirmed</div>
+                    <span class="booking-status status-confirmed">Confirmed</span>
                 </div>
-                <div class="booking-details">
-                    📅 June 15, 2026<br>
-                    💰 $1,200<br>
-                    📍 Grand Ballroom
+                <div class="booking-info">
+                    📅 June 15, 2026 | 💰 $1,200 | 📍 Grand Ballroom
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- PREFERENCES TAB -->
-    <div class="tab-content" id="preferences">
-        <div class="cards-grid">
-            <div class="info-card">
-                <h3>Style Preferences</h3>
-                <div class="info-item">
-                    <i class="fas fa-palette"></i>
-                    <span class="label">Color Theme:</span>
-                    <span class="value">Sage Green & Gold</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-flower"></i>
-                    <span class="label">Flowers:</span>
-                    <span class="value">Roses & Tulips</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-utensils"></i>
-                    <span class="label">Food Style:</span>
-                    <span class="value">Mediterranean</span>
-                </div>
-                <button class="edit-btn"><i class="fas fa-edit"></i> Update Preferences</button>
+        <!-- SAVED PREFERENCES -->
+        <div class="card">
+            <h3><i class="fas fa-heart"></i> Preferences</h3>
+
+            <div class="info-row">
+                <i class="fas fa-palette"></i>
+                <span class="label">Colors:</span>
+                <span class="value">Sage Green & Gold</span>
             </div>
 
-            <div class="info-card">
-                <h3>Saved Ideas</h3>
-                <div class="info-item">
-                    <i class="fas fa-bookmark"></i>
-                    <span class="value">12 Decoration Ideas</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-bookmark"></i>
-                    <span class="value">8 Cake Designs</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-bookmark"></i>
-                    <span class="value">5 Venue Options</span>
-                </div>
-                <button class="edit-btn"><i class="fas fa-eye"></i> View All</button>
+            <div class="info-row">
+                <i class="fas fa-flower"></i>
+                <span class="label">Flowers:</span>
+                <span class="value">Roses & Tulips</span>
             </div>
+
+            <div class="info-row">
+                <i class="fas fa-bookmark"></i>
+                <span class="label">Saved Ideas:</span>
+                <span class="value">25 items</span>
+            </div>
+
+            <button class="btn btn-primary">
+                <i class="fas fa-eye"></i> View All
+            </button>
         </div>
-    </div>
 
-    <!-- SETTINGS TAB -->
-    <div class="tab-content" id="settings">
-        <div class="info-card">
-            <h3>Account Settings</h3>
-            <div class="info-item">
+        <!-- ACCOUNT SETTINGS -->
+        <div class="card">
+            <h3><i class="fas fa-cog"></i> Settings</h3>
+
+            <div class="info-row">
                 <i class="fas fa-bell"></i>
                 <span class="label">Notifications:</span>
                 <span class="value">Enabled</span>
             </div>
-            <div class="info-item">
+
+            <div class="info-row">
                 <i class="fas fa-lock"></i>
                 <span class="label">Password:</span>
                 <span class="value">••••••••</span>
             </div>
-            <div class="info-item">
+
+            <div class="info-row">
                 <i class="fas fa-language"></i>
                 <span class="label">Language:</span>
                 <span class="value">English</span>
             </div>
-            <button class="edit-btn"><i class="fas fa-key"></i> Change Password</button>
-            <button class="edit-btn" style="background:#dc3545;margin-top:10px;">
+
+            <button class="btn btn-primary">
+                <i class="fas fa-key"></i> Change Password
+            </button>
+
+            <button class="btn btn-danger" onclick="deleteAccount()">
                 <i class="fas fa-trash"></i> Delete Account
             </button>
         </div>
+
     </div>
 </div>
 
@@ -643,118 +634,77 @@
 </footer>
 
 <script>
-    // Tab switching
-    function deleteAccount() {
-        if (!confirm("Are you sure you want to delete your account?")) return;
+    // Load user data from session
+    function loadUserData() {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
 
-        const user = JSON.parse(localStorage.getItem("user"));
-        let users = JSON.parse(localStorage.getItem("users")) || [];
+        if (!user.email) {
+            alert('Please login first');
+            window.location.href = 'login.html';
+            return;
+        }
 
-        users = users.filter(u => u.email !== user.email);
+        // Update profile header
+        document.getElementById('userName').textContent = `${user.firstName} ${user.lastName}`;
+        document.getElementById('userEmail').textContent = user.email;
 
-        localStorage.setItem("users", JSON.stringify(users));
-        localStorage.removeItem("user");
+        // Update personal info
+        document.getElementById('fullName').textContent = `${user.firstName} ${user.lastName}`;
+        document.getElementById('email').textContent = user.email;
 
-        alert("Account deleted successfully.");
-        window.location.href = "signup.html";
+        if (user.phone) document.getElementById('phone').textContent = user.phone;
+        if (user.location) document.getElementById('location').textContent = user.location;
+
+        // Update wedding details
+        if (user.weddingDate) document.getElementById('weddingDate').textContent = user.weddingDate;
+        if (user.guestCount) document.getElementById('guestCount').textContent = `${user.guestCount} guests`;
+        if (user.theme) document.getElementById('theme').textContent = user.theme;
+        if (user.budget) document.getElementById('budget').textContent = `$${user.budget}`;
     }
 
-    function logout() {
-        localStorage.removeItem('user');
-        window.location.href = "login.html";
-    }
-
-    function showTab(tabName) {
-        const tabs = document.querySelectorAll('.tab-content');
-        const btns = document.querySelectorAll('.tab-btn');
-
-        tabs.forEach(tab => tab.classList.remove('active'));
-        btns.forEach(btn => btn.classList.remove('active'));
-
-        document.getElementById(tabName).classList.add('active');
-        event.target.classList.add('active');
-    }
-
-    // Avatar upload
-    document.getElementById('avatarInput').addEventListener('change', function(e) {
+    // Upload profile picture
+    document.getElementById('fileInput').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                document.getElementById('avatarImg').src = e.target.result;
+                document.getElementById('profileImage').src = e.target.result;
+
+                // Save to user data
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                user.profilePicture = e.target.result;
+                localStorage.setItem('user', JSON.stringify(user));
             };
             reader.readAsDataURL(file);
         }
     });
 
-    // Load user data from localStorage
-    window.addEventListener('load', () => {
-        const userData = JSON.parse(localStorage.getItem('user') || '{}');
-        if (userData.firstName) {
-            document.querySelector('.profile-info h2').textContent =
-                `${userData.firstName} ${userData.lastName}`;
-            document.querySelector('.email span').textContent = userData.email;
+    // Logout function
+    function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
         }
-    });
-    // جلب بيانات المستخدم عند تحميل الصفحة
-    window.addEventListener('load', () => {
-        fetch('get_user_data.php')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const user = data.user;
+    }
 
-                    // تحديث الاسم
-                    document.querySelector('.profile-info h2').textContent =
-                        `${user.first_name} ${user.last_name}`;
+    // Delete account function
+    function deleteAccount() {
+        if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+            const user = JSON.parse(localStorage.getItem('user'));
+            let users = JSON.parse(localStorage.getItem('users') || '[]');
 
-                    // تحديث البريد
-                    document.querySelector('.email span').textContent = user.email;
+            users = users.filter(u => u.email !== user.email);
 
-                    // تحديث البيانات الأساسية
-                    document.querySelectorAll('.info-item')[0].querySelector('.value').textContent =
-                        `${user.first_name} ${user.last_name}`;
-                    document.querySelectorAll('.info-item')[1].querySelector('.value').textContent =
-                        `${user.age} years`;
-                    document.querySelectorAll('.info-item')[2].querySelector('.value').textContent =
-                        user.phone || 'Not set';
-                    document.querySelectorAll('.info-item')[3].querySelector('.value').textContent =
-                        user.location || 'Not set';
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.removeItem('user');
 
-                    // تحديث تفاصيل الزفاف
-                    if (user.wedding_date) {
-                        document.querySelectorAll('.info-item')[4].querySelector('.value').textContent =
-                            new Date(user.wedding_date).toLocaleDateString();
-                    }
-                    if (user.guest_count) {
-                        document.querySelectorAll('.info-item')[5].querySelector('.value').textContent =
-                            `${user.guest_count} guests`;
-                    }
-                    if (user.theme) {
-                        document.querySelectorAll('.info-item')[6].querySelector('.value').textContent =
-                            user.theme;
-                    }
-                    if (user.budget) {
-                        document.querySelectorAll('.info-item')[7].querySelector('.value').textContent =
-                            `$${user.budget}`;
-                    }
+            alert('Account deleted successfully.');
+            window.location.href = 'signup.html';
+        }
+    }
 
-                    // تحديث الصورة الشخصية
-                    if (user.profile_picture && user.profile_picture !== 'default.jpg') {
-                        document.getElementById('avatarImg').src = `uploads/${user.profile_picture}`;
-                    }
-
-                } else {
-                    if (data.redirect) {
-                        alert(data.message);
-                        window.location.href = data.redirect;
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    });
+    // Load data on page load
+    window.addEventListener('load', loadUserData);
 </script>
 
 </body>
