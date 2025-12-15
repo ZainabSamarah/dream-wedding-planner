@@ -6,18 +6,17 @@
     <title>Admin Dashboard – WEDÉ</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
     <style>
         :root {
             --green-dark: #4B5945;
             --green-medium: #66785F;
             --green-light: #91AC8F;
             --green-pale: #B2C9AD;
+            --green-extra-pale: #E8F0E5;
             --bg-gradient: linear-gradient(135deg,#B2C9AD,#91AC8F);
             --card-bg: #FFFFFFCC;
             --transition: 0.3s ease;
         }
-
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
             font-family: 'Poppins', sans-serif;
@@ -26,36 +25,71 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            padding-top: 90px;
-            padding-bottom: 60px;
+            padding-top: 90px;         /* مساحة للهيدر */
+            padding-bottom: 200px;     /* مساحة كافية للفوتر الكبير الثابت */
         }
-
-        /* HEADER */
+        /* HEADER - موحد تماماً مع الصفحة الثانية */
         header {
-            position: fixed; top:0; left:0; width:100%; height:70px;
-            background: var(--green-medium); color:white;
-            display: flex; justify-content: space-between; align-items: center;
-            padding:0 40px; z-index:100;
-            box-shadow:0 4px 15px rgba(0,0,0,0.3);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background-color: var(--green-medium);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
         header h1 {
-            font-family:'Great Vibes', cursive; font-size:36px; color:var(--green-pale);
+            font-family: 'Great Vibes', cursive;
+            font-size: 34px;
+            color: var(--green-pale);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
         }
-        header a { color: var(--green-pale); text-decoration:none; margin-left:25px; font-weight:500; transition:opacity var(--transition); }
-        header a:hover { opacity:0.8; }
+        .logo-link {
+            color: var(--green-pale);
+            text-decoration: none;
+            transition: opacity var(--transition);
+        }
+        .logo-link:hover { opacity: 0.8; }
+        header nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: opacity var(--transition);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        header nav a:hover { opacity: 0.8; }
         .nav-btn {
-            padding:10px 20px; border:none; border-radius:25px;
-            background: var(--green-light); color:white; cursor:pointer; font-weight:600;
+            padding: 10px 30px;
+            background-color: var(--green-light);
+            color: white;
+            border-radius: 50px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
             transition: all var(--transition);
+            margin-left: 25px;
         }
-        .nav-btn:hover { background: var(--green-dark); transform: translateY(-2px); box-shadow:0 4px 10px rgba(0,0,0,0.2); }
-
+        .nav-btn:hover {
+            background-color: var(--green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
         /* HORIZONTAL SIDEBAR */
         .sidebar-container {
             width: 100%;
             padding: 20px 40px;
             display: flex;
             justify-content: center;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
         }
         .sidebar {
             width: 100%;
@@ -93,9 +127,9 @@
             background: var(--green-medium);
             color: white;
         }
-
         /* MAIN CONTENT */
         .main-content {
+            flex: 1;
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -121,7 +155,6 @@
             text-align: center;
         }
         @keyframes fadeInUp { to { opacity:1; transform:translateY(0); } }
-
         .overview-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -152,7 +185,6 @@
             -webkit-background-clip: text;
             background-clip: text;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -187,7 +219,6 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-
         .messages-list {
             list-style: none;
             padding: 0;
@@ -199,26 +230,55 @@
             border-radius: 10px;
             border-left: 4px solid var(--green-light);
         }
-
+        /* FOOTER - موحد تماماً مع الصفحة الثانية */
         footer {
-            background: var(--green-medium);
+            background-color: var(--green-medium);
             color: white;
-            text-align: center;
-            padding: 15px 0;
+            padding: 40px 20px;
             width: 100%;
             position: fixed;
             bottom: 0;
             left: 0;
+            z-index: 90;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
         }
-        footer span {
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
             color: var(--green-pale);
             font-weight: 500;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
-
+        .footer-column a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 10px;
+            font-size: 14px;
+            transition: 0.3s;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        .footer-column a:hover { color: var(--green-pale); }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        .footer-bottom span {
+            color: var(--green-pale);
+        }
         /* RESPONSIVE */
         @media (max-width:768px) {
-            body { padding-top: 80px; }
+            body { padding-top: 80px; padding-bottom: 250px; }
             header { padding: 10px 20px; }
             header h1 { font-size: 28px; }
             .sidebar-container { padding: 15px 20px; }
@@ -229,13 +289,13 @@
             .card h2 { font-size: 26px; }
             .overview-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
             table th, table td { font-size: 12px; padding: 10px; }
+            footer { padding: 30px 15px; }
         }
     </style>
 </head>
 <body>
-
 <header>
-    <h1><a href="main.html">WEDÉ</a></h1>
+    <h1><a href="main.html" class="logo-link">WEDÉ</a></h1>
     <nav>
         <a href="main.html"><i class="fas fa-home"></i> Home</a>
         <button class="nav-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -264,7 +324,6 @@
             <div class="overview-item"><h3>New Messages</h3><p>0</p></div>
         </div>
     </section>
-
     <section id="users" class="card" style="display:none;">
         <h2>Manage Users</h2>
         <table>
@@ -275,7 +334,6 @@
         </table>
         <button class="btn primary">Add User</button>
     </section>
-
     <section id="bookings" class="card" style="display:none;">
         <h2>Manage Bookings</h2>
         <table>
@@ -285,7 +343,6 @@
             </tbody>
         </table>
     </section>
-
     <section id="services" class="card" style="display:none;">
         <h2>Manage Services</h2>
         <table>
@@ -296,7 +353,6 @@
         </table>
         <button class="btn primary">Add Service</button>
     </section>
-
     <section id="messages" class="card" style="display:none;">
         <h2>Messages</h2>
         <ul class="messages-list">
@@ -306,27 +362,51 @@
 </main>
 
 <footer>
-    © 2025 <span>WEDÉ</span> | All rights reserved
+    <div class="footer-content">
+        <div class="footer-column">
+            <h3>Plan</h3>
+            <a href="services.html">All Services</a>
+            <a href="rsvp.html">RSVP Manager</a>
+            <a href="budget.html">Budget Tracker</a>
+            <a href="gallery.html">Gallery</a>
+        </div>
+        <div class="footer-column">
+            <h3>Discover</h3>
+            <a href="services.html">Wedding Vendors</a>
+            <a href="gallery.html">Photo Gallery</a>
+            <a href="services.html">Planning Tips</a>
+        </div>
+        <div class="footer-column">
+            <h3>Company</h3>
+            <a href="contact.html">Contact Us</a>
+            <a href="#">About WEDÉ</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+        <div class="footer-column">
+            <h3>Follow Us</h3>
+            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+            <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+            <a href="#"><i class="fab fa-pinterest"></i> Pinterest</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        © 2025 <span>WEDÉ</span> | All rights reserved
+    </div>
 </footer>
 
 <script>
     const links = document.querySelectorAll('.sidebar ul li a');
     const sections = document.querySelectorAll('.main-content section');
-
     links.forEach(link => {
         link.addEventListener('click', e => {
             e.preventDefault();
-
-            // Remove active class from all links
             links.forEach(l => l.classList.remove('active'));
-            // Add active class to clicked link
             link.classList.add('active');
-
             const target = link.dataset.section;
             sections.forEach(sec => sec.style.display = (sec.id === target ? 'block' : 'none'));
         });
     });
 </script>
-
 </body>
 </html>
