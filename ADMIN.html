@@ -1,5 +1,23 @@
+<?php
+require_once 'config.php';
+
+// Check if user is logged in and is admin/owner
+if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
+    header("Location: login.php");
+    exit();
+}
+
+if ($_SESSION['role'] !== 'owner' && $_SESSION['role'] !== 'admin') {
+    header("Location: main.html");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+$first_name = $_SESSION['first_name'];
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,23 +30,20 @@
             --green-medium: #66785F;
             --green-light: #91AC8F;
             --green-pale: #B2C9AD;
-            --green-extra-pale: #E8F0E5;
-            --bg-gradient: linear-gradient(135deg,#B2C9AD,#91AC8F);
-            --card-bg: #FFFFFFCC;
-            --transition: 0.3s ease;
         }
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Poppins', sans-serif;
-            background: var(--bg-gradient);
+            background: linear-gradient(135deg, var(--green-pale), #E8EFE8);
             color: var(--green-dark);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            padding-top: 90px;         /* مساحة للهيدر */
-            padding-bottom: 200px;     /* مساحة كافية للفوتر الكبير الثابت */
+            padding-top: 90px;
+            padding-bottom: 200px;
         }
-        /* HEADER - موحد تماماً مع الصفحة الثانية */
+
+        /* HEADER - SAME AS MAIN */
         header {
             position: fixed;
             top: 0;
@@ -46,43 +61,47 @@
         }
         header h1 {
             font-family: 'Great Vibes', cursive;
-            font-size: 34px;
+            font-size: 36px;
             color: var(--green-pale);
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
         }
-        .logo-link {
+        header h1 a {
             color: var(--green-pale);
             text-decoration: none;
-            transition: opacity var(--transition);
         }
-        .logo-link:hover { opacity: 0.8; }
+        header nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
         header nav a {
             color: white;
             text-decoration: none;
-            margin-left: 25px;
             font-weight: 500;
-            transition: opacity var(--transition);
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         header nav a:hover { opacity: 0.8; }
         .nav-btn {
-            padding: 10px 30px;
-            background-color: var(--green-light);
-            color: white;
-            border-radius: 50px;
-            font-weight: 600;
+            padding: 10px 20px;
             border: none;
+            border-radius: 25px;
+            background: var(--green-light);
+            color: white;
             cursor: pointer;
-            font-size: 16px;
-            transition: all var(--transition);
-            margin-left: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .nav-btn:hover {
-            background-color: var(--green-dark);
+            background: var(--green-dark);
             transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-        /* HORIZONTAL SIDEBAR */
+
+        /* SIDEBAR */
         .sidebar-container {
             width: 100%;
             padding: 20px 40px;
@@ -111,7 +130,7 @@
             font-weight: 500;
             padding: 12px 20px;
             border-radius: 25px;
-            transition: all var(--transition);
+            transition: all 0.3s;
             background: var(--green-pale);
             border: 1px solid var(--green-light);
             white-space: nowrap;
@@ -127,6 +146,7 @@
             background: var(--green-medium);
             color: white;
         }
+
         /* MAIN CONTENT */
         .main-content {
             flex: 1;
@@ -139,13 +159,10 @@
             padding: 0 40px;
         }
         .card {
-            background: var(--card-bg);
+            background: rgba(255,255,255,0.95);
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(105,121,85,0.3);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s ease-out forwards;
         }
         .card h2 {
             font-family: 'Great Vibes', cursive;
@@ -154,7 +171,6 @@
             margin-bottom: 25px;
             text-align: center;
         }
-        @keyframes fadeInUp { to { opacity:1; transform:translateY(0); } }
         .overview-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -166,7 +182,7 @@
             border-radius: 15px;
             text-align: center;
             box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-            transition: transform var(--transition), box-shadow var(--transition);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
         .overview-item:hover {
             transform: translateY(-5px);
@@ -180,19 +196,13 @@
         .overview-item p {
             font-size: 32px;
             font-weight: 600;
-            color: transparent;
-            background: linear-gradient(90deg,var(--green-pale),var(--green-light));
-            -webkit-background-clip: text;
-            background-clip: text;
+            color: var(--green-light);
         }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
-            overflow-x: auto;
-            display: block;
         }
-        table thead, table tbody { display: table; width: 100%; }
         table th, table td {
             padding: 15px;
             border-bottom: 1px solid #ddd;
@@ -210,11 +220,11 @@
             border: none;
             cursor: pointer;
             font-weight: 600;
-            transition: all var(--transition);
+            transition: all 0.3s;
             background: var(--green-light);
             color: white;
         }
-        .btn.primary:hover {
+        .btn:hover {
             background: var(--green-medium);
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -230,7 +240,8 @@
             border-radius: 10px;
             border-left: 4px solid var(--green-light);
         }
-        /* FOOTER - موحد تماماً مع الصفحة الثانية */
+
+        /* FOOTER - SAME AS MAIN */
         footer {
             background-color: var(--green-medium);
             color: white;
@@ -254,8 +265,6 @@
             font-size: 18px;
             margin-bottom: 15px;
             color: var(--green-pale);
-            font-weight: 500;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
         .footer-column a {
             display: block;
@@ -263,8 +272,6 @@
             text-decoration: none;
             margin-bottom: 10px;
             font-size: 14px;
-            transition: 0.3s;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
         .footer-column a:hover { color: var(--green-pale); }
         .footer-bottom {
@@ -273,35 +280,35 @@
             margin-top: 30px;
             text-align: center;
         }
-        .footer-bottom span {
-            color: var(--green-pale);
-        }
-        /* RESPONSIVE */
-        @media (max-width:768px) {
+
+        @media (max-width: 768px) {
             body { padding-top: 80px; padding-bottom: 250px; }
             header { padding: 10px 20px; }
-            header h1 { font-size: 28px; }
             .sidebar-container { padding: 15px 20px; }
-            .sidebar ul { gap: 10px; }
-            .sidebar ul li a { padding: 10px 15px; font-size: 13px; }
             .main-content { padding: 0 20px; }
             .card { padding: 20px; }
-            .card h2 { font-size: 26px; }
-            .overview-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
-            table th, table td { font-size: 12px; padding: 10px; }
-            footer { padding: 30px 15px; }
         }
     </style>
 </head>
 <body>
+
+<!-- HEADER - SAME AS MAIN -->
 <header>
-    <h1><a href="main.html" class="logo-link">WEDÉ</a></h1>
+    <h1><a href="main.html">WEDÉ</a></h1>
     <nav>
-        <a href="main.html"><i class="fas fa-home"></i> Home</a>
-        <button class="nav-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        <a href="main.html">Features</a>
+        <a href="main.html">Tools</a>
+        <a href="services.html">Services</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <button class="nav-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+        </button>
     </nav>
 </header>
 
+<!-- SIDEBAR -->
 <div class="sidebar-container">
     <aside class="sidebar">
         <ul>
@@ -314,6 +321,7 @@
     </aside>
 </div>
 
+<!-- MAIN CONTENT -->
 <main class="main-content">
     <section id="overview" class="card">
         <h2>Dashboard Overview</h2>
@@ -324,6 +332,7 @@
             <div class="overview-item"><h3>New Messages</h3><p>0</p></div>
         </div>
     </section>
+
     <section id="users" class="card" style="display:none;">
         <h2>Manage Users</h2>
         <table>
@@ -332,8 +341,9 @@
             <tr><td>No users yet</td><td>-</td><td>-</td><td>-</td></tr>
             </tbody>
         </table>
-        <button class="btn primary">Add User</button>
+        <button class="btn">Add User</button>
     </section>
+
     <section id="bookings" class="card" style="display:none;">
         <h2>Manage Bookings</h2>
         <table>
@@ -343,6 +353,7 @@
             </tbody>
         </table>
     </section>
+
     <section id="services" class="card" style="display:none;">
         <h2>Manage Services</h2>
         <table>
@@ -351,8 +362,9 @@
             <tr><td>No services yet</td><td>-</td><td>-</td></tr>
             </tbody>
         </table>
-        <button class="btn primary">Add Service</button>
+        <button class="btn">Add Service</button>
     </section>
+
     <section id="messages" class="card" style="display:none;">
         <h2>Messages</h2>
         <ul class="messages-list">
@@ -361,6 +373,7 @@
     </section>
 </main>
 
+<!-- FOOTER - SAME AS MAIN -->
 <footer>
     <div class="footer-content">
         <div class="footer-column">
@@ -391,13 +404,20 @@
         </div>
     </div>
     <div class="footer-bottom">
-        © 2025 <span>WEDÉ</span> | All rights reserved
+        © 2025 <span style="color: var(--green-pale);">WEDÉ</span> | All rights reserved
     </div>
 </footer>
 
 <script>
+    function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+            window.location.href = 'logout.php';
+        }
+    }
+
     const links = document.querySelectorAll('.sidebar ul li a');
     const sections = document.querySelectorAll('.main-content section');
+
     links.forEach(link => {
         link.addEventListener('click', e => {
             e.preventDefault();
@@ -408,5 +428,6 @@
         });
     });
 </script>
+
 </body>
 </html>

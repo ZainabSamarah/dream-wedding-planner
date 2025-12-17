@@ -62,6 +62,83 @@
             background-color: var(--green-medium);
             transform: translateY(-2px);
         }
+        .profile-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .profile-btn {
+            padding: 10px 20px;
+            background-color: var(--green-light);
+            color: white;
+            border-radius: 25px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            margin-left: 25px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .profile-btn:hover {
+            background-color: var(--green-medium);
+            transform: translateY(-2px);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 250px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 10px;
+            top: 50px;
+            overflow: hidden;
+        }
+        .dropdown-content.show {
+            display: block;
+        }
+        .dropdown-header {
+            padding: 15px 20px;
+            background-color: var(--green-light);
+            color: white;
+            border-bottom: 1px solid #ddd;
+        }
+        .dropdown-header p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .dropdown-header .user-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .dropdown-content a {
+            color: var(--green-dark);
+            padding: 12px 20px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+        .dropdown-content a:hover {
+            background-color: #f0f0f0;
+        }
+        .dropdown-content a i {
+            color: var(--green-light);
+        }
+        .dropdown-divider {
+            height: 1px;
+            background-color: #ddd;
+            margin: 5px 0;
+        }
+        .logout-link {
+            color: #d32f2f !important;
+        }
+        .logout-link i {
+            color: #d32f2f !important;
+        }
         .hero {
             position: relative;
             height: 100vh;
@@ -185,7 +262,6 @@
             line-height: 1.6;
         }
 
-        /* === القسم الجديد: How It Works === */
         .how-it-works {
             padding: 100px 40px;
             background: linear-gradient(135deg, #f8f9f5, white);
@@ -411,6 +487,36 @@
         <a href="services.html">Services</a>
         <a href="gallery.html">Gallery</a>
         <a href="contact.html">Contact</a>
+
+        <!-- Profile Dropdown (Hidden by default) -->
+        <div id="profileDropdown" class="profile-dropdown" style="display: none;">
+            <button class="profile-btn" onclick="toggleDropdown()">
+                <i class="fas fa-user-circle"></i>
+                <span id="userName">User</span>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div id="dropdownMenu" class="dropdown-content">
+                <div class="dropdown-header">
+                    <p class="user-name" id="dropdownName">User Name</p>
+                    <p id="dropdownEmail">user@email.com</p>
+                </div>
+                <a href="profile.php">
+                    <i class="fas fa-user"></i> My Profile
+                </a>
+                <a href="services.html">
+                    <i class="fas fa-concierge-bell"></i> My Bookings
+                </a>
+                <a href="services.html">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="logout.php" class="logout-link">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- Login Button (Shown by default) -->
         <button id="loginBtn" class="nav-btn">Login</button>
     </nav>
 </header>
@@ -424,7 +530,7 @@
         <p>Everything you need to plan your dream wedding in one place. Organize, track, and celebrate every moment with WEDÉ.</p>
         <div class="cta-buttons">
             <a href="services.html" class="cta-btn cta-primary">Explore Services</a>
-            <a href="signup.html" class="cta-btn cta-secondary">Get Started Free</a>
+            <a href="signup.php" class="cta-btn cta-secondary">Get Started Free</a>
         </div>
     </div>
 </section>
@@ -465,7 +571,6 @@
     </div>
 </section>
 
-<!-- القسم الجديد: How It Works -->
 <section class="how-it-works">
     <h2>How It Works</h2>
     <div class="steps-grid">
@@ -551,7 +656,7 @@
 <section class="cta-section">
     <h2>Ready to Start Planning?</h2>
     <p>Join thousands of couples planning their perfect wedding with WEDÉ</p>
-    <a href="signup.html" class="cta-btn">Create Free Account</a>
+    <a href="signup.php" class="cta-btn">Create Free Account</a>
 </section>
 
 <footer>
@@ -589,9 +694,58 @@
 </footer>
 
 <script>
-    document.getElementById('loginBtn').addEventListener('click', function () {
-        window.location.href = 'login.html';
+    // Check if user is logged in
+    function checkSession() {
+        fetch('check_session.php')
+            .then(response => response.json())
+            .then(data => {
+                const profileDropdown = document.getElementById('profileDropdown');
+                const loginBtn = document.getElementById('loginBtn');
+
+                if (data.loggedin) {
+                    // User is logged in - show profile button, hide login button
+                    profileDropdown.style.display = 'inline-block';
+                    loginBtn.style.display = 'none';
+
+                    // Update profile info
+                    document.getElementById('userName').textContent = data.firstName;
+                    document.getElementById('dropdownName').textContent = data.firstName;
+                    document.getElementById('dropdownEmail').textContent = data.email;
+                } else {
+                    // User is not logged in - show login button, hide profile button
+                    profileDropdown.style.display = 'none';
+                    loginBtn.style.display = 'inline-block';
+                }
+            })
+            .catch(error => console.log('Session check error:', error));
+    }
+
+    // Toggle dropdown menu
+    function toggleDropdown() {
+        const dropdown = document.getElementById('dropdownMenu');
+        dropdown.classList.toggle('show');
+    }
+
+    // Close dropdown when clicking outside
+    window.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('dropdownMenu');
+        const profileBtn = document.querySelector('.profile-btn');
+
+        if (dropdown && !event.target.closest('.profile-dropdown')) {
+            dropdown.classList.remove('show');
+        }
     });
+
+    // Login button click
+    const loginBtn = document.getElementById('loginBtn');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', function () {
+            window.location.href = 'login.php';
+        });
+    }
+
+    // Check session on page load
+    window.addEventListener('load', checkSession);
 </script>
 </body>
 </html>
