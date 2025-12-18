@@ -7,6 +7,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
         :root {
@@ -105,12 +106,36 @@
             border-radius: 6px;
         }
 
+        .qr-code-container {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 8px;
+            padding: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-code-container canvas,
+        .qr-code-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
         .controls {
             flex: 1;
             background: #f9faf9;
             padding: 40px 30px;
             display: flex;
             flex-direction: column;
+            overflow-y: auto;
+            max-height: 700px;
         }
 
         .controls h2 {
@@ -130,6 +155,7 @@
         }
 
         input[type="text"],
+        input[type="date"],
         textarea,
         select {
             width: 100%;
@@ -149,27 +175,56 @@
         .row { display: flex; gap: 10px; }
         .col { flex: 1; }
 
+        .form-section {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .section-title {
+            font-weight: 600;
+            color: var(--green-dark);
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
         .actions {
             display: flex;
             gap: 10px;
             margin-top: 20px;
+            flex-wrap: wrap;
         }
 
         .btn {
             flex: 1;
+            min-width: 120px;
             padding: 12px 16px;
-            border-radius: 30px;
+            border-radius: 8px;
             border: none;
             cursor: pointer;
             font-weight: 600;
             background: var(--green-mid);
             color: white;
             transition: 0.3s;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .btn:hover {
             background: var(--green-dark);
             transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #999;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #777;
         }
 
         .note {
@@ -182,6 +237,7 @@
         @media(max-width:900px) {
             .editor-container { flex-direction: column; }
             .card-section, .controls { width: 100%; flex: none; }
+            .controls { max-height: none; }
         }
     </style>
 </head>
@@ -190,70 +246,141 @@
 
 <header>
     <h1>Design Your Invitation Card</h1>
-    <p>Customize your luxury wedding invitation</p>
+    <p>Customize your luxury wedding invitation with QR code</p>
 </header>
 
 <div class="editor-container">
 
     <div class="card-section">
         <div class="card-preview" id="card-area">
-            <img id="card-bg" src="" alt="Luxury Card" />
+            <img id="card-bg" src="imgs/LX1b.png" alt="Luxury Card" />
             <div class="overlay-text" style="top:15%;font-size:28px;">Save The Date</div>
             <div class="overlay-text" style="top:35%;font-size:16px;">FOR THE WEDDING OF</div>
             <div class="overlay-text" style="top:50%;font-family:'Great Vibes', cursive;font-size:32px;">Layla & Adam</div>
             <div class="overlay-text" style="top:65%;font-size:16px;">SATURDAY, JUNE 14, 2026 | 6:00 PM</div>
             <div class="overlay-text" style="top:78%;font-size:15px;">Royal Garden, London</div>
+            <div class="qr-code-container" id="qrContainer"></div>
         </div>
     </div>
 
     <div class="controls">
         <h2>Edit Your Card</h2>
 
-        <label for="text-input">Edit Selected Text</label>
-        <textarea id="text-input" placeholder="Click any text on the card to edit it"></textarea>
-
-        <div class="row">
-            <div class="col">
-                <label for="font-select">Font</label>
-                <select id="font-select">
-                    <option value="'Playfair Display', serif">Playfair Display</option>
-                    <option value="'Great Vibes', cursive">Great Vibes</option>
-                    <option value="'Poppins', sans-serif">Poppins</option>
-                </select>
+        <!-- معلومات العروس والعريس -->
+        <div class="form-section">
+            <div class="section-title">Wedding Details</div>
+            <div class="row">
+                <div class="col">
+                    <label for="brideName">Bride Name</label>
+                    <input type="text" id="brideName" placeholder="Bride's name">
+                </div>
+                <div class="col">
+                    <label for="groomName">Groom Name</label>
+                    <input type="text" id="groomName" placeholder="Groom's name">
+                </div>
             </div>
-            <div class="col">
-                <label for="size-input">Font Size (px)</label>
-                <input type="text" id="size-input" placeholder="e.g. 18">
+            <div class="row">
+                <div class="col">
+                    <label for="weddingDate">Wedding Date</label>
+                    <input type="date" id="weddingDate">
+                </div>
+                <div class="col">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" placeholder="Venue location">
+                </div>
             </div>
         </div>
 
-        <label for="color-input">Text Color</label>
-        <input type="color" id="color-input" value="#3a5a40">
+        <!-- تعديل النص -->
+        <div class="form-section">
+            <div class="section-title">Edit Text</div>
+            <label for="text-input">Selected Text</label>
+            <textarea id="text-input" placeholder="Click any text on the card to edit it"></textarea>
+
+            <div class="row">
+                <div class="col">
+                    <label for="font-select">Font</label>
+                    <select id="font-select">
+                        <option value="'Playfair Display', serif">Playfair Display</option>
+                        <option value="'Great Vibes', cursive">Great Vibes</option>
+                        <option value="'Poppins', sans-serif">Poppins</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="size-input">Font Size (px)</label>
+                    <input type="text" id="size-input" placeholder="e.g. 18">
+                </div>
+            </div>
+
+            <label for="color-input">Text Color</label>
+            <input type="color" id="color-input" value="#3a5a40">
+        </div>
 
         <div class="actions">
+            <button class="btn" id="save-wedding-btn">Save Wedding</button>
+            <button class="btn btn-secondary" id="generate-qr-btn">Generate QR</button>
             <button class="btn" id="download-btn">Download Card</button>
         </div>
 
-        <p class="note">Click any text to edit, move, resize, or change color — then download your card.</p>
+        <p class="note">Click any text to edit, move, resize, or change color. Generate QR code to link guests to RSVP tracking.</p>
     </div>
 </div>
 
 <script>
+    // المتغيرات العامة
+    let weddingId = null;
+    let activeEl = null;
+    const API_URL = 'wedding_qr.php';
+
+    // تحميل البطاقة المختارة
     window.addEventListener("DOMContentLoaded", () => {
         const selectedCard = localStorage.getItem("selected_card_LX");
         const bg = document.getElementById("card-bg");
-        if(selectedCard) bg.src = "imgs/" + selectedCard.replace(".png","b.png");
+        if(selectedCard) {
+            bg.src = "imgs/" + selectedCard.replace(".png","b.png");
+        }
+
+        // محاولة تحميل wedding موجود
+        loadExistingWedding();
     });
 
+    // تحميل wedding موجود من قاعدة البيانات
+    async function loadExistingWedding() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('weddingId');
+
+        if (id) {
+            try {
+                const response = await fetch(`${API_URL}?action=get_wedding&weddingId=${id}`);
+                const data = await response.json();
+
+                if (data.success && data.wedding) {
+                    weddingId = data.wedding.id;
+                    document.getElementById('brideName').value = data.wedding.bride_name;
+                    document.getElementById('groomName').value = data.wedding.groom_name;
+                    document.getElementById('weddingDate').value = data.wedding.wedding_date;
+                    document.getElementById('location').value = data.wedding.location;
+
+                    // توليد QR code
+                    generateQRCode();
+                }
+            } catch (error) {
+                console.error('Error loading wedding:', error);
+            }
+        }
+    }
+
+    // Elements
     const cardArea = document.getElementById("card-area");
     const textInput = document.getElementById("text-input");
     const fontSelect = document.getElementById("font-select");
     const sizeInput = document.getElementById("size-input");
     const colorInput = document.getElementById("color-input");
     const downloadBtn = document.getElementById("download-btn");
+    const generateQRBtn = document.getElementById("generate-qr-btn");
+    const saveWeddingBtn = document.getElementById("save-wedding-btn");
 
-    let activeEl = null;
-
+    // تفعيل السحب والإفلات للنصوص
     cardArea.querySelectorAll(".overlay-text").forEach(el => {
         makeDraggable(el);
         el.addEventListener("click", () => {
@@ -267,6 +394,7 @@
         });
     });
 
+    // دالة جعل النص قابل للسحب
     function makeDraggable(el) {
         let dragging=false, startX=0, startY=0, origX=0, origY=0;
         el.addEventListener("pointerdown", e => {
@@ -287,11 +415,90 @@
         el.addEventListener("pointerup", e => { dragging=false; el.releasePointerCapture(e.pointerId); });
     }
 
+    // تحديث النص المحدد
     textInput.addEventListener("input", ()=>{ if(activeEl) activeEl.textContent=textInput.value; });
     fontSelect.addEventListener("change", ()=>{ if(activeEl) activeEl.style.fontFamily=fontSelect.value; });
     sizeInput.addEventListener("input", ()=>{ if(activeEl) activeEl.style.fontSize=sizeInput.value+"px"; });
     colorInput.addEventListener("input", ()=>{ if(activeEl) activeEl.style.color=colorInput.value; });
 
+    // حفظ معلومات الزفاف في قاعدة البيانات
+    saveWeddingBtn.addEventListener("click", async () => {
+        const brideName = document.getElementById('brideName').value.trim();
+        const groomName = document.getElementById('groomName').value.trim();
+        const weddingDate = document.getElementById('weddingDate').value;
+        const location = document.getElementById('location').value.trim();
+
+        if (!brideName || !groomName) {
+            showToast('Please enter bride and groom names', 'error');
+            return;
+        }
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    action: 'create_wedding',
+                    brideName: brideName,
+                    groomName: groomName,
+                    brideEmail: '',
+                    groomEmail: '',
+                    weddingDate: weddingDate,
+                    location: location
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                weddingId = data.weddingId;
+                showToast('Wedding saved successfully!', 'success');
+                // تحديث URL
+                const newUrl = window.location.pathname + '?weddingId=' + weddingId;
+                window.history.pushState({}, '', newUrl);
+                // توليد QR code
+                generateQRCode();
+            } else {
+                showToast(data.message || 'Error saving wedding', 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showToast('Connection error', 'error');
+        }
+    });
+
+    // توليد QR Code
+    async function generateQRCode() {
+        if (!weddingId) {
+            showToast('Please save wedding details first', 'error');
+            return;
+        }
+
+        const qrContainer = document.getElementById("qrContainer");
+        qrContainer.innerHTML = '';
+
+        // الحصول على الـ domain الفعلي
+        const protocol = window.location.protocol;
+        const host = window.location.host;
+        const qrData = `${protocol}//${host}/qr.html?weddingId=${weddingId}`;
+
+        new QRCode(qrContainer, {
+            text: qrData,
+            width: 70,
+            height: 70,
+            colorDark: '#3a5a40',
+            colorLight: '#FFFFFF',
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        showToast('QR Code generated!', 'success');
+    }
+
+    generateQRBtn.addEventListener("click", generateQRCode);
+
+    // تحميل البطاقة
     downloadBtn.addEventListener("click", ()=>{
         cardArea.querySelectorAll(".overlay-text").forEach(x=>x.classList.remove("selected"));
         html2canvas(cardArea,{scale:3,useCORS:true,backgroundColor:null}).then(canvas=>{
@@ -299,8 +506,19 @@
             a.href=canvas.toDataURL("image/png");
             a.download="WEDE_Luxury_Invitation.png";
             a.click();
+            showToast('Card downloaded!', 'success');
         });
     });
+
+    // دالة عرض الرسائل
+    function showToast(msg, type = 'success') {
+        const toast = document.createElement('div');
+        const bgColor = type === 'success' ? '#4CAF50' : '#f44336';
+        toast.style.cssText = `position:fixed;bottom:20px;right:20px;background:${bgColor};color:white;padding:15px 20px;border-radius:8px;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.3);`;
+        toast.textContent = msg;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
 </script>
 </body>
 </html>

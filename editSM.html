@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Edit Invitation Card – WEDÉ (SM)</title>
 
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&family=Dancing+Script:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
-
-    <!-- html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
         :root {
@@ -46,7 +44,6 @@
             overflow: hidden;
         }
 
-        /* Left side (card) */
         .card-section {
             flex: 1;
             background: #f4f7f4;
@@ -90,17 +87,33 @@
             cursor: grab;
         }
 
-        .overlay-text.dragging {
-            cursor: grabbing;
-            opacity: .95;
-        }
-
         .overlay-text.selected {
             outline: 2px dashed rgba(145, 172, 143, 0.6);
             border-radius: 6px;
         }
 
-        /* Right side (controls) */
+        .qr-code-container {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 8px;
+            padding: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-code-container canvas,
+        .qr-code-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
         .controls {
             flex: 1;
             background: #fff;
@@ -108,6 +121,8 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
+            overflow-y: auto;
+            max-height: 700px;
         }
 
         .controls h2 {
@@ -155,10 +170,12 @@
             display: flex;
             gap: 10px;
             margin-top: 14px;
+            flex-wrap: wrap;
         }
 
         .btn {
             flex: 1;
+            min-width: 100px;
             padding: 10px 12px;
             border-radius: 10px;
             border: none;
@@ -167,16 +184,21 @@
             background: var(--accent);
             color: white;
             box-shadow: 0 6px 18px rgba(145, 172, 143, .16);
+            transition: 0.3s;
+            font-size: 13px;
         }
 
-        .btn.gray {
+        .btn:hover {
+            background: #7a9a6f;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #999;
+        }
+
+        .btn-secondary:hover {
             background: #777;
-        }
-
-        .btn.ghost {
-            background: transparent;
-            color: var(--dark);
-            border: 1px solid #ddd;
         }
 
         .note {
@@ -198,6 +220,7 @@
 
             .controls {
                 border-top: 1px solid #eee;
+                max-height: none;
             }
         }
     </style>
@@ -205,7 +228,6 @@
 <body>
 
 <div class="editor-container">
-    <!-- CARD AREA -->
     <div class="card-section">
         <div class="card-preview" id="card-area">
             <img class="card-bg" id="card-bg" src="imgs/SM1b.png" alt="Card background" />
@@ -213,10 +235,10 @@
             <div class="overlay-text" style="top:35%;font-size:15px;">For the wedding of</div>
             <div class="overlay-text" style="top:50%;font-family:'Great Vibes', cursive;font-size:26px;">Sophia & Liam</div>
             <div class="overlay-text" style="top:65%;font-size:13px;">June 10, 2026 – London</div>
+            <div class="qr-code-container" id="qrContainer"></div>
         </div>
     </div>
 
-    <!-- CONTROLS -->
     <div class="controls">
         <h2>Edit Your Card</h2>
 
@@ -244,6 +266,7 @@
 
         <div class="actions">
             <button class="btn" id="download-btn">Download</button>
+            <button class="btn btn-secondary" id="generate-qr-btn">Generate QR</button>
         </div>
 
         <p class="note">Click any text to edit, move, resize, or recolor it — then download your final card.</p>
@@ -251,7 +274,15 @@
 </div>
 
 <script>
-    // Load selected card from localStorage
+    let weddingData = JSON.parse(localStorage.getItem('wede_wedding')) || {
+        id: Date.now(),
+        brideName: 'Bride',
+        groomName: 'Groom',
+        date: new Date().toLocaleDateString(),
+        location: 'London',
+        qrCode: null
+    };
+
     window.addEventListener("DOMContentLoaded", () => {
         const selectedCard = localStorage.getItem("selected_card_SM");
         const bg = document.getElementById("card-bg");
@@ -260,6 +291,8 @@
         else if (selectedCard === "SM2.png") bg.src = "imgs/SM2b.png";
         else if (selectedCard === "SM3.png") bg.src = "imgs/SM3b.png";
         else if (selectedCard === "SM4.png") bg.src = "imgs/SM4b.png";
+
+        generateQRCode();
     });
 
     const cardArea = document.getElementById("card-area");
@@ -268,10 +301,10 @@
     const sizeInput = document.getElementById("size-input");
     const colorInput = document.getElementById("color-input");
     const downloadBtn = document.getElementById("download-btn");
+    const generateQRBtn = document.getElementById("generate-qr-btn");
 
     let activeEl = null;
 
-    // Click to select text
     cardArea.querySelectorAll(".overlay-text").forEach(el => {
         makeDraggable(el);
         el.addEventListener("click", () => {
@@ -285,7 +318,6 @@
         });
     });
 
-    // Draggable text
     function makeDraggable(el) {
         let dragging = false, startX = 0, startY = 0, origX = 0, origY = 0;
         el.addEventListener("pointerdown", e => {
@@ -313,13 +345,30 @@
         });
     }
 
-    // Live editing
     textInput.addEventListener("input", () => { if (activeEl) activeEl.textContent = textInput.value; });
     fontSelect.addEventListener("change", () => { if (activeEl) activeEl.style.fontFamily = fontSelect.value; });
     sizeInput.addEventListener("input", () => { if (activeEl) activeEl.style.fontSize = sizeInput.value + "px"; });
     colorInput.addEventListener("input", () => { if (activeEl) activeEl.style.color = colorInput.value; });
 
-    // Download
+    function generateQRCode() {
+        const qrContainer = document.getElementById("qrContainer");
+        qrContainer.innerHTML = '';
+        const qrData = `${window.location.origin}/qr.html?weddingId=${weddingData.id}`;
+        new QRCode(qrContainer, {
+            text: qrData,
+            width: 70,
+            height: 70,
+            colorDark: '#2e3b2a',
+            colorLight: '#FFFFFF',
+            correctLevel: QRCode.CorrectLevel.H
+        });
+        weddingData.qrCode = qrData;
+        localStorage.setItem('wede_wedding', JSON.stringify(weddingData));
+        showToast('QR Code generated!');
+    }
+
+    generateQRBtn.addEventListener("click", generateQRCode);
+
     downloadBtn.addEventListener("click", () => {
         document.querySelectorAll(".overlay-text").forEach(x => x.classList.remove("selected"));
         html2canvas(cardArea, { scale: 3, useCORS: true, backgroundColor: null }).then(canvas => {
@@ -327,8 +376,17 @@
             a.href = canvas.toDataURL("image/png");
             a.download = "WEDÉ_Invitation.png";
             a.click();
+            showToast('Card downloaded!');
         });
     });
+
+    function showToast(msg) {
+        const toast = document.createElement('div');
+        toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#4CAF50;color:white;padding:15px 20px;border-radius:8px;z-index:1000;';
+        toast.textContent = msg;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
 </script>
 
 </body>
