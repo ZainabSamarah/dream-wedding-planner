@@ -1,139 +1,72 @@
 <?php
-/**
- * Wedding Preparation API + Form Page
- */
+require_once 'config.php';
 
-header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
+// لو مش مسجل دخول، يرجع للوجن
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
     exit();
 }
 
-// Database configuration
-$DB_HOST = 'localhost';
-$DB_USER = 'root';
-$DB_PASS = '';
-$DB_NAME = 'wedding_db';
+$user_id = $_SESSION['user_id'];
 
-try {
-    $db = new PDO("mysql:host=$DB_HOST;dbname=$DB_NAME;charset=utf8mb4", $DB_USER, $DB_PASS);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-sendJsonResponse(false, 'Database connection failed', 500);
-}
-
-// API Routes
 $action = $_GET['action'] ?? '';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'submit_wedding_form') {
-handleSubmitForm($db);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'submit') {
+    $input = json_decode(file_get_contents('php://input'), true);
+
+    $fullName = trim($input['fullName'] ?? '');
+    $email = trim(strtolower($input['email'] ?? ''));
+    $packageName = trim($input['package'] ?? '');
+    $weddingDate = $input['weddingDate'] ?? null;
+    $notes = trim($input['notes'] ?? '');
+
+    if (empty($fullName) || empty($email) || empty($packageName)) {
+        echo json_encode(['success' => false, 'message' => 'Please fill all required fields']);
+        exit();
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode(['success' => false, 'message' => 'Invalid email format']);
+        exit();
+    }
+
+    try {
+        // جلب package_id من الاسم
+        $stmt = $pdo->prepare("SELECT id FROM packages WHERE name = ?");
+        $stmt->execute([$packageName]);
+        $package = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$package) {
+            echo json_encode(['success' => false, 'message' => 'Selected package not found']);
+            exit();
+        }
+
+        $package_id = $package['id'];
+
+        // تحقق إذا كان موجود سابقاً في user_packages
+        $stmt = $pdo->prepare("SELECT id FROM user_packages WHERE user_id = ?");
+        $stmt->execute([$user_id]);
+        $exists = $stmt->fetch();
+
+        if ($exists) {
+            // تحديث
+            $stmt = $pdo->prepare("UPDATE user_packages SET full_name = ?, email = ?, package_id = ?, wedding_date = ?, notes = ? WHERE user_id = ?");
+            $stmt->execute([$fullName, $email, $package_id, $weddingDate, $notes, $user_id]);
+        } else {
+            // إضافة جديد
+            $stmt = $pdo->prepare("INSERT INTO user_packages (user_id, full_name, email, package_id, wedding_date, notes) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$user_id, $fullName, $email, $package_id, $weddingDate, $notes]);
+        }
+
+        echo json_encode(['success' => true, 'message' => 'Your details have been saved successfully!']);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+    }
+    exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'get_wedding_data') {
-handleGetData($db);
-}
-
-// Show the HTML form if no API action
-showFormPage();
-
-function handleSubmitForm($db) {
-$input = json_decode(file_get_contents('php://input'), true);
-
-if (!$input) {
-sendJsonResponse(false, 'Invalid JSON data', 400);
-return;
-}
-
-$required = ['fullName', 'email', 'package'];
-foreach ($required as $field) {
-if (empty($input[$field])) {
-sendJsonResponse(false, "Missing required field: $field", 400);
-return;
-}
-}
-
-$fullName = trim($input['fullName']);
-$email = trim(strtolower($input['email']));
-$package = trim($input['package']);
-$phone = trim($input['phone'] ?? '');
-$partnerName = trim($input['partnerName'] ?? '');
-$weddingDate = $input['weddingDate'] ?? null;
-$guestCount = (int)($input['guestCount'] ?? 0);
-$venue = trim($input['venue'] ?? '');
-$budget = trim($input['budget'] ?? '');
-$notes = trim($input['notes'] ?? '');
-$services = trim($input['services'] ?? '');
-
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-sendJsonResponse(false, 'Invalid email address', 400);
-return;
-}
-
-try {
-// Check if record exists
-$stmt = $db->prepare("SELECT id FROM wedding_preparations WHERE email = ?");
-$stmt->execute([$email]);
-$exists = $stmt->fetchColumn();
-
-if ($exists) {
-// Update
-$sql = "UPDATE wedding_preparations SET
-fullName = ?, phone = ?, partnerName = ?, package = ?,
-weddingDate = ?, guestCount = ?, venue = ?, budget = ?,
-notes = ?, services = ?, updated_at = NOW()
-WHERE email = ?";
-$stmt = $db->prepare($sql);
-$stmt->execute([$fullName, $phone, $partnerName, $package, $weddingDate, $guestCount, $venue, $budget, $notes, $services, $email]);
-sendJsonResponse(true, 'Wedding preparation updated successfully', 200, ['action' => 'updated']);
-} else {
-// Insert
-$sql = "INSERT INTO wedding_preparations
-(fullName, email, phone, partnerName, package, weddingDate, guestCount, venue, budget, notes, services, created_at, updated_at)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
-$stmt = $db->prepare($sql);
-$stmt->execute([$fullName, $email, $phone, $partnerName, $package, $weddingDate, $guestCount, $venue, $budget, $notes, $services]);
-sendJsonResponse(true, 'Wedding preparation submitted successfully', 201, ['action' => 'created']);
-}
-} catch (Exception $e) {
-sendJsonResponse(false, 'Database error: ' . $e->getMessage(), 500);
-}
-}
-
-function handleGetData($db) {
-$email = trim(strtolower($_GET['email'] ?? ''));
-if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-sendJsonResponse(false, 'Valid email required', 400);
-return;
-}
-
-try {
-$stmt = $db->prepare("SELECT * FROM wedding_preparations WHERE email = ?");
-$stmt->execute([$email]);
-$data = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if ($data) {
-sendJsonResponse(true, 'Data retrieved', 200, $data);
-} else {
-sendJsonResponse(false, 'No data found', 404);
-}
-} catch (Exception $e) {
-sendJsonResponse(false, 'Database error', 500);
-}
-}
-
-function sendJsonResponse($success, $message, $code = 200, $data = null) {
-http_response_code($code);
-$res = ['success' => $success, 'message' => $message];
-if ($data) $res['data'] = $data;
-echo json_encode($res);
-exit();
-}
-
-function showFormPage() {
+// جلب الـ package المختار من الـ URL عشان يعبي الـ select تلقائي
+$selectedPackage = $_GET['package'] ?? '';
 ?>
 
 <!DOCTYPE html>
@@ -154,7 +87,8 @@ function showFormPage() {
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f0f7f2, #eaf2e8);
+            background-color: var(--green-pale);
+            color: var(--green-dark);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -163,103 +97,92 @@ function showFormPage() {
         }
         .container {
             background: white;
-            padding: 50px;
+            padding: 60px 50px;
             border-radius: 25px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            max-width: 600px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            max-width: 650px;
             width: 100%;
+            text-align: center;
         }
         h1 {
             font-family: 'Great Vibes', cursive;
-            font-size: 48px;
+            font-size: 52px;
             color: var(--green-dark);
-            text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         .subtitle {
-            text-align: center;
+            font-size: 18px;
             color: #666;
-            margin-bottom: 40px;
-            font-size: 16px;
+            margin-bottom: 50px;
             line-height: 1.6;
         }
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
+            text-align: left;
         }
-        .form-group label {
+        label {
             display: block;
-            margin-bottom: 8px;
-            color: var(--green-dark);
+            margin-bottom: 10px;
             font-weight: 600;
-            font-size: 14px;
+            color: var(--green-medium);
+            font-size: 16px;
         }
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        input, select, textarea {
             width: 100%;
-            padding: 14px 18px;
-            border: 2px solid #e0e0e0;
+            padding: 16px;
+            border: 1px solid #ddd;
             border-radius: 12px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        input:focus, select:focus, textarea:focus {
             outline: none;
-            font-size: 15px;
-            font-family: 'Poppins', sans-serif;
-            transition: 0.3s;
-        }
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
             border-color: var(--green-light);
-            box-shadow: 0 0 0 3px rgba(145, 172, 143, 0.1);
+            box-shadow: 0 0 0 3px rgba(145,172,143,0.2);
         }
-        .form-group textarea {
-            min-height: 120px;
+        textarea {
+            height: 130px;
             resize: vertical;
         }
         .btn-submit {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, var(--green-medium), var(--green-dark));
+            background: var(--green-light);
             color: white;
+            padding: 18px 50px;
             border: none;
-            border-radius: 12px;
+            border-radius: 30px;
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            margin-top: 20px;
+            width: 100%;
         }
         .btn-submit:hover {
+            background: var(--green-dark);
             transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(75, 89, 69, 0.3);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
         .toast {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 18px 24px;
-            background: white;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 18px 35px;
             border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            display: none;
+            display: flex;
             align-items: center;
             gap: 12px;
+            opacity: 0;
+            transition: opacity 0.4s;
             z-index: 1000;
-            animation: slideIn 0.3s ease;
-            border-left: 4px solid #10B981;
+            font-size: 16px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-        .toast.show { display: flex; }
-        .toast.error { border-left-color: #EF4444; }
-        @keyframes slideIn {
-            from { transform: translateX(400px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        @media (max-width: 768px) {
-            .container { padding: 30px 20px; }
-            h1 { font-size: 36px; }
-        }
+        .toast.show { opacity: 1; }
+        .toast.error { background: #d32f2f; }
+        .toast i { font-size: 20px; }
     </style>
 </head>
 <body>
@@ -270,59 +193,49 @@ function showFormPage() {
 
     <form id="weddingForm">
         <div class="form-group">
-            <label>Full Name *</label>
-            <input type="text" id="fullName" required placeholder="Enter your full name">
+            <label for="fullName">Full Name *</label>
+            <input type="text" id="fullName" placeholder="Enter your full name" required>
         </div>
 
         <div class="form-group">
-            <label>Email Address *</label>
-            <input type="email" id="email" required placeholder="your@email.com">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" placeholder="your@email.com" required>
         </div>
 
         <div class="form-group">
-            <label>Select Package *</label>
+            <label for="package">Select Package *</label>
             <select id="package" required>
-                <option value="">Choose...</option>
-                <option value="Regular Package">Regular Package – $5000</option>
-                <option value="Medium Bouquet">Medium Bouquet – $6500</option>
-                <option value="Luxury Bouquet">Luxury Bouquet – $8000</option>
+                <option value="">Choose your package...</option>
+                <option value="Regular Package" <?php echo ($selectedPackage === 'Regular Package') ? 'selected' : ''; ?>>Regular Package – $5000</option>
+                <option value="Medium Bouquet" <?php echo ($selectedPackage === 'Medium Bouquet') ? 'selected' : ''; ?>>Medium Bouquet – $6500</option>
+                <option value="Luxury Bouquet" <?php echo ($selectedPackage === 'Luxury Bouquet') ? 'selected' : ''; ?>>Luxury Bouquet – $8000</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label>Preferred Wedding Date</label>
+            <label for="weddingDate">Preferred Wedding Date</label>
             <input type="date" id="weddingDate">
         </div>
 
         <div class="form-group">
-            <label>Additional Notes</label>
-            <textarea id="notes" placeholder="Tell us about your vision, preferences, or any special requests..."></textarea>
+            <label for="notes">Additional Notes</label>
+            <textarea id="notes" placeholder="Any special requests, themes, or details you'd like to share..."></textarea>
         </div>
 
-        <button type="submit" class="btn-submit">
-            <i class="fas fa-paper-plane"></i>
-            Submit Your Details
-        </button>
+        <button type="submit" class="btn-submit">Submit Your Details</button>
     </form>
 </div>
 
 <div id="toast" class="toast">
     <i id="toastIcon" class="fas fa-check-circle"></i>
-    <span id="toastMessage">Success!</span>
+    <span id="toastMessage"></span>
 </div>
 
 <script>
-    // تعبئة الباكيدج من URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const selectedPackage = urlParams.get('package');
-    if (selectedPackage) {
-        document.getElementById('package').value = selectedPackage;
-    }
-
-    document.getElementById('weddingForm').addEventListener('submit', async function(e) {
+    document.getElementById('weddingForm').onsubmit = async function(e) {
         e.preventDefault();
 
-        const formData = {
+        const data = {
             fullName: document.getElementById('fullName').value.trim(),
             email: document.getElementById('email').value.trim().toLowerCase(),
             package: document.getElementById('package').value,
@@ -330,47 +243,33 @@ function showFormPage() {
             notes: document.getElementById('notes').value.trim()
         };
 
-        if (!formData.fullName || !formData.email || !formData.package) {
-            showToast('Please fill all required fields', 'error');
-            return;
-        }
-
         try {
-            const response = await fetch('?action=submit_wedding_form', {
+            const res = await fetch('preparation.php?action=submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(data)
             });
 
-            const result = await response.json();
+            const result = await res.json();
 
             if (result.success) {
-                sessionStorage.setItem('userEmail', formData.email);
-                sessionStorage.setItem('userPackage', formData.package);
-                sessionStorage.setItem('userName', formData.fullName);
-
-                showToast('Submitted successfully! Redirecting...', 'success');
-
+                showToast('Submitted successfully! Redirecting to services...', 'success');
                 setTimeout(() => {
                     window.location.href = 'services.php';
                 }, 2000);
             } else {
-                showToast(result.message || 'Submission failed', 'error');
+                showToast(result.message || 'Something went wrong. Please try again.', 'error');
             }
         } catch (err) {
-            showToast('Connection error. Please try again.', 'error');
+            showToast('Connection error. Please check your internet and try again.', 'error');
         }
-    });
+    };
 
-    function showToast(message, type = 'success') {
+    function showToast(msg, type = 'success') {
         const toast = document.getElementById('toast');
-        const msg = document.getElementById('toastMessage');
-        const icon = document.getElementById('toastIcon');
-
-        msg.textContent = message;
+        document.getElementById('toastMessage').textContent = msg;
         toast.classList.toggle('error', type === 'error');
-        icon.className = type === 'error' ? 'fas fa-exclamation-circle' : 'fas fa-check-circle';
-
+        document.getElementById('toastIcon').className = type === 'error' ? 'fas fa-exclamation-circle' : 'fas fa-check-circle';
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 4000);
     }
@@ -378,6 +277,3 @@ function showFormPage() {
 
 </body>
 </html>
-<?php
-}
-?>
