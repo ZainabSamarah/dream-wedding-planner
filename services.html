@@ -491,6 +491,7 @@
             nav a { margin-left: 15px; font-size: 14px; }
         }
     </style>
+
 </head>
 <body>
 <header>
@@ -720,47 +721,147 @@
 </footer>
 
 <script>
-    window.addEventListener('load', () => {
+    const API_URL = 'wedding_qr.php';
+    let userEmail = sessionStorage.getItem('userEmail') || '';
+    let userPackage = sessionStorage.getItem('userPackage') || '';
+    let isRegistered = false;
+
+    // تحميل حالة المستخدم عند فتح الصفحة
+    window.addEventListener('load', async () => {
+        // تحقق من التسجيل
+        if (userEmail) {
+            await checkUserRegistration();
+        }
+
+        // الانيميشن الموجود
         document.querySelector('.services-hero').classList.add('visible');
-        setTimeout(() => {
-            document.querySelector('.services-intro').classList.add('visible');
-        }, 800);
+        setTimeout(() => document.querySelector('.services-intro').classList.add('visible'), 800);
+
         setTimeout(() => {
             const cards = document.querySelectorAll('.service-card');
             cards.forEach((card, index) => {
-                setTimeout(() => {
-                    card.classList.add('visible');
-                }, index * 150);
+                setTimeout(() => card.classList.add('visible'), index * 150);
             });
         }, 1400);
+
         setTimeout(() => {
             const testimonials = document.querySelectorAll('.testimonial-card');
             testimonials.forEach((card, index) => {
-                setTimeout(() => {
-                    card.classList.add('visible');
-                }, index * 200);
+                setTimeout(() => card.classList.add('visible'), index * 200);
             });
         }, 2000);
+
         setTimeout(() => {
             const faqs = document.querySelectorAll('.faq-item');
             faqs.forEach((item, index) => {
-                setTimeout(() => {
-                    item.classList.add('visible');
-                }, index * 150);
+                setTimeout(() => item.classList.add('visible'), index * 150);
             });
         }, 2500);
     });
 
+    // التحقق من تسجيل المستخدم
+    async function checkUserRegistration() {
+        try {
+            const response = await fetch(`${API_URL}?action=check_user_registration&email=${encodeURIComponent(userEmail)}`);
+            const result = await response.json();
+
+            if (result.success && result.registered) {
+                isRegistered = true;
+                userPackage = result.package;
+                sessionStorage.setItem('userPackage', userPackage);
+                unlockServiceCards();
+            }
+        } catch (error) {
+            console.error('Error checking registration:', error);
+        }
+    }
+
+    // فتح بطاقات الخدمات
+    function unlockServiceCards() {
+        const serviceCards = document.querySelectorAll('.service-card');
+
+        serviceCards.forEach((card, index) => {
+            card.style.cursor = 'pointer';
+            card.style.position = 'relative';
+
+            // إضافة أيقونة فتح القفل
+            if (!card.querySelector('.unlocked-icon')) {
+                const icon = document.createElement('i');
+                icon.className = 'fas fa-check-circle unlocked-icon';
+                icon.style.cssText = 'position:absolute;top:20px;right:20px;color:#10B981;font-size:22px;';
+                card.appendChild(icon);
+            }
+
+            // إضافة حدث الضغط
+            card.addEventListener('click', () => handleServiceClick(index));
+
+            // تحسين الـ hover
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-15px) scale(1.05)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    }
+
+    // معالجة الضغط على بطاقة خدمة
+    function handleServiceClick(serviceIndex) {
+        if (!isRegistered) {
+            alert('Please register first by choosing a package below!');
+            window.scrollTo({
+                top: document.querySelector('.services-gallery').offsetTop,
+                behavior: 'smooth'
+            });
+            return;
+        }
+
+        // تحديد اللاحقة حسب الباقة
+        let packageSuffix = 'Reg';
+        if (userPackage.includes('Luxury')) {
+            packageSuffix = 'Lux';
+        } else if (userPackage.includes('Medium')) {
+            packageSuffix = 'Med';
+        }
+
+        // مصفوفة الصفحات حسب ترتيب البطاقات
+        const servicePages = [
+            'photoVideography.html',                    // 0: Photography & Videography
+            `servicesList${packageSuffix}.html`,        // 1: Custom Food Menus
+            `invCard${packageSuffix}.html`,             // 2: Invitations & Stationery
+            'luxuryVideo.html',                         // 3: Music & Entertainment
+            'regDecoration.html',                       // 4: Decor & Venue Design
+            'regDecoration.html',                       // 5: Theme & Color
+            `${packageSuffix}Cake.html`,                // 6: Cake & Dessert
+            'rsvp.html',                                // 7: RSVP & Guest Count
+            'budget.html'                               // 8: Budget Management
+        ];
+
+        const targetPage = servicePages[serviceIndex];
+
+        if (targetPage) {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                window.location.href = targetPage;
+            }, 300);
+        }
+    }
+
+    // تحديث دالة goToPreparation
+    function goToPreparation(packageName) {
+        document.body.style.opacity = '0';
+        setTimeout(() => {
+            window.location.href = `preparation.php?package=${encodeURIComponent(packageName)}`;
+        }, 300);
+    }
+
+    // Login button
     document.getElementById('loginBtn').addEventListener('click', function () {
         document.body.style.opacity = '0';
         setTimeout(() => { window.location.href = 'login.html'; }, 500);
     });
 
-    function goToPreparation() {
-        document.body.style.opacity = '0';
-        setTimeout(() => { window.location.href = 'preparation.html'; }, 500);
-    }
-
+    // Contact button
     function goToContact() {
         document.body.style.opacity = '0';
         setTimeout(() => { window.location.href = 'contact.html'; }, 500);
