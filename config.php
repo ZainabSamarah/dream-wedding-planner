@@ -1,15 +1,14 @@
 <?php
-// config.php - ملف الاتصال بقاعدة البيانات المركزي
+session_start();
 
-session_start(); // لازم في كل صفحة تستخدم session
-
+// إعدادات الاتصال
 $host = 'localhost';
-$db = 'wedding_db';          // اسم الداتابيز
-$user = 'root';
-$pass = '123456';            // الباسوورد الصحيح
+$dbname = 'wedding_db';
+$username = 'root';
+$password = '';                    // فارغ لـ XAMPP، غيريه لو في باسوورد
 $charset = 'utf8mb4';
 
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
 
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
@@ -18,10 +17,16 @@ $options = [
 ];
 
 try {
-    $pdo = new PDO($dsn, $user, $pass, $options);
-    // اختياري: رسالة نجاح للتطوير فقط (احذفها لاحقاً)
-    // echo "✓ تم الاتصال بقاعدة البيانات بنجاح!";
+    $pdo = new PDO($dsn, $username, $password, $options);
 } catch (PDOException $e) {
-    die("❌ خطأ في الاتصال بقاعدة البيانات: " . $e->getMessage());
+    die("rror connecting to DB " . $e->getMessage());
 }
+
+// تحقق من تسجيل الدخول (استخدميه في الصفحات المحمية فقط)
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
 ?>

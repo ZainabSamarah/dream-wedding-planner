@@ -1,19 +1,62 @@
 <?php
 require_once 'config.php';
 
-// Check if user is logged in and is admin/owner
-if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
-    header("Location: login.php");
-    exit();
-}
-
+// تحقق من أن المستخدم admin أو owner
 if ($_SESSION['role'] !== 'owner' && $_SESSION['role'] !== 'admin') {
     header("Location: main.html");
     exit();
 }
 
-$user_id = $_SESSION['user_id'];
-$first_name = $_SESSION['first_name'];
+// جلب المستخدمين اللي عندهم رسائل مع الـ admin
+$stmt = $pdo->prepare("
+SELECT DISTINCT u.id, u.first_name, u.last_name
+FROM messages m
+JOIN users u ON (u.id = m.from_user_id OR u.id = m.to_user_id)
+WHERE (m.from_user_id = 1 OR m.to_user_id = 1)
+AND u.id != 1
+ORDER BY u.first_name
+");
+$stmt->execute();
+$chat_users = $stmt->fetchAll();
+
+// إذا كان فيه طلب AJAX لإرسال رسالة
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['to_user_id']) && isset($_POST['content'])) {
+$to_user_id = (int)$_POST['to_user_id'];
+$content = trim($_POST['content']);
+
+if ($content !== '') {
+$stmt = $pdo->prepare("INSERT INTO messages (from_user_id, to_user_id, content, sent_at) VALUES (1, ?, ?, NOW())");
+$stmt->execute([$to_user_id, $content]);
+}
+exit; // مهم عشان ما يطبعش HTML تاني
+}
+
+// إذا كان فيه طلب AJAX لجلب الرسائل
+if (isset($_GET['user_id'])) {
+$user_id = (int)$_GET['user_id'];
+$stmt = $pdo->prepare("
+SELECT m.content, m.sent_at, m.from_user_id
+FROM messages m
+WHERE (m.from_user_id = 1 AND m.to_user_id = ?)
+OR (m.from_user_id = ? AND m.to_user_id = 1)
+ORDER BY m.sent_at ASC
+");
+$stmt->execute([$user_id, $user_id]);
+$msgs = $stmt->fetchAll();
+
+foreach ($msgs as $msg) {
+$align = $msg['from_user_id'] == 1 ? 'right' : 'left';
+$bg = $msg['from_user_id'] == 1 ? 'var(--green-light)' : '#f0f0f0';
+$color = $msg['from_user_id'] == 1 ? 'white' : 'black';
+echo "<p style='text-align:$align; margin:8px 0;'>
+                <span style='display:inline-block; max-width:70%; padding:10px 15px; border-radius:15px; background:$bg; color:$color;'>
+                    " . htmlspecialchars($msg['content']) . "
+                    <br><small style='opacity:0.7; font-size:11px;'>" . $msg['sent_at'] . "</small>
+                </span>
+</p>";
+}
+exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +83,6 @@ $first_name = $_SESSION['first_name'];
             padding-bottom: 200px;
         }
 
-        /* HEADER - SAME AS MAIN */
         header {
             background-color: var(--green-medium);
             padding: 15px 40px;
@@ -55,194 +97,78 @@ $first_name = $_SESSION['first_name'];
             height: 70px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        header h1 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 36px;
-            color: var(--green-pale);
-        }
-        header h1 a {
-            color: var(--green-pale);
-            text-decoration: none;
-        }
-        header nav {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        header nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: opacity 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        header h1 { font-family: 'Great Vibes', cursive; font-size: 36px; color: var(--green-pale); }
+        header h1 a { color: var(--green-pale); text-decoration: none; }
+        header nav { display: flex; align-items: center; gap: 20px; }
+        header nav a { color: white; text-decoration: none; font-weight: 500; transition: opacity 0.3s; }
         header nav a:hover { opacity: 0.8; }
         .nav-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 25px;
-            background: var(--green-light);
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            padding: 10px 20px; border: none; border-radius: 25px; background: var(--green-light);
+            color: white; cursor: pointer; font-weight: 600; transition: all 0.3s;
         }
-        .nav-btn:hover {
-            background: var(--green-dark);
-            transform: translateY(-2px);
-        }
+        .nav-btn:hover { background: var(--green-dark); transform: translateY(-2px); }
 
-        /* MAIN CONTENT */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
 
-        .chat-container {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 40px;
-        }
+        .chat-container { display: flex; gap: 20px; margin-bottom: 40px; }
 
         .users-list {
-            width: 250px;
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            height: fit-content;
+            width: 250px; background: white; padding: 20px; border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); height: fit-content;
         }
-
         .users-list h2 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 24px;
-            color: var(--green-dark);
-            margin-bottom: 15px;
-            text-align: center;
+            font-family: 'Great Vibes', cursive; font-size: 24px; color: var(--green-dark);
+            margin-bottom: 15px; text-align: center;
         }
-
-        .users-list ul {
-            list-style: none;
-        }
-
+        .users-list ul { list-style: none; }
         .users-list ul li {
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            background: var(--green-pale);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            text-align: center;
-            font-weight: 500;
+            padding: 12px 15px; margin-bottom: 10px; background: var(--green-pale);
+            border-radius: 10px; cursor: pointer; transition: background-color 0.3s;
+            text-align: center; font-weight: 500;
         }
-
         .users-list ul li:hover {
-            background-color: var(--green-light);
-            color: white;
+            background-color: var(--green-light); color: white;
+        }
+        .users-list ul li.active {
+            background-color: var(--green-medium); color: white;
         }
 
         .chat-window {
-            flex: 1;
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            height: 500px;
+            flex: 1; background: white; border-radius: 15px; padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; height: 500px;
         }
-
         .chat-window h2 {
-            text-align: center;
-            color: var(--green-dark);
-            margin-bottom: 15px;
+            text-align: center; color: var(--green-dark); margin-bottom: 15px;
             font-family: 'Great Vibes', cursive;
         }
-
         .messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-            border: 1px solid var(--green-light);
-            border-radius: 10px;
-            margin-bottom: 10px;
-            background: #f8f9f7;
+            flex: 1; overflow-y: auto; padding: 10px; border: 1px solid var(--green-light);
+            border-radius: 10px; margin-bottom: 10px; background: #f8f9f7;
         }
+        .messages p { font-size: 14px; margin-bottom: 8px; }
 
-        .messages p {
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-
-        .input-area {
-            display: flex;
-            gap: 10px;
-        }
-
+        .input-area { display: flex; gap: 10px; }
         .input-area input {
-            flex: 1;
-            padding: 10px 15px;
-            border-radius: 20px;
-            border: 1px solid var(--green-light);
-            outline: none;
+            flex: 1; padding: 10px 15px; border-radius: 20px; border: 1px solid var(--green-light); outline: none;
         }
-
         .input-area button {
-            padding: 10px 20px;
-            border-radius: 20px;
-            border: none;
-            background-color: var(--green-light);
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            padding: 10px 20px; border-radius: 20px; border: none; background-color: var(--green-light);
+            color: white; font-weight: 600; cursor: pointer; transition: background-color 0.3s;
         }
+        .input-area button:hover { background-color: var(--green-dark); }
 
-        .input-area button:hover {
-            background-color: var(--green-dark);
-        }
-
-        /* FOOTER - SAME AS MAIN */
         footer {
-            background-color: var(--green-medium);
-            color: white;
-            text-align: center;
-            padding: 40px 20px;
-            margin-top: 60px;
+            background-color: var(--green-medium); color: white; text-align: center; padding: 40px 20px; margin-top: 60px;
         }
         .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-bottom: 30px;
+            max-width: 1200px; margin: 0 auto; display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 30px;
         }
-        .footer-column h3 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: var(--green-pale);
-        }
-        .footer-column a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        .footer-column a:hover {
-            color: var(--green-pale);
-        }
+        .footer-column h3 { font-size: 18px; margin-bottom: 15px; color: var(--green-pale); }
+        .footer-column a { display: block; color: white; text-decoration: none; margin-bottom: 10px; font-size: 14px; }
+        .footer-column a:hover { color: var(--green-pale); }
         .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.2);
-            padding-top: 20px;
-            margin-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; margin-top: 30px;
         }
 
         @media (max-width: 768px) {
@@ -253,7 +179,6 @@ $first_name = $_SESSION['first_name'];
 </head>
 <body>
 
-<!-- HEADER - SAME AS MAIN -->
 <header>
     <h1><a href="main.html">WEDÉ</a></h1>
     <nav>
@@ -263,8 +188,7 @@ $first_name = $_SESSION['first_name'];
         <a href="gallery.html">Gallery</a>
         <a href="contact.html">Contact</a>
         <button class="nav-btn" onclick="logout()">
-            <i class="fas fa-sign-out-alt"></i>
-            Logout
+            <i class="fas fa-sign-out-alt"></i> Logout
         </button>
     </nav>
 </header>
@@ -275,7 +199,15 @@ $first_name = $_SESSION['first_name'];
         <div class="users-list">
             <h2>Users</h2>
             <ul id="usersList">
+                <?php if (empty($chat_users)): ?>
                 <li>No users yet</li>
+                <?php else: ?>
+                <?php foreach ($chat_users as $user): ?>
+                <li data-user-id="<?php echo $user['id']; ?>">
+                    <?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?>
+                </li>
+                <?php endforeach; ?>
+                <?php endif; ?>
             </ul>
         </div>
 
@@ -293,7 +225,6 @@ $first_name = $_SESSION['first_name'];
     </div>
 </div>
 
-<!-- FOOTER - SAME AS MAIN -->
 <footer>
     <div class="footer-content">
         <div class="footer-column">
@@ -336,25 +267,78 @@ $first_name = $_SESSION['first_name'];
     }
 
     const usersList = document.getElementById('usersList');
-    const messages = document.getElementById('messages');
+    const messagesDiv = document.getElementById('messages');
     const messageInput = document.getElementById('messageInput');
     const sendBtn = document.getElementById('sendBtn');
 
-    // Example: Load users from database (to be implemented)
-    const sampleUsers = [];
-    if (sampleUsers.length > 0) {
-        usersList.innerHTML = '';
-        sampleUsers.forEach(user => {
-            const li = document.createElement('li');
-            li.textContent = user;
-            li.addEventListener('click', () => {
-                messages.innerHTML = '<p style="text-align:center; opacity:0.6;">No messages yet.</p>';
-                messageInput.disabled = false;
-                sendBtn.disabled = false;
+    let currentUserId = null;
+
+    usersList.addEventListener('click', (e) => {
+        const li = e.target.closest('li');
+        if (!li || !li.dataset.userId) return;
+
+        // تحديد المستخدم المختار
+        document.querySelectorAll('#usersList li').forEach(l => l.classList.remove('active'));
+        li.classList.add('active');
+
+        currentUserId = li.dataset.userId;
+        messagesDiv.innerHTML = '<p style="text-align:center; opacity:0.6;">Loading messages...</p>';
+
+        // جلب الرسائل
+        fetch(`admin-messages.php?user_id=${currentUserId}`)
+            .then(r => r.text())
+            .then(html => {
+                messagesDiv.innerHTML = html || '<p style="text-align:center; opacity:0.6;">No messages yet.</p>';
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
             });
-            usersList.appendChild(li);
+
+        messageInput.disabled = false;
+        sendBtn.disabled = false;
+        messageInput.focus();
+    });
+
+    // إرسال رسالة
+    sendBtn.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    function sendMessage() {
+        const content = messageInput.value.trim();
+        if (!content || !currentUserId) return;
+
+        const formData = new FormData();
+        formData.append('to_user_id', currentUserId);
+        formData.append('content', content);
+
+        fetch('admin-messages.php', {
+            method: 'POST',
+            body: formData
+        }).then(() => {
+            messageInput.value = '';
+            // إعادة تحميل الرسائل
+            fetch(`admin-messages.php?user_id=${currentUserId}`)
+                .then(r => r.text())
+                .then(html => {
+                    messagesDiv.innerHTML = html;
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                });
         });
     }
+
+    // تحديث تلقائي كل 10 ثواني (اختياري)
+    setInterval(() => {
+        if (currentUserId) {
+            fetch(`admin-messages.php?user_id=${currentUserId}`)
+                .then(r => r.text())
+                .then(html => {
+                    if (messagesDiv.innerHTML !== html) {
+                        messagesDiv.innerHTML = html;
+                        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                    }
+                });
+        }
+    }, 10000);
 </script>
 
 </body>

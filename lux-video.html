@@ -1,3 +1,7 @@
+<?php
+require_once 'config.php'; // يجب أن يحتوي على session_start(), اتصال PDO, تحقق من اللوجن, $user_id
+?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -23,8 +27,6 @@
             padding-top: 70px;
             padding-bottom: 200px;
         }
-
-        /* HEADER - SAME AS MAIN */
         header {
             background-color: var(--green-medium);
             padding: 15px 40px;
@@ -39,309 +41,81 @@
             height: 70px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        header h1 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 36px;
-            color: var(--green-pale);
-        }
-        header h1 a {
-            color: var(--green-pale);
-            text-decoration: none;
-        }
-        header nav {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        header nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: opacity 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        header h1 { font-family: 'Great Vibes', cursive; font-size: 36px; color: var(--green-pale); }
+        header h1 a { color: var(--green-pale); text-decoration: none; }
+        header nav { display: flex; align-items: center; gap: 20px; }
+        header nav a { color: white; text-decoration: none; font-weight: 500; transition: opacity 0.3s; }
         header nav a:hover { opacity: 0.8; }
         .nav-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 25px;
-            background: var(--green-light);
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            padding: 10px 20px; background-color: var(--green-light); color: white; border: none;
+            border-radius: 25px; font-weight: 600; cursor: pointer; transition: all 0.3s;
         }
-        .nav-btn:hover {
-            background: var(--green-dark);
-            transform: translateY(-2px);
-        }
+        .nav-btn:hover { background-color: var(--green-dark); transform: translateY(-2px); }
 
-        /* MAIN CONTENT */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .container h2 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 48px;
-            margin-bottom: 30px;
-            text-align: center;
-            color: var(--green-dark);
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .container h2 { font-family: 'Great Vibes', cursive; font-size: 48px; margin-bottom: 30px; text-align: center; color: var(--green-dark); }
 
         .upload-section {
             background: linear-gradient(135deg, var(--green-light), var(--green-medium));
-            padding: 40px;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            text-align: center;
+            padding: 40px; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); text-align: center;
         }
-
-        .upload-section h3 {
-            color: white;
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-
+        .upload-section h3 { color: white; margin-bottom: 20px; font-size: 24px; }
         .upload-btn {
-            background-color: white;
-            color: var(--green-dark);
-            border: none;
-            padding: 15px 30px;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 16px;
+            background-color: white; color: var(--green-dark); border: none; padding: 15px 30px;
+            border-radius: 25px; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 16px;
         }
+        .upload-btn:hover { background-color: var(--green-pale); transform: translateY(-2px); }
 
-        .upload-btn:hover {
-            background-color: var(--green-pale);
-            transform: translateY(-2px);
-        }
-
-        #image-preview {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
+        #image-preview { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 20px; }
         .image-item {
-            width: 150px;
-            height: 150px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            border: 3px solid var(--green-light);
-            cursor: grab;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: white;
+            width: 150px; height: 150px; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border: 3px solid var(--green-light); cursor: grab; background: white;
         }
+        .image-item img { width: 100%; height: 100%; object-fit: cover; }
 
-        .image-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
+        .video-options { background: white; padding: 30px; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .video-options h3 { color: var(--green-dark); margin-bottom: 20px; font-size: 24px; }
+        .option-group { margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; align-items: center; }
+        .option-group label { font-weight: 500; color: var(--green-dark); min-width: 150px; }
+        .option-group select, .option-group input[type="number"] {
+            padding: 10px 15px; border-radius: 10px; border: 1px solid var(--green-light); min-width: 200px;
         }
+        .text-inputs { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+        .text-inputs input { padding: 12px 15px; border-radius: 10px; border: 1px solid var(--green-light); width: 100%; max-width: 300px; }
 
-        .video-options {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
-
-        .video-options h3 {
-            color: var(--green-dark);
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-
-        .option-group {
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        .option-group label {
-            font-weight: 500;
-            color: var(--green-dark);
-            min-width: 150px;
-        }
-
-        .option-group select,
-        .option-group input[type="number"] {
-            padding: 10px 15px;
-            border-radius: 10px;
-            border: 1px solid var(--green-light);
-            min-width: 200px;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .text-inputs {
-            margin-top: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        .text-inputs input {
-            padding: 12px 15px;
-            border-radius: 10px;
-            border: 1px solid var(--green-light);
-            width: 100%;
-            max-width: 300px;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .display-buttons {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
+        .display-buttons { margin-top: 30px; display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; }
         .display-buttons button {
-            background-color: var(--green-light);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            min-width: 220px;
-            font-size: 16px;
+            background-color: var(--green-light); color: white; border: none; padding: 15px 30px;
+            border-radius: 25px; font-weight: 600; cursor: pointer; transition: 0.3s; min-width: 220px; font-size: 16px;
         }
-
-        .display-buttons button:disabled {
-            background-color: #aaa;
-            cursor: not-allowed;
-        }
-
-        .display-buttons button:hover:not(:disabled) {
-            background-color: var(--green-medium);
-            transform: translateY(-2px);
-        }
-
-        .display-buttons button i.fa-spinner {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .display-buttons button:disabled { background-color: #aaa; cursor: not-allowed; }
+        .display-buttons button:hover:not(:disabled) { background-color: var(--green-medium); transform: translateY(-2px); }
 
         #preview-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.95);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95);
+            z-index: 100; align-items: center; justify-content: center; flex-direction: column;
         }
+        #preview-video { max-width: 90%; max-height: 80vh; border: 10px solid var(--green-light); border-radius: 15px; background: black; }
+        #close-preview { margin-top: 20px; padding: 12px 30px; background: var(--green-light); color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: 600; }
+        #close-preview:hover { background: var(--green-medium); }
 
-        #preview-video {
-            max-width: 90%;
-            max-height: 80vh;
-            border: 10px solid var(--green-light);
-            border-radius: 15px;
-            background: black;
-        }
+        .progress-text { margin-top: 30px; text-align: center; font-weight: 600; color: var(--green-dark); font-size: 18px; }
 
-        #close-preview {
-            margin-top: 20px;
-            padding: 12px 30px;
-            background: var(--green-light);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        #close-preview:hover {
-            background: var(--green-medium);
-        }
-
-        .progress-text {
-            margin-top: 15px;
-            text-align: center;
-            font-weight: 600;
-            color: var(--green-dark);
-        }
-
-        /* FOOTER - SAME AS MAIN */
-        footer {
-            background-color: var(--green-medium);
-            color: white;
-            text-align: center;
-            padding: 40px 20px;
-            margin-top: 60px;
-        }
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-bottom: 30px;
-        }
-        .footer-column h3 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: var(--green-pale);
-        }
-        .footer-column a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        .footer-column a:hover {
-            color: var(--green-pale);
-        }
-        .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.2);
-            padding-top: 20px;
-            margin-top: 30px;
-        }
+        footer { background-color: var(--green-medium); color: white; text-align: center; padding: 40px 20px; margin-top: 60px; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 30px; }
+        .footer-column h3 { font-size: 18px; margin-bottom: 15px; color: var(--green-pale); }
+        .footer-column a { display: block; color: white; text-decoration: none; margin-bottom: 10px; font-size: 14px; }
+        .footer-column a:hover { color: var(--green-pale); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; margin-top: 30px; }
 
         @media (max-width: 768px) {
-            .container { padding: 20px 10px; }
-            .upload-section { padding: 20px; }
-            .video-options { padding: 20px; }
             .option-group { flex-direction: column; align-items: stretch; }
-            .option-group label { min-width: auto; }
-            .option-group select,
-            .option-group input[type="number"] { min-width: auto; width: 100%; }
+            .option-group label, .option-group select, .option-group input[type="number"] { min-width: auto; width: 100%; }
         }
     </style>
 </head>
 <body>
 
-<!-- HEADER - SAME AS MAIN -->
 <header>
     <h1><a href="main.html">WEDÉ</a></h1>
     <nav>
@@ -350,7 +124,7 @@
         <a href="services.html">Services</a>
         <a href="gallery.html">Gallery</a>
         <a href="contact.html">Contact</a>
-        <button class="nav-btn" onclick="window.location.href='login.php'">Login</button>
+        <button class="nav-btn" onclick="window.location.href='logout.php'">Logout</button>
     </nav>
 </header>
 
@@ -384,15 +158,6 @@
             <input type="number" id="slide-duration" value="3" min="1" max="10">
         </div>
 
-        <div class="option-group">
-            <label for="music-select">Background Music:</label>
-            <select id="music-select">
-                <option value="none">No Music</option>
-                <option value="romantic">Romantic Piano</option>
-                <option value="upbeat">Upbeat Pop</option>
-            </select>
-        </div>
-
         <div class="text-inputs">
             <input type="text" placeholder="Bride's Name" id="bride-name">
             <input type="text" placeholder="Groom's Name" id="groom-name">
@@ -401,20 +166,17 @@
     </div>
 
     <div class="display-buttons">
-        <button id="preview-btn"><i class="fas fa-eye"></i> Preview Video</button>
-        <button id="fullscreen-btn"><i class="fas fa-play-circle"></i> Play Fullscreen</button>
-        <button id="download-btn"><i class="fas fa-download"></i> Download Video</button>
+        <button id="generate-btn"><i class="fas fa-video"></i> Generate & Save Video</button>
     </div>
 
     <div class="progress-text" id="progress-text"></div>
 </div>
 
-<div id="preview-modal" role="dialog" aria-modal="true">
-    <video id="preview-video" controls></video>
+<div id="preview-modal">
+    <video id="preview-video" controls autoplay></video>
     <button id="close-preview">Close Preview</button>
 </div>
 
-<!-- FOOTER - SAME AS MAIN -->
 <footer>
     <div class="footer-content">
         <div class="footer-column">
@@ -457,13 +219,11 @@
     const openUploadBtn = document.getElementById('open-upload');
     const imageUpload = document.getElementById('image-upload');
     const previewContainer = document.getElementById('image-preview');
-    const previewBtn = document.getElementById('preview-btn');
-    const fullscreenBtn = document.getElementById('fullscreen-btn');
-    const downloadBtn = document.getElementById('download-btn');
+    const generateBtn = document.getElementById('generate-btn');
+    const progressText = document.getElementById('progress-text');
     const previewModal = document.getElementById('preview-modal');
     const previewVideo = document.getElementById('preview-video');
     const closePreviewBtn = document.getElementById('close-preview');
-    const progressText = document.getElementById('progress-text');
 
     let imageFilesOrdered = [];
     let preRenderedCanvases = [];
@@ -473,11 +233,8 @@
     function loadImageFromFile(file) {
         return new Promise((resolve, reject) => {
             const img = new Image();
-            img.onload = () => {
-                URL.revokeObjectURL(img.src);
-                resolve(img);
-            };
-            img.onerror = (e) => { URL.revokeObjectURL(img.src); reject(e); };
+            img.onload = () => resolve(img);
+            img.onerror = reject;
             img.src = URL.createObjectURL(file);
         });
     }
@@ -506,22 +263,15 @@
             const div = document.createElement('div');
             div.className = 'image-item';
             div.dataset.index = idx;
-            div.innerHTML = `<img src="${url}" alt="photo-${idx}">`;
+            div.innerHTML = `<img src="${url}" alt="photo">`;
             previewContainer.appendChild(div);
-            const imgEl = div.querySelector('img');
-            imgEl.onload = () => { URL.revokeObjectURL(url); };
         });
 
-        if (previewContainer._sortable) previewContainer._sortable.destroy();
-        previewContainer._sortable = new Sortable(previewContainer, {
+        new Sortable(previewContainer, {
             animation: 150,
             onEnd: () => {
                 const nodes = Array.from(previewContainer.children);
-                const newFiles = nodes.map(n => {
-                    const idx = Number(n.dataset.index);
-                    return imageFilesOrdered[idx];
-                });
-                imageFilesOrdered = newFiles.slice();
+                imageFilesOrdered = nodes.map(n => imageFilesOrdered[Number(n.dataset.index)]);
                 previewContainer.querySelectorAll('.image-item').forEach((n, i) => n.dataset.index = i);
             }
         });
@@ -529,18 +279,13 @@
 
     imageUpload.addEventListener('change', async (e) => {
         const files = e.target.files;
-        if (!files || files.length === 0) return;
+        if (!files.length) return;
         renderThumbnails(files);
         preRenderedCanvases = [];
 
-        for (let f of imageFilesOrdered) {
-            try {
-                const img = await loadImageFromFile(f);
-                const pc = renderImageToCanvasFit(img, OUT_W, OUT_H);
-                preRenderedCanvases.push(pc);
-            } catch (err) {
-                console.warn('image preload failed', err);
-            }
+        for (let file of imageFilesOrdered) {
+            const img = await loadImageFromFile(file);
+            preRenderedCanvases.push(renderImageToCanvasFit(img, OUT_W, OUT_H));
         }
     });
 
@@ -551,188 +296,134 @@
         ctx.fillStyle = '#4B5945';
         ctx.fillRect(0,0,OUT_W,OUT_H);
         ctx.textAlign = 'center';
-        const titleSize = Math.min(100, Math.floor(OUT_W / 7));
-        ctx.font = `bold ${titleSize}px Great Vibes, serif`;
+        ctx.font = `bold ${Math.min(100, OUT_W / 7)}px 'Great Vibes'`;
         ctx.fillStyle = '#B2C9AD';
         ctx.fillText(`${bride} & ${groom}`, OUT_W/2, OUT_H/2 - 60);
-        ctx.font = `${Math.min(48, Math.floor(OUT_W / 12))}px Poppins, sans-serif`;
+        ctx.font = `${Math.min(48, OUT_W / 12)}px Poppins`;
         ctx.fillStyle = 'white';
         ctx.fillText(date, OUT_W/2, OUT_H/2 + 60);
         return c;
     }
 
-    function setGenerating(state, text = 'Generating...') {
-        [previewBtn, fullscreenBtn, downloadBtn].forEach(btn => {
-            btn.disabled = state;
-            if (state) {
-                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${text}`;
-            } else {
-                if (btn.id === 'preview-btn') btn.innerHTML = '<i class="fas fa-eye"></i> Preview Video';
-                if (btn.id === 'fullscreen-btn') btn.innerHTML = '<i class="fas fa-play-circle"></i> Play Fullscreen';
-                if (btn.id === 'download-btn') btn.innerHTML = '<i class="fas fa-download"></i> Download Video';
-            }
-        });
-    }
-
     async function generateVideoBlob() {
-        if (!imageFilesOrdered.length || !preRenderedCanvases.length) {
-            alert('Please upload at least one photo first!');
+        if (!preRenderedCanvases.length) {
+            alert('Upload photos first!');
             return null;
         }
 
-        setGenerating(true, 'Preparing...');
+        generateBtn.disabled = true;
+        progressText.textContent = 'Generating video... (may take 30-60 seconds)';
 
         const slideSec = Math.max(1, Number(document.getElementById('slide-duration').value) || 3);
         const slideFrames = Math.round(FPS * slideSec);
-        const totalSlides = 1 + preRenderedCanvases.length;
-        let currentSlideIndex = 0;
 
-        const recCanvas = document.createElement('canvas');
-        recCanvas.width = OUT_W; recCanvas.height = OUT_H;
-        const recCtx = recCanvas.getContext('2d');
+        const canvas = document.createElement('canvas');
+        canvas.width = OUT_W; canvas.height = OUT_H;
+        const ctx = canvas.getContext('2d');
 
-        const videoStream = recCanvas.captureStream(FPS);
-        const mime = 'video/webm;codecs=vp9';
-        let recorder;
-        try {
-            recorder = new MediaRecorder(videoStream, { mimeType: mime });
-        } catch (e) {
-            try { recorder = new MediaRecorder(videoStream); }
-            catch (err) { setGenerating(false); alert('Recording not supported'); return null; }
-        }
-
+        const stream = canvas.captureStream(FPS);
+        const recorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
         const chunks = [];
-        recorder.ondataavailable = ev => { if (ev.data && ev.data.size) chunks.push(ev.data); };
 
-        function updateProgressText(i) {
-            progressText.textContent = `Rendering ${i}/${totalSlides}`;
-        }
-
-        recorder.start(200);
-        currentSlideIndex = 1;
-        updateProgressText(currentSlideIndex);
+        recorder.ondataavailable = e => e.data.size && chunks.push(e.data);
+        recorder.start();
 
         const titleCanvas = renderTitleCanvas(
-            document.getElementById('bride-name').value.trim() || 'The Bride',
-            document.getElementById('groom-name').value.trim() || 'The Groom',
+            document.getElementById('bride-name').value.trim() || 'Bride',
+            document.getElementById('groom-name').value.trim() || 'Groom',
             document.getElementById('wedding-date').value.trim() || 'Forever'
         );
 
         for (let f = 0; f < slideFrames; f++) {
-            recCtx.drawImage(titleCanvas, 0, 0);
+            ctx.drawImage(titleCanvas, 0, 0);
             await new Promise(r => requestAnimationFrame(r));
         }
 
-        let prevCanvas = null;
-        for (let i = 0; i < preRenderedCanvases.length; ++i) {
-            currentSlideIndex = i + 2;
-            updateProgressText(currentSlideIndex);
-
-            const pc = preRenderedCanvases[i];
+        let prev = null;
+        for (let pc of preRenderedCanvases) {
             const style = document.getElementById('video-style').value;
+            const transFrames = Math.round(FPS * 0.5);
 
-            if (style === 'fade' || style === 'zoom') {
-                const transFrames = Math.max(4, Math.round(FPS * 0.15));
+            if (style !== 'simple') {
                 for (let t = 0; t < transFrames; t++) {
-                    const a = t / (transFrames - 1 || 1);
-                    recCtx.clearRect(0,0,OUT_W,OUT_H);
-                    if (prevCanvas) {
-                        recCtx.globalAlpha = 1 - a;
-                        recCtx.drawImage(prevCanvas, 0, 0);
+                    const a = t / transFrames;
+                    ctx.clearRect(0,0,OUT_W,OUT_H);
+                    if (prev) {
+                        ctx.globalAlpha = 1 - a;
+                        ctx.drawImage(prev, 0, 0);
                     }
-                    recCtx.globalAlpha = a;
+                    ctx.globalAlpha = a;
                     if (style === 'zoom') {
-                        const scale = 1 + 0.06 * a;
-                        recCtx.save();
-                        recCtx.translate(OUT_W/2, OUT_H/2);
-                        recCtx.scale(scale, scale);
-                        recCtx.translate(-OUT_W/2, -OUT_H/2);
-                        recCtx.drawImage(pc, 0, 0);
-                        recCtx.restore();
+                        const scale = 1 + 0.1 * a;
+                        ctx.save();
+                        ctx.translate(OUT_W/2, OUT_H/2);
+                        ctx.scale(scale, scale);
+                        ctx.translate(-OUT_W/2, -OUT_H/2);
+                        ctx.drawImage(pc, 0, 0);
+                        ctx.restore();
                     } else {
-                        recCtx.drawImage(pc, 0, 0);
+                        ctx.drawImage(pc, 0, 0);
                     }
-                    recCtx.globalAlpha = 1;
-                    await new Promise(r => requestAnimationFrame(r));
-                }
-
-                for (let f = 0; f < slideFrames; f++) {
-                    if (style === 'zoom') {
-                        const prog = f / Math.max(1, slideFrames-1);
-                        const scale = 1 + 0.08 * prog;
-                        recCtx.clearRect(0,0,OUT_W,OUT_H);
-                        recCtx.save();
-                        recCtx.translate(OUT_W/2, OUT_H/2);
-                        recCtx.scale(scale, scale);
-                        recCtx.translate(-OUT_W/2, -OUT_H/2);
-                        recCtx.drawImage(pc, 0, 0);
-                        recCtx.restore();
-                    } else {
-                        recCtx.drawImage(pc, 0, 0);
-                    }
-                    await new Promise(r => requestAnimationFrame(r));
-                }
-            } else {
-                for (let f = 0; f < slideFrames; f++) {
-                    recCtx.drawImage(pc, 0, 0);
+                    ctx.globalAlpha = 1;
                     await new Promise(r => requestAnimationFrame(r));
                 }
             }
 
-            prevCanvas = pc;
+            for (let f = 0; f < slideFrames; f++) {
+                ctx.drawImage(pc, 0, 0);
+                await new Promise(r => requestAnimationFrame(r));
+            }
+            prev = pc;
         }
 
-        await new Promise(resolve => {
-            recorder.onstop = () => resolve();
-            recorder.stop();
-        });
+        recorder.stop();
+        await new Promise(r => recorder.onstop = r);
 
-        try { videoStream.getTracks().forEach(t => t.stop()); } catch(e){}
+        stream.getTracks().forEach(t => t.stop());
 
-        const outBlob = new Blob(chunks, { type: 'video/webm' });
-        setGenerating(false);
-        progressText.textContent = '';
+        generateBtn.disabled = false;
 
-        return outBlob;
+        return new Blob(chunks, { type: 'video/webm' });
     }
 
-    previewBtn.addEventListener('click', async () => {
+    generateBtn.addEventListener('click', async () => {
         const blob = await generateVideoBlob();
         if (!blob) return;
-        previewVideo.pause();
-        previewVideo.src = URL.createObjectURL(blob);
-        previewModal.style.display = 'flex';
-        previewVideo.play().catch(()=>{});
-    });
 
-    fullscreenBtn.addEventListener('click', async () => {
-        const blob = await generateVideoBlob();
-        if (!blob) return;
-        const url = URL.createObjectURL(blob);
-        const v = document.createElement('video');
-        v.src = url;
-        v.controls = true;
-        v.style = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:black;object-fit:contain;z-index:99999;';
-        document.body.appendChild(v);
-        v.play().catch(()=>{});
-        v.requestFullscreen?.();
-        v.onended = () => { try { v.remove(); } catch(e) {} };
-    });
+        progressText.textContent = 'Saving video to server...';
 
-    downloadBtn.addEventListener('click', async () => {
-        const blob = await generateVideoBlob();
-        if (!blob) return;
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'Wede_Wedding_Video.webm';
-        a.click();
-        setTimeout(() => URL.revokeObjectURL(url), 6000);
+        const formData = new FormData();
+        formData.append('video', blob, 'wedding_video.webm');
+
+        fetch('save_video.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    progressText.innerHTML = `
+                    Video saved successfully! 🎉<br>
+                    <a href="${data.video_url}" target="_blank">Watch Video</a> |
+                    <a href="${data.video_url}" download>Download Video</a>
+                `;
+                    previewVideo.src = data.video_url;
+                    previewModal.style.display = 'flex';
+                    previewVideo.play();
+                } else {
+                    alert('Error: ' + data.message);
+                    progressText.textContent = '';
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Upload failed');
+                progressText.textContent = '';
+            });
     });
 
     closePreviewBtn.addEventListener('click', () => {
         previewVideo.pause();
-        try { URL.revokeObjectURL(previewVideo.src); } catch(e){}
         previewVideo.src = '';
         previewModal.style.display = 'none';
     });

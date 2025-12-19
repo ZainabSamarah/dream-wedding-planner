@@ -328,11 +328,19 @@
 
 <script>
     // المتغيرات العامة
-    let weddingId = null;
+    let weddingData = JSON.parse(localStorage.getItem('wede_wedding_LX')) || {
+        id: Date.now(),
+        brideName: 'Layla',
+        groomName: 'Adam',
+        weddingDate: '2026-06-14',
+        location: 'Royal Garden, London'
+    };
+
+    let weddingId = weddingData.id;
     let activeEl = null;
     const API_URL = 'wedding_qr.php';
 
-    // تحميل البطاقة المختارة
+    // تحميل البطاقة والـ QR فور التحميل
     window.addEventListener("DOMContentLoaded", () => {
         const selectedCard = localStorage.getItem("selected_card_LX");
         const bg = document.getElementById("card-bg");
@@ -340,7 +348,16 @@
             bg.src = "imgs/" + selectedCard.replace(".png","b.png");
         }
 
-        // محاولة تحميل wedding موجود
+        // ملء الحقول من localStorage
+        document.getElementById('brideName').value = weddingData.brideName;
+        document.getElementById('groomName').value = weddingData.groomName;
+        document.getElementById('weddingDate').value = weddingData.weddingDate;
+        document.getElementById('location').value = weddingData.location;
+
+        // توليد الـ QR Code تلقائيًا من البداية
+        generateQRCode();
+
+        // محاولة تحميل wedding من الداتابيز لو فيه weddingId في URL
         loadExistingWedding();
     });
 
@@ -356,12 +373,16 @@
 
                 if (data.success && data.wedding) {
                     weddingId = data.wedding.id;
+                    weddingData.id = weddingId;
                     document.getElementById('brideName').value = data.wedding.bride_name;
                     document.getElementById('groomName').value = data.wedding.groom_name;
                     document.getElementById('weddingDate').value = data.wedding.wedding_date;
                     document.getElementById('location').value = data.wedding.location;
 
-                    // توليد QR code
+                    // تحديث localStorage
+                    localStorage.setItem('wede_wedding_LX', JSON.stringify(weddingData));
+
+                    // توليد QR code جديد
                     generateQRCode();
                 }
             } catch (error) {
@@ -454,12 +475,12 @@
 
             if (data.success) {
                 weddingId = data.weddingId;
+                weddingData.id = weddingId;
+                localStorage.setItem('wede_wedding_LX', JSON.stringify(weddingData));
                 showToast('Wedding saved successfully!', 'success');
-                // تحديث URL
                 const newUrl = window.location.pathname + '?weddingId=' + weddingId;
                 window.history.pushState({}, '', newUrl);
-                // توليد QR code
-                generateQRCode();
+                generateQRCode(); // تحديث الـ QR
             } else {
                 showToast(data.message || 'Error saving wedding', 'error');
             }
@@ -469,20 +490,15 @@
         }
     });
 
-    // توليد QR Code
-    async function generateQRCode() {
-        if (!weddingId) {
-            showToast('Please save wedding details first', 'error');
-            return;
-        }
-
+    // توليد QR Code (موجودة دائمًا)
+    function generateQRCode() {
         const qrContainer = document.getElementById("qrContainer");
         qrContainer.innerHTML = '';
 
-        // الحصول على الـ domain الفعلي
         const protocol = window.location.protocol;
         const host = window.location.host;
-        const qrData = `${protocol}//${host}/qr.html?weddingId=${weddingId}`;
+        const currentId = weddingId || weddingData.id;
+        const qrData = `${protocol}//${host}/qr.html?weddingId=${currentId}`;
 
         new QRCode(qrContainer, {
             text: qrData,
@@ -492,8 +508,6 @@
             colorLight: '#FFFFFF',
             correctLevel: QRCode.CorrectLevel.H
         });
-
-        showToast('QR Code generated!', 'success');
     }
 
     generateQRBtn.addEventListener("click", generateQRCode);

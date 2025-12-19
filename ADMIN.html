@@ -1,19 +1,34 @@
 <?php
-require_once 'config.php';
+require_once 'config.php'; // ملف الاتصال بالداتابيز + session + تحقق لوغن
 
-// Check if user is logged in and is admin/owner
-if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
-    header("Location: login.php");
-    exit();
-}
-
+// تحقق من أن المستخدم admin أو owner
 if ($_SESSION['role'] !== 'owner' && $_SESSION['role'] !== 'admin') {
     header("Location: main.html");
     exit();
 }
 
-$user_id = $_SESSION['user_id'];
-$first_name = $_SESSION['first_name'];
+// جلب البيانات للـ Overview
+$total_users = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
+$pending_bookings = $pdo->query("SELECT COUNT(*) FROM bookings WHERE status = 'pending'")->fetchColumn();
+$unread_messages = $pdo->query("SELECT COUNT(*) FROM messages WHERE is_read = 0")->fetchColumn();
+
+// جلب بيانات الجداول
+$users = $pdo->query("SELECT id, first_name, last_name, email, role FROM users ORDER BY created_at DESC")->fetchAll();
+$bookings = $pdo->query("
+SELECT b.id, u.first_name, u.last_name, s.name AS service_name, b.status, b.price
+FROM bookings b
+JOIN users u ON b.user_id = u.id
+JOIN services s ON b.service_id = s.id
+ORDER BY b.created_at DESC
+")->fetchAll();
+
+$services = $pdo->query("SELECT id, name, description FROM services ORDER BY created_at DESC")->fetchAll();
+$messages = $pdo->query("
+SELECT m.id, u.first_name, u.last_name, m.content, m.is_read, m.sent_at
+FROM messages m
+JOIN users u ON m.from_user_id = u.id
+ORDER BY m.sent_at DESC
+")->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +58,6 @@ $first_name = $_SESSION['first_name'];
             padding-bottom: 200px;
         }
 
-        /* HEADER - SAME AS MAIN */
         header {
             position: fixed;
             top: 0;
@@ -59,49 +73,17 @@ $first_name = $_SESSION['first_name'];
             z-index: 100;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        header h1 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 36px;
-            color: var(--green-pale);
-        }
-        header h1 a {
-            color: var(--green-pale);
-            text-decoration: none;
-        }
-        header nav {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        header nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: opacity 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        header h1 { font-family: 'Great Vibes', cursive; font-size: 36px; color: var(--green-pale); }
+        header h1 a { color: var(--green-pale); text-decoration: none; }
+        header nav { display: flex; align-items: center; gap: 20px; }
+        header nav a { color: white; text-decoration: none; font-weight: 500; transition: opacity 0.3s; }
         header nav a:hover { opacity: 0.8; }
         .nav-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 25px;
-            background: var(--green-light);
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            padding: 10px 20px; border: none; border-radius: 25px; background: var(--green-light);
+            color: white; cursor: pointer; font-weight: 600; transition: all 0.3s;
         }
-        .nav-btn:hover {
-            background: var(--green-dark);
-            transform: translateY(-2px);
-        }
+        .nav-btn:hover { background: var(--green-dark); transform: translateY(-2px); }
 
-        /* SIDEBAR */
         .sidebar-container {
             width: 100%;
             padding: 20px 40px;
@@ -147,7 +129,6 @@ $first_name = $_SESSION['first_name'];
             color: white;
         }
 
-        /* MAIN CONTENT */
         .main-content {
             flex: 1;
             display: flex;
@@ -241,7 +222,6 @@ $first_name = $_SESSION['first_name'];
             border-left: 4px solid var(--green-light);
         }
 
-        /* FOOTER - SAME AS MAIN */
         footer {
             background-color: var(--green-medium);
             color: white;
@@ -292,7 +272,6 @@ $first_name = $_SESSION['first_name'];
 </head>
 <body>
 
-<!-- HEADER - SAME AS MAIN -->
 <header>
     <h1><a href="main.html">WEDÉ</a></h1>
     <nav>
@@ -308,7 +287,6 @@ $first_name = $_SESSION['first_name'];
     </nav>
 </header>
 
-<!-- SIDEBAR -->
 <div class="sidebar-container">
     <aside class="sidebar">
         <ul>
@@ -321,59 +299,115 @@ $first_name = $_SESSION['first_name'];
     </aside>
 </div>
 
-<!-- MAIN CONTENT -->
 <main class="main-content">
+    <!-- Overview -->
     <section id="overview" class="card">
         <h2>Dashboard Overview</h2>
         <div class="overview-grid">
-            <div class="overview-item"><h3>Total Users</h3><p>0</p></div>
-            <div class="overview-item"><h3>Pending Bookings</h3><p>0</p></div>
-            <div class="overview-item"><h3>Unpaid Payments</h3><p>0</p></div>
-            <div class="overview-item"><h3>New Messages</h3><p>0</p></div>
+            <div class="overview-item"><h3>Total Users</h3><p><?php echo $total_users; ?></p></div>
+            <div class="overview-item"><h3>Pending Bookings</h3><p><?php echo $pending_bookings; ?></p></div>
+            <div class="overview-item"><h3>Unpaid Payments</h3><p>0</p></div> <!-- لو عندك جدول payments، عدليه -->
+            <div class="overview-item"><h3>New Messages</h3><p><?php echo $unread_messages; ?></p></div>
         </div>
     </section>
 
+    <!-- Users -->
     <section id="users" class="card" style="display:none;">
         <h2>Manage Users</h2>
         <table>
             <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Actions</th></tr></thead>
             <tbody>
-            <tr><td>No users yet</td><td>-</td><td>-</td><td>-</td></tr>
+            <?php if (empty($users)): ?>
+            <tr><td colspan="4">No users yet</td></tr>
+            <?php else: ?>
+            <?php foreach ($users as $user): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?></td>
+                <td><?php echo htmlspecialchars($user['email']); ?></td>
+                <td><?php echo ucfirst($user['role']); ?></td>
+                <td>
+                    <button class="btn" style="padding:8px 15px;font-size:12px;">Edit</button>
+                    <button class="btn" style="background:#e74c3c;padding:8px 15px;font-size:12px;">Delete</button>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            <?php endif; ?>
             </tbody>
         </table>
         <button class="btn">Add User</button>
     </section>
 
+    <!-- Bookings -->
     <section id="bookings" class="card" style="display:none;">
         <h2>Manage Bookings</h2>
         <table>
             <thead><tr><th>User</th><th>Service</th><th>Status</th><th>Price</th><th>Actions</th></tr></thead>
             <tbody>
-            <tr><td>No bookings yet</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+            <?php if (empty($bookings)): ?>
+            <tr><td colspan="5">No bookings yet</td></tr>
+            <?php else: ?>
+            <?php foreach ($bookings as $booking): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($booking['first_name'] . ' ' . $booking['last_name']); ?></td>
+                <td><?php echo htmlspecialchars($booking['service_name']); ?></td>
+                <td><?php echo ucfirst($booking['status']); ?></td>
+                <td>$<?php echo number_format($booking['price'], 2); ?></td>
+                <td>
+                    <button class="btn" style="padding:8px 15px;font-size:12px;">View</button>
+                    <button class="btn" style="background:#f39c12;padding:8px 15px;font-size:12px;">Update</button>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            <?php endif; ?>
             </tbody>
         </table>
     </section>
 
+    <!-- Services -->
     <section id="services" class="card" style="display:none;">
         <h2>Manage Services</h2>
         <table>
             <thead><tr><th>Service Name</th><th>Description</th><th>Actions</th></tr></thead>
             <tbody>
-            <tr><td>No services yet</td><td>-</td><td>-</td></tr>
+            <?php if (empty($services)): ?>
+            <tr><td colspan="3">No services yet</td></tr>
+            <?php else: ?>
+            <?php foreach ($services as $service): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($service['name']); ?></td>
+                <td><?php echo htmlspecialchars($service['description']); ?></td>
+                <td>
+                    <button class="btn" style="padding:8px 15px;font-size:12px;">Edit</button>
+                    <button class="btn" style="background:#e74c3c;padding:8px 15px;font-size:12px;">Delete</button>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            <?php endif; ?>
             </tbody>
         </table>
         <button class="btn">Add Service</button>
     </section>
 
+    <!-- Messages -->
     <section id="messages" class="card" style="display:none;">
         <h2>Messages</h2>
         <ul class="messages-list">
+            <?php if (empty($messages)): ?>
             <li><strong>No messages yet</strong></li>
+            <?php else: ?>
+            <?php foreach ($messages as $msg): ?>
+            <li>
+                <strong><?php echo htmlspecialchars($msg['first_name'] . ' ' . $msg['last_name']); ?></strong>
+                (<?php echo $msg['sent_at']; ?>)<br>
+                <?php echo nl2br(htmlspecialchars($msg['content'])); ?>
+                <?php if (!$msg['is_read']): ?> <span style="color:red;font-weight:bold;">(Unread)</span><?php endif; ?>
+            </li>
+            <?php endforeach; ?>
+            <?php endif; ?>
         </ul>
     </section>
 </main>
 
-<!-- FOOTER - SAME AS MAIN -->
 <footer>
     <div class="footer-content">
         <div class="footer-column">

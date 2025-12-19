@@ -1,3 +1,6 @@
+<?php
+session_start(); // لازم للتحقق من اللوج إن لاحقاً إذا أردت
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -6,6 +9,8 @@
     <title>Luxury Cake Menu – WEDÉ</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- jQuery للـ AJAX -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         :root {
             --green-dark: #4B5945;
@@ -173,6 +178,38 @@
             color: #555;
             line-height: 1.6;
         }
+        .select-checkbox {
+            margin-top: 15px;
+            display: block;
+        }
+        .select-checkbox input[type="checkbox"] {
+            transform: scale(1.4);
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .select-checkbox label {
+            font-weight: 500;
+            color: var(--green-dark);
+            cursor: pointer;
+        }
+
+        /* قسم السلة */
+        .cart-section {
+            padding: 60px 60px;
+            background: var(--green-extra-pale);
+            text-align: center;
+        }
+        #cartItems {
+            font-size: 18px;
+            margin-bottom: 30px;
+            min-height: 50px;
+            color: var(--green-dark);
+        }
+        #saveMessage {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: 600;
+        }
 
         .food-cta {
             padding: 100px 60px;
@@ -282,6 +319,10 @@
             <div class="dish-info">
                 <h3>Kahlua Cake With Mocha Buttercream</h3>
                 <p>Kahlua-infused cake with mocha frosting.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Kahlua Cake With Mocha Buttercream">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -289,6 +330,10 @@
             <div class="dish-info">
                 <h3>Ombre Peach Cake</h3>
                 <p>Stunning peach ombre effect in layers.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Ombre Peach Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -296,6 +341,10 @@
             <div class="dish-info">
                 <h3>Pineapple Cake (with dried Pineapple flowers)</h3>
                 <p>Tropical pineapple with dried flower decor.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Pineapple Cake (with dried Pineapple flowers)">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -303,6 +352,10 @@
             <div class="dish-info">
                 <h3>Raffaello Cake (Coconut Almond Cake)</h3>
                 <p>Coconut and almond inspired by Raffaello.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Raffaello Cake (Coconut Almond Cake)">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -310,6 +363,10 @@
             <div class="dish-info">
                 <h3>White Chocolate Raspberry Cake</h3>
                 <p>White chocolate with tart raspberry filling.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="White Chocolate Raspberry Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -317,6 +374,10 @@
             <div class="dish-info">
                 <h3>Milk Chocolate Almond Cake</h3>
                 <p>Creamy milk chocolate with almond crunch.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Milk Chocolate Almond Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -324,6 +385,10 @@
             <div class="dish-info">
                 <h3>Lemon Elderflower Cake (Copycat Royal Wedding Cake)</h3>
                 <p>Light lemon and elderflower royal-inspired.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Lemon Elderflower Cake (Copycat Royal Wedding Cake)">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -331,6 +396,10 @@
             <div class="dish-info">
                 <h3>Boston Cream Pie</h3>
                 <p>Classic custard and chocolate ganache.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Boston Cream Pie">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -338,6 +407,10 @@
             <div class="dish-info">
                 <h3>Cotton Candy Cake</h3>
                 <p>Fluffy cotton candy flavor in cake form.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Cotton Candy Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -345,6 +418,10 @@
             <div class="dish-info">
                 <h3>Brown Butter Cake</h3>
                 <p>Rich nutty flavor from brown butter.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Brown Butter Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -352,6 +429,10 @@
             <div class="dish-info">
                 <h3>Nutella Banana Cake with Hazelnut Meringue</h3>
                 <p>Nutella and banana with hazelnut meringue.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Nutella Banana Cake with Hazelnut Meringue">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -359,6 +440,10 @@
             <div class="dish-info">
                 <h3>Key Lime Pie Cake</h3>
                 <p>Tangy key lime pie in cake layers.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Key Lime Pie Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -366,6 +451,10 @@
             <div class="dish-info">
                 <h3>Chocolate Raspberry Cake</h3>
                 <p>Rich chocolate with fresh raspberries.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Chocolate Raspberry Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -373,6 +462,10 @@
             <div class="dish-info">
                 <h3>Raspberry Vanilla Mini Cakes</h3>
                 <p>Delicate vanilla cakes with raspberry.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Raspberry Vanilla Mini Cakes">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -380,6 +473,10 @@
             <div class="dish-info">
                 <h3>Berry Layer Cake Momofuku Birthday Cake</h3>
                 <p>Layered berry cake with elegant finish.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Berry Layer Cake Momofuku Birthday Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -387,6 +484,10 @@
             <div class="dish-info">
                 <h3>Nutella Hazelnut Cake</h3>
                 <p>Nutella-infused cake with hazelnut crunch.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Nutella Hazelnut Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -394,6 +495,10 @@
             <div class="dish-info">
                 <h3>Caramel Apple Cake</h3>
                 <p>Spiced apple cake with caramel drizzle.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Caramel Apple Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -401,6 +506,10 @@
             <div class="dish-info">
                 <h3>Peanut Butter Chocolate Cake</h3>
                 <p>Rich chocolate with creamy peanut butter.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Peanut Butter Chocolate Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -408,6 +517,10 @@
             <div class="dish-info">
                 <h3>Nanaimo Bar Cake</h3>
                 <p>Classic Canadian-inspired layered cake.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Nanaimo Bar Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -415,6 +528,10 @@
             <div class="dish-info">
                 <h3>French Silk Pie Cake</h3>
                 <p>Silky smooth chocolate indulgence.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="French Silk Pie Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -422,6 +539,10 @@
             <div class="dish-info">
                 <h3>Mint Chocolate Chip Cake</h3>
                 <p>Refreshing mint with chocolate chips.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Mint Chocolate Chip Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -429,6 +550,10 @@
             <div class="dish-info">
                 <h3>Chocolate Dulce de Leche Cake</h3>
                 <p>Decadent chocolate with caramel dulce.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Chocolate Dulce de Leche Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -436,6 +561,10 @@
             <div class="dish-info">
                 <h3>Chocolate Gingerbread Cake</h3>
                 <p>Spiced gingerbread with chocolate twist.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Chocolate Gingerbread Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -443,6 +572,10 @@
             <div class="dish-info">
                 <h3>Ferrero Rocher Cake</h3>
                 <p>Hazelnut chocolate luxury inspired by Ferrero.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Ferrero Rocher Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -450,6 +583,10 @@
             <div class="dish-info">
                 <h3>Chocolate Mocha Cake</h3>
                 <p>Rich chocolate with coffee essence.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Chocolate Mocha Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -457,6 +594,10 @@
             <div class="dish-info">
                 <h3>Nutella Cake</h3>
                 <p>Pure Nutella bliss in every bite.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Nutella Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -464,6 +605,10 @@
             <div class="dish-info">
                 <h3>Black Forest Cake</h3>
                 <p>Classic chocolate with cherry filling.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Black Forest Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -471,6 +616,10 @@
             <div class="dish-info">
                 <h3>Chocolate Truffle Cake</h3>
                 <p>Ultra-rich chocolate truffle layers.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Chocolate Truffle Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -478,6 +627,10 @@
             <div class="dish-info">
                 <h3>Hot Chocolate Cake With Marshmallow Filling</h3>
                 <p>Warm chocolate with fluffy marshmallow.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Hot Chocolate Cake With Marshmallow Filling">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -485,6 +638,10 @@
             <div class="dish-info">
                 <h3>Dark Chocolate Honeycomb Cake</h3>
                 <p>Dark chocolate with crunchy honeycomb.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Dark Chocolate Honeycomb Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -492,6 +649,10 @@
             <div class="dish-info">
                 <h3>Turtles Cake</h3>
                 <p>Caramel pecan chocolate delight.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Turtles Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -499,6 +660,10 @@
             <div class="dish-info">
                 <h3>Cookie Dough Cake</h3>
                 <p>Cookie dough lovers' dream cake.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Cookie Dough Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -506,6 +671,10 @@
             <div class="dish-info">
                 <h3>Crème Brûlée Cake</h3>
                 <p>Creamy custard with caramelized top.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Crème Brûlée Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -513,6 +682,10 @@
             <div class="dish-info">
                 <h3>Banana Split Cake</h3>
                 <p>Banana split flavors in cake form.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Banana Split Cake">
+                    <label>اختيار هذه الكعكة</label>
+                </div>
             </div>
         </div>
     </div>
@@ -526,6 +699,10 @@
             <div class="dish-info">
                 <h3>Iced Banana Protein Matcha</h3>
                 <p>Refreshing matcha with banana protein.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Iced Banana Protein Matcha">
+                    <label>اختيار هذا المشروب</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -533,6 +710,10 @@
             <div class="dish-info">
                 <h3>Iced Vanilla Cream Protein Latte</h3>
                 <p>Creamy vanilla latte with protein boost.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Iced Vanilla Cream Protein Latte">
+                    <label>اختيار هذا المشروب</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -540,6 +721,10 @@
             <div class="dish-info">
                 <h3>Caramel Ribbon Crunch Frapp</h3>
                 <p>Rich caramel frappe with crunch topping.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Caramel Ribbon Crunch Frapp">
+                    <label>اختيار هذا المشروب</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -547,6 +732,10 @@
             <div class="dish-info">
                 <h3>Dragon Drink</h3>
                 <p>Exotic dragon fruit and mango blend.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Dragon Drink">
+                    <label>اختيار هذا المشروب</label>
+                </div>
             </div>
         </div>
         <div class="dish-card">
@@ -554,9 +743,23 @@
             <div class="dish-info">
                 <h3>Water</h3>
                 <p>Pure and refreshing hydration.</p>
+                <div class="select-checkbox">
+                    <input type="checkbox" name="selected_items[]" value="Water">
+                    <label>اختيار هذا المشروب</label>
+                </div>
             </div>
         </div>
     </div>
+</section>
+
+<!-- قسم السلة وحفظ الاختيارات -->
+<section class="cart-section">
+    <h2 style="font-family: 'Great Vibes', cursive; font-size: 42px; margin-bottom: 20px;">سلة الاختيارات</h2>
+    <div id="cartItems">لم تقم باختيار أي عنصر بعد.</div>
+    <button id="saveSelectionsBtn" class="nav-btn" style="padding: 15px 60px; font-size: 20px; margin-top: 20px;">
+        حفظ الاختيارات في قاعدة البيانات
+    </button>
+    <p id="saveMessage"></p>
 </section>
 
 <section class="food-cta">
@@ -603,7 +806,96 @@
     document.getElementById('loginBtn').addEventListener('click', function () {
         window.location.href = 'login.html';
     });
+
+    // تحديث السلة في الوقت الفعلي
+    function updateCart() {
+        var selected = [];
+        $('input[name="selected_items[]"]:checked').each(function() {
+            selected.push($(this).val());
+        });
+
+        if (selected.length === 0) {
+            $('#cartItems').text('لم تقم باختيار أي عنصر بعد.');
+        } else {
+            $('#cartItems').html('<strong>اختياراتك الحالية:</strong><br>' + selected.join('<br>'));
+        }
+    }
+
+    // تحديث السلة عند تغيير أي checkbox
+    $('input[name="selected_items[]"]').on('change', updateCart);
+
+    // حفظ الاختيارات
+    $('#saveSelectionsBtn').on('click', function() {
+        var selectedItems = [];
+        $('input[name="selected_items[]"]:checked').each(function() {
+            selectedItems.push($(this).val());
+        });
+
+        if (selectedItems.length === 0) {
+            $('#saveMessage').text('الرجاء اختيار عنصر واحد على الأقل قبل الحفظ!').css('color', 'red');
+            return;
+        }
+
+        $('#saveMessage').text('جاري الحفظ...').css('color', '#4B5945');
+
+        $.ajax({
+            url: '', // نفس الملف (لأن الكود كله في ملف واحد)
+            type: 'POST',
+            data: { save_selections: true, selections: selectedItems },
+            success: function(response) {
+                $('#saveMessage').html(response);
+            },
+            error: function() {
+                $('#saveMessage').text('فشل الاتصال، تأكد من السيرفر').css('color', 'red');
+            }
+        });
+    });
 </script>
+
+<?php
+// ==== كود PHP لحفظ الاختيارات داخل نفس الملف ====
+if (isset($_POST['save_selections'])) {
+    // تحقق من تسجيل الدخول
+    if (!isset($_SESSION['user_id'])) {
+        echo '<span style="color:red;">يجب تسجيل الدخول أولاً!</span>';
+exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
+if (!isset($_POST['selections']) || !is_array($_POST['selections']) || empty($_POST['selections'])) {
+echo '<span style="color:red;">لا توجد اختيارات للحفظ!</span>';
+exit();
+}
+
+$selections = $_POST['selections'];
+$notes = "اختيارات الكعك والمشروبات: " . implode(" | ", $selections);
+
+// اتصال بقاعدة البيانات (عدل البيانات حسب إعداداتك)
+$conn = new mysqli("localhost", "root", "", "wedding_db");
+
+if ($conn->connect_error) {
+echo '<span style="color:red;">فشل الاتصال بقاعدة البيانات</span>';
+exit();
+}
+
+// استخدام عمود notes في جدول user_packages
+$stmt = $conn->prepare("INSERT INTO user_packages (user_id, notes, created_at)
+VALUES (?, ?, NOW())
+ON DUPLICATE KEY UPDATE notes = VALUES(notes), created_at = NOW()");
+$stmt->bind_param("is", $user_id, $notes);
+
+if ($stmt->execute()) {
+echo '<span style="color:green;">تم حفظ اختياراتك بنجاح في قاعدة البيانات!</span>';
+} else {
+echo '<span style="color:red;">حدث خطأ أثناء الحفظ</span>';
+}
+
+$stmt->close();
+$conn->close();
+exit(); // مهم جدًا لمنع إعادة تحميل الصفحة كاملة
+}
+?>
 
 </body>
 </html>
