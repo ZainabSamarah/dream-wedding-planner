@@ -1,4 +1,5 @@
 <?php
+global $pdo;
 session_start();
 require_once 'config.php'; // Your database connection file with $pdo
 
@@ -16,36 +17,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Invalid email address.';
     } else {
         try {
-            // Get the owner ID
-            $stmt = $pdo->query("SELECT id FROM users WHERE role = 'owner' LIMIT 1");
-$owner = $stmt->fetch(PDO::FETCH_ASSOC);
+            // Get ALL owners (not just one)
+            $stmt = $pdo->query("SELECT id FROM users WHERE role = 'owner'");
+            $owners = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-if (!$owner) {
-$error = 'No owner account found in the system.';
-} else {
-$from_user_id = $_SESSION['user_id'] ?? null; // If logged in user
+            if (empty($owners)) {
+                $error = 'No owner accounts found in the system.';
+            } else {
+                $from_user_id = $_SESSION['user_id'] ?? null; // If logged in user
 
-$sql = "INSERT INTO messages
-(from_user_id, to_user_id, content, guest_name, guest_email, is_read, sent_at)
-VALUES (?, ?, ?, ?, ?, 0, NOW())";
+                $sql = "INSERT INTO messages 
+                        (from_user_id, to_user_id, content, guest_name, guest_email, is_read, sent_at)
+                        VALUES (?, ?, ?, ?, ?, 0, NOW())";
 
-$stmt = $pdo->prepare($sql);
-$stmt->execute([
-$from_user_id,
-$owner['id'],
-$message,
-$from_user_id ? null : $name,
-$from_user_id ? null : $email
-]);
+                $stmt = $pdo->prepare($sql);
 
-$success = 'Your message has been sent successfully! We will get back to you soon.';
-// Clear fields after success
-$_POST = [];
-}
-} catch (Exception $e) {
-$error = 'An error occurred while sending the message. Please try again.';
-}
-}
+                // Insert the same message for EVERY owner
+                foreach ($owners as $owner) {
+                    $stmt->execute([
+                            $from_user_id,
+                            $owner['id'],
+                            $message,
+                            $from_user_id ? null : $name,
+                            $from_user_id ? null : $email
+                    ]);
+                }
+
+                $success = 'Your message has been sent successfully! We will get back to you soon.';
+                // Clear form fields after success
+                $_POST = [];
+            }
+        } catch (Exception $e) {
+            $error = 'An error occurred while sending the message. Please try again.';
+        }
+    }
 }
 ?>
 
@@ -167,11 +172,11 @@ $error = 'An error occurred while sending the message. Please try again.';
         <p>We'd love to hear from you — let's plan something beautiful together!</p>
 
         <?php if ($success): ?>
-        <div class="alert success"><?php echo $success; ?></div>
+            <div class="alert success"><?php echo $success; ?></div>
         <?php endif; ?>
 
         <?php if ($error): ?>
-        <div class="alert error"><?php echo $error; ?></div>
+            <div class="alert error"><?php echo $error; ?></div>
         <?php endif; ?>
 
         <form method="POST" action="">

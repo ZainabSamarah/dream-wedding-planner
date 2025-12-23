@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>WEDÉ – Plan Your Perfect Day</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
@@ -13,13 +15,20 @@
             --green-light: #91AC8F;
             --green-pale: #B2C9AD;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--green-pale);
             color: var(--green-dark);
             overflow-x: hidden;
         }
+
         header {
             background-color: var(--green-medium);
             padding: 15px 40px;
@@ -32,13 +41,15 @@
             width: 100%;
             z-index: 10;
             height: 70px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
+
         header h1 {
             font-family: 'Great Vibes', cursive;
             font-size: 36px;
             color: var(--green-pale);
         }
+
         nav a {
             color: white;
             text-decoration: none;
@@ -46,7 +57,11 @@
             font-weight: 500;
             transition: 0.3s;
         }
-        nav a:hover { opacity: 0.8; }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
         .nav-btn {
             padding: 10px 20px;
             background-color: var(--green-light);
@@ -58,14 +73,17 @@
             margin-left: 25px;
             transition: 0.3s;
         }
+
         .nav-btn:hover {
             background-color: var(--green-medium);
             transform: translateY(-2px);
         }
+
         .profile-dropdown {
             position: relative;
             display: inline-block;
         }
+
         .profile-btn {
             padding: 10px 20px;
             background-color: var(--green-light);
@@ -80,39 +98,46 @@
             align-items: center;
             gap: 8px;
         }
+
         .profile-btn:hover {
             background-color: var(--green-medium);
             transform: translateY(-2px);
         }
+
         .dropdown-content {
             display: none;
             position: absolute;
             right: 0;
             background-color: white;
             min-width: 250px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             z-index: 1;
             border-radius: 10px;
             top: 50px;
             overflow: hidden;
         }
+
         .dropdown-content.show {
             display: block;
         }
+
         .dropdown-header {
             padding: 15px 20px;
             background-color: var(--green-light);
             color: white;
             border-bottom: 1px solid #ddd;
         }
+
         .dropdown-header p {
             margin: 5px 0;
             font-size: 14px;
         }
+
         .dropdown-header .user-name {
             font-weight: 600;
             font-size: 16px;
         }
+
         .dropdown-content a {
             color: var(--green-dark);
             padding: 12px 20px;
@@ -122,23 +147,29 @@
             gap: 10px;
             transition: 0.3s;
         }
+
         .dropdown-content a:hover {
             background-color: #f0f0f0;
         }
+
         .dropdown-content a i {
             color: var(--green-light);
         }
+
         .dropdown-divider {
             height: 1px;
             background-color: #ddd;
             margin: 5px 0;
         }
+
         .logout-link {
             color: #d32f2f !important;
         }
+
         .logout-link i {
             color: #d32f2f !important;
         }
+
         .hero {
             position: relative;
             height: 100vh;
@@ -148,6 +179,7 @@
             text-align: center;
             overflow: hidden;
         }
+
         .background-video {
             position: absolute;
             top: 0;
@@ -158,38 +190,51 @@
             opacity: 0.4;
             z-index: 1;
         }
+
         .hero-text {
             background-color: rgba(255, 255, 255, 0.9);
             padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             z-index: 5;
             position: relative;
             max-width: 700px;
             animation: fadeInUp 1s ease-out;
         }
+
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         .hero-text h2 {
             font-size: 48px;
             color: var(--green-dark);
             font-family: 'Great Vibes', cursive;
             margin-bottom: 20px;
         }
+
         .hero-text p {
             font-size: 18px;
             margin-bottom: 30px;
             color: #333;
             line-height: 1.6;
         }
+
         .cta-buttons {
             display: flex;
             gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
         }
+
         .cta-btn {
             padding: 15px 35px;
             border-radius: 30px;
@@ -198,27 +243,33 @@
             transition: 0.3s;
             border: 2px solid transparent;
         }
+
         .cta-primary {
             background: var(--green-light);
             color: white;
         }
+
         .cta-primary:hover {
             background: var(--green-dark);
             transform: translateY(-2px);
         }
+
         .cta-secondary {
             background: transparent;
             color: var(--green-dark);
             border-color: var(--green-dark);
         }
+
         .cta-secondary:hover {
             background: var(--green-dark);
             color: white;
         }
+
         .features-section {
             padding: 100px 40px;
             background: white;
         }
+
         .features-section h2 {
             font-family: 'Great Vibes', cursive;
             font-size: 48px;
@@ -226,6 +277,7 @@
             margin-bottom: 60px;
             color: var(--green-dark);
         }
+
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -233,29 +285,34 @@
             max-width: 1200px;
             margin: 0 auto;
         }
+
         .feature-card {
             background: linear-gradient(145deg, #f8f9f5, #e8f0e5);
             padding: 40px 30px;
             border-radius: 20px;
             text-align: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
         }
+
         .feature-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
         }
+
         .feature-card i {
             font-size: 48px;
             color: var(--green-light);
             margin-bottom: 20px;
         }
+
         .feature-card h3 {
             font-size: 22px;
             margin-bottom: 15px;
             color: var(--green-dark);
         }
+
         .feature-card p {
             font-size: 15px;
             color: #666;
@@ -267,12 +324,14 @@
             background: linear-gradient(135deg, #f8f9f5, white);
             text-align: center;
         }
+
         .how-it-works h2 {
             font-family: 'Great Vibes', cursive;
             font-size: 48px;
             color: var(--green-dark);
             margin-bottom: 60px;
         }
+
         .steps-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -280,16 +339,19 @@
             max-width: 1200px;
             margin: 0 auto;
         }
+
         .step-card {
             background: white;
             padding: 40px 30px;
             border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             transition: transform 0.4s ease;
         }
+
         .step-card:hover {
             transform: translateY(-10px);
         }
+
         .step-number {
             width: 60px;
             height: 60px;
@@ -303,16 +365,19 @@
             justify-content: center;
             margin: 0 auto 25px;
         }
+
         .step-card i {
             font-size: 45px;
             color: var(--green-light);
             margin-bottom: 20px;
         }
+
         .step-card h3 {
             font-size: 22px;
             margin-bottom: 15px;
             color: var(--green-dark);
         }
+
         .step-card p {
             font-size: 16px;
             color: #666;
@@ -324,18 +389,21 @@
             background: linear-gradient(135deg, #B2C9AD, #91AC8F);
             color: white;
         }
+
         .tools-section h2 {
             font-family: 'Great Vibes', cursive;
             font-size: 48px;
             text-align: center;
             margin-bottom: 20px;
         }
+
         .tools-section p {
             text-align: center;
             font-size: 18px;
             margin-bottom: 50px;
             opacity: 0.95;
         }
+
         .tools-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -343,6 +411,7 @@
             max-width: 1200px;
             margin: 0 auto;
         }
+
         .tool-card {
             background: rgba(255, 255, 255, 0.95);
             padding: 30px;
@@ -351,18 +420,22 @@
             transition: transform 0.3s;
             color: var(--green-dark);
         }
+
         .tool-card:hover {
             transform: scale(1.05);
         }
+
         .tool-card i {
             font-size: 40px;
             color: var(--green-light);
             margin-bottom: 15px;
         }
+
         .tool-card h3 {
             font-size: 20px;
             margin-bottom: 10px;
         }
+
         .tool-card a {
             display: inline-block;
             margin-top: 15px;
@@ -374,13 +447,16 @@
             font-weight: 600;
             transition: 0.3s;
         }
+
         .tool-card a:hover {
             background: var(--green-dark);
         }
+
         .testimonials-section {
             padding: 100px 40px;
             background: white;
         }
+
         .testimonials-section h2 {
             font-family: 'Great Vibes', cursive;
             font-size: 48px;
@@ -388,6 +464,7 @@
             margin-bottom: 60px;
             color: var(--green-dark);
         }
+
         .testimonials-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -395,55 +472,66 @@
             max-width: 1200px;
             margin: 0 auto;
         }
+
         .testimonial-card {
             background: #f8f9f5;
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
+
         .testimonial-card .stars {
             color: #FFD700;
             font-size: 18px;
             margin-bottom: 15px;
         }
+
         .testimonial-card p {
             font-style: italic;
             color: #555;
             margin-bottom: 20px;
             line-height: 1.6;
         }
+
         .testimonial-card .author {
             font-weight: 600;
             color: var(--green-dark);
         }
+
         .cta-section {
             padding: 100px 40px;
             background: var(--green-dark);
             color: white;
             text-align: center;
         }
+
         .cta-section h2 {
             font-family: 'Great Vibes', cursive;
             font-size: 48px;
             margin-bottom: 20px;
         }
+
         .cta-section p {
             font-size: 18px;
             margin-bottom: 30px;
         }
+
         .cta-section .cta-btn {
             background: white;
             color: var(--green-dark);
         }
+
         .cta-section .cta-btn:hover {
             background: var(--green-pale);
         }
+
         footer {
             background-color: var(--green-medium);
             color: white;
             text-align: center;
             padding: 40px 20px;
         }
+
         .footer-content {
             max-width: 1200px;
             margin: 0 auto;
@@ -452,11 +540,13 @@
             gap: 40px;
             margin-bottom: 30px;
         }
+
         .footer-column h3 {
             font-size: 18px;
             margin-bottom: 15px;
             color: var(--green-pale);
         }
+
         .footer-column a {
             display: block;
             color: white;
@@ -464,288 +554,312 @@
             margin-bottom: 10px;
             font-size: 14px;
         }
+
         .footer-column a:hover {
             color: var(--green-pale);
         }
+
         .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
             padding-top: 20px;
             margin-top: 30px;
         }
+
         @media (max-width: 768px) {
-            .hero-text h2 { font-size: 36px; }
-            .features-grid, .tools-grid, .testimonials-grid, .steps-grid { grid-template-columns: 1fr; }
+            .hero-text h2 {
+                font-size: 36px;
+            }
+
+            .features-grid,
+            .tools-grid,
+            .testimonials-grid,
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
-<body>
-<header>
-    <h1>WEDÉ</h1>
-    <nav>
-        <a href="#features">Features</a>
-        <a href="#tools">Tools</a>
-        <a href="services.php">Services</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="contact.html">Contact</a>
 
-        <!-- Profile Dropdown (Hidden by default) -->
-        <div id="profileDropdown" class="profile-dropdown" style="display: none;">
-            <button class="profile-btn" onclick="toggleDropdown()">
-                <i class="fas fa-user-circle"></i>
-                <span id="userName">User</span>
-                <i class="fas fa-chevron-down"></i>
-            </button>
-            <div id="dropdownMenu" class="dropdown-content">
-                <div class="dropdown-header">
-                    <p class="user-name" id="dropdownName">User Name</p>
-                    <p id="dropdownEmail">user@email.com</p>
+<body>
+    <header>
+        <h1>WEDÉ</h1>
+        <nav>
+            <a href="#features">Features</a>
+            <a href="#tools">Tools</a>
+            <a href="services.php">Services</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="contact.php">Contact</a>
+
+            <!-- Profile Dropdown (Hidden by default) -->
+            <div id="profileDropdown" class="profile-dropdown" style="display: none;">
+                <button class="profile-btn" onclick="toggleDropdown()">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userName">User</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div id="dropdownMenu" class="dropdown-content">
+                    <div class="dropdown-header">
+                        <p class="user-name" id="dropdownName">User Name</p>
+                        <p id="dropdownEmail">user@email.com</p>
+                    </div>
+                    <a href="profile.php" id="profileLink">
+                        <i class="fas fa-user"></i> My Profile
+                    </a>
+                    <a href="services.php">
+                        <i class="fas fa-concierge-bell"></i> My Bookings
+                    </a>
+                    <a href="services.php">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="logout.php" class="logout-link">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
                 </div>
-                <a href="profile.php">
-                    <i class="fas fa-user"></i> My Profile
-                </a>
-                <a href="services.php">
-                    <i class="fas fa-concierge-bell"></i> My Bookings
-                </a>
-                <a href="services.php">
-                    <i class="fas fa-cog"></i> Settings
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="logout.php" class="logout-link">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
+            </div>
+
+            <!-- Login Button (Shown by default) -->
+            <button id="loginBtn" class="nav-btn">Login</button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <video autoplay muted loop playsinline class="background-video">
+            <source src="imgs/v5.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-text">
+            <h2>Plan Your Perfect Wedding</h2>
+            <p>Everything you need to plan your dream wedding in one place. Organize, track, and celebrate every moment
+                with WEDÉ.</p>
+            <div class="cta-buttons">
+                <a href="services.php" class="cta-btn cta-primary">Explore Services</a>
+                <a href="signup.php" class="cta-btn cta-secondary">Get Started Free</a>
             </div>
         </div>
+    </section>
 
-        <!-- Login Button (Shown by default) -->
-        <button id="loginBtn" class="nav-btn">Login</button>
-    </nav>
-</header>
+    <section class="features-section" id="features">
+        <h2>Everything You Need in One Place</h2>
+        <div class="features-grid">
+            <div class="feature-card" onclick="window.location.href='services.php'">
+                <i class="fas fa-calendar-check"></i>
+                <h3>Full Planning Suite</h3>
+                <p>Comprehensive tools for every aspect of your wedding planning journey</p>
+            </div>
+            <div class="feature-card" onclick="window.location.href='services.php'">
+                <i class="fas fa-users"></i>
+                <h3>Guest Management</h3>
+                <p>Track RSVPs, manage plus-ones, and organize seating arrangements</p>
+            </div>
+            <div class="feature-card" onclick="window.location.href='services.php'">
+                <i class="fas fa-dollar-sign"></i>
+                <h3>Budget Tracker</h3>
+                <p>Keep your wedding spending on track with our intuitive budget tools</p>
+            </div>
+            <div class="feature-card" onclick="window.location.href='services.php'">
+                <i class="fas fa-palette"></i>
+                <h3>Design Inspiration</h3>
+                <p>Explore thousands of photos and ideas for your perfect day</p>
+            </div>
+            <div class="feature-card" onclick="window.location.href='services.php'">
+                <i class="fas fa-search"></i>
+                <h3>Vendor Directory</h3>
+                <p>Find and connect with the best wedding vendors in your area</p>
+            </div>
+            <div class="feature-card" onclick="window.location.href='services.php'">
+                <i class="fas fa-list-check"></i>
+                <h3>Smart Checklists</h3>
+                <p>Stay organized with customized checklists for every milestone</p>
+            </div>
+        </div>
+    </section>
 
-<section class="hero">
-    <video autoplay muted loop playsinline class="background-video">
-        <source src="imgs/v5.mp4" type="video/mp4" />
-    </video>
-    <div class="hero-text">
-        <h2>Plan Your Perfect Wedding</h2>
-        <p>Everything you need to plan your dream wedding in one place. Organize, track, and celebrate every moment with WEDÉ.</p>
-        <div class="cta-buttons">
-            <a href="services.php" class="cta-btn cta-primary">Explore Services</a>
-            <a href="signup.php" class="cta-btn cta-secondary">Get Started Free</a>
+    <section class="how-it-works">
+        <h2>How It Works</h2>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <i class="fas fa-user-plus"></i>
+                <h3>Create Your Free Account</h3>
+                <p>Sign up in seconds and start building your wedding dashboard instantly</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <i class="fas fa-heart"></i>
+                <h3>Build Your Vision</h3>
+                <p>Explore tools, save inspiration, and organize every detail of your dream day</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <i class="fas fa-handshake"></i>
+                <h3>Connect with Vendors</h3>
+                <p>Find trusted professionals and bring your perfect wedding to life</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <i class="fas fa-ring"></i>
+                <h3>Celebrate!</h3>
+                <p>Enjoy your stress-free, perfectly planned wedding day</p>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="features-section" id="features">
-    <h2>Everything You Need in One Place</h2>
-    <div class="features-grid">
-        <div class="feature-card" onclick="window.location.href='services.php'">
-            <i class="fas fa-calendar-check"></i>
-            <h3>Full Planning Suite</h3>
-            <p>Comprehensive tools for every aspect of your wedding planning journey</p>
+    <section class="tools-section" id="tools">
+        <h2>Free Wedding Planning Tools</h2>
+        <p>Make planning easier with our comprehensive suite of tools</p>
+        <div class="tools-grid">
+            <div class="tool-card">
+                <i class="fas fa-clipboard-list"></i>
+                <h3>RSVP Manager</h3>
+                <p>Track guest responses efficiently</p>
+                <a href="rsvp.html">Start Tracking</a>
+            </div>
+            <div class="tool-card">
+                <i class="fas fa-wallet"></i>
+                <h3>Budget Planner</h3>
+                <p>Manage wedding expenses</p>
+                <a href="budget.html">Plan Budget</a>
+            </div>
+            <div class="tool-card">
+                <i class="fas fa-tasks"></i>
+                <h3>Checklist</h3>
+                <p>Never miss a planning task</p>
+                <a href="services.php">View Checklist</a>
+            </div>
+            <div class="tool-card">
+                <i class="fas fa-images"></i>
+                <h3>Vision Board</h3>
+                <p>Save inspiration & ideas</p>
+                <a href="gallery.html">Create Board</a>
+            </div>
         </div>
-        <div class="feature-card" onclick="window.location.href='services.php'">
-            <i class="fas fa-users"></i>
-            <h3>Guest Management</h3>
-            <p>Track RSVPs, manage plus-ones, and organize seating arrangements</p>
-        </div>
-        <div class="feature-card" onclick="window.location.href='services.php'">
-            <i class="fas fa-dollar-sign"></i>
-            <h3>Budget Tracker</h3>
-            <p>Keep your wedding spending on track with our intuitive budget tools</p>
-        </div>
-        <div class="feature-card" onclick="window.location.href='services.php'">
-            <i class="fas fa-palette"></i>
-            <h3>Design Inspiration</h3>
-            <p>Explore thousands of photos and ideas for your perfect day</p>
-        </div>
-        <div class="feature-card" onclick="window.location.href='services.php'">
-            <i class="fas fa-search"></i>
-            <h3>Vendor Directory</h3>
-            <p>Find and connect with the best wedding vendors in your area</p>
-        </div>
-        <div class="feature-card" onclick="window.location.href='services.php'">
-            <i class="fas fa-list-check"></i>
-            <h3>Smart Checklists</h3>
-            <p>Stay organized with customized checklists for every milestone</p>
-        </div>
-    </div>
-</section>
+    </section>
 
-<section class="how-it-works">
-    <h2>How It Works</h2>
-    <div class="steps-grid">
-        <div class="step-card">
-            <div class="step-number">1</div>
-            <i class="fas fa-user-plus"></i>
-            <h3>Create Your Free Account</h3>
-            <p>Sign up in seconds and start building your wedding dashboard instantly</p>
+    <section class="testimonials-section">
+        <h2>What Couples Say About Us</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p>"WEDÉ made planning our wedding so much easier! The budget tracker and guest list tools were
+                    lifesavers."</p>
+                <div class="author">— Sarah & Michael</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p>"We found all our vendors through WEDÉ and loved the checklist feature. Highly recommend!"</p>
+                <div class="author">— Emily & James</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p>"The best wedding planning platform! Everything we needed in one place. Thank you WEDÉ!"</p>
+                <div class="author">— Lisa & David</div>
+            </div>
         </div>
-        <div class="step-card">
-            <div class="step-number">2</div>
-            <i class="fas fa-heart"></i>
-            <h3>Build Your Vision</h3>
-            <p>Explore tools, save inspiration, and organize every detail of your dream day</p>
-        </div>
-        <div class="step-card">
-            <div class="step-number">3</div>
-            <i class="fas fa-handshake"></i>
-            <h3>Connect with Vendors</h3>
-            <p>Find trusted professionals and bring your perfect wedding to life</p>
-        </div>
-        <div class="step-card">
-            <div class="step-number">4</div>
-            <i class="fas fa-ring"></i>
-            <h3>Celebrate!</h3>
-            <p>Enjoy your stress-free, perfectly planned wedding day</p>
-        </div>
-    </div>
-</section>
+    </section>
 
-<section class="tools-section" id="tools">
-    <h2>Free Wedding Planning Tools</h2>
-    <p>Make planning easier with our comprehensive suite of tools</p>
-    <div class="tools-grid">
-        <div class="tool-card">
-            <i class="fas fa-clipboard-list"></i>
-            <h3>RSVP Manager</h3>
-            <p>Track guest responses efficiently</p>
-            <a href="rsvp.html">Start Tracking</a>
-        </div>
-        <div class="tool-card">
-            <i class="fas fa-wallet"></i>
-            <h3>Budget Planner</h3>
-            <p>Manage wedding expenses</p>
-            <a href="budget.html">Plan Budget</a>
-        </div>
-        <div class="tool-card">
-            <i class="fas fa-tasks"></i>
-            <h3>Checklist</h3>
-            <p>Never miss a planning task</p>
-            <a href="services.php">View Checklist</a>
-        </div>
-        <div class="tool-card">
-            <i class="fas fa-images"></i>
-            <h3>Vision Board</h3>
-            <p>Save inspiration & ideas</p>
-            <a href="gallery.html">Create Board</a>
-        </div>
-    </div>
-</section>
+    <section class="cta-section">
+        <h2>Ready to Start Planning?</h2>
+        <p>Join thousands of couples planning their perfect wedding with WEDÉ</p>
+        <a href="signup.php" class="cta-btn">Create Free Account</a>
+    </section>
 
-<section class="testimonials-section">
-    <h2>What Couples Say About Us</h2>
-    <div class="testimonials-grid">
-        <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <p>"WEDÉ made planning our wedding so much easier! The budget tracker and guest list tools were lifesavers."</p>
-            <div class="author">— Sarah & Michael</div>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Plan</h3>
+                <a href="services.php">All Services</a>
+                <a href="rsvp.html">RSVP Manager</a>
+                <a href="budget.html">Budget Tracker</a>
+                <a href="gallery.html">Gallery</a>
+            </div>
+            <div class="footer-column">
+                <h3>Discover</h3>
+                <a href="services.php">Wedding Vendors</a>
+                <a href="gallery.html">Photo Gallery</a>
+                <a href="services.php">Planning Tips</a>
+            </div>
+            <div class="footer-column">
+                <h3>Company</h3>
+                <a href="contact.php">Contact Us</a>
+                <a href="#">About WEDÉ</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div class="footer-column">
+                <h3>Follow Us</h3>
+                <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+                <a href="#"><i class="fab fa-pinterest"></i> Pinterest</a>
+            </div>
         </div>
-        <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <p>"We found all our vendors through WEDÉ and loved the checklist feature. Highly recommend!"</p>
-            <div class="author">— Emily & James</div>
+        <div class="footer-bottom">
+            © 2025 <span style="color: var(--green-pale);">WEDÉ</span> | All rights reserved
         </div>
-        <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <p>"The best wedding planning platform! Everything we needed in one place. Thank you WEDÉ!"</p>
-            <div class="author">— Lisa & David</div>
-        </div>
-    </div>
-</section>
+    </footer>
 
-<section class="cta-section">
-    <h2>Ready to Start Planning?</h2>
-    <p>Join thousands of couples planning their perfect wedding with WEDÉ</p>
-    <a href="signup.php" class="cta-btn">Create Free Account</a>
-</section>
+    <script>
+        // Check if user is logged in
+        function checkSession() {
+            fetch('check_session.php')
+                .then(response => response.json())
+                .then(data => {
+                    const profileDropdown = document.getElementById('profileDropdown');
+                    const loginBtn = document.getElementById('loginBtn');
 
-<footer>
-    <div class="footer-content">
-        <div class="footer-column">
-            <h3>Plan</h3>
-            <a href="services.php">All Services</a>
-            <a href="rsvp.html">RSVP Manager</a>
-            <a href="budget.html">Budget Tracker</a>
-            <a href="gallery.html">Gallery</a>
-        </div>
-        <div class="footer-column">
-            <h3>Discover</h3>
-            <a href="services.php">Wedding Vendors</a>
-            <a href="gallery.html">Photo Gallery</a>
-            <a href="services.php">Planning Tips</a>
-        </div>
-        <div class="footer-column">
-            <h3>Company</h3>
-            <a href="contact.html">Contact Us</a>
-            <a href="#">About WEDÉ</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-        </div>
-        <div class="footer-column">
-            <h3>Follow Us</h3>
-            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-            <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
-            <a href="#"><i class="fab fa-pinterest"></i> Pinterest</a>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        © 2025 <span style="color: var(--green-pale);">WEDÉ</span> | All rights reserved
-    </div>
-</footer>
+                    if (data.loggedin) {
+                        // User is logged in - show profile button, hide login button
+                        profileDropdown.style.display = 'inline-block';
+                        loginBtn.style.display = 'none';
 
-<script>
-    // Check if user is logged in
-    function checkSession() {
-        fetch('check_session.php')
-            .then(response => response.json())
-            .then(data => {
-                const profileDropdown = document.getElementById('profileDropdown');
-                const loginBtn = document.getElementById('loginBtn');
+                        // Update profile info
+                        document.getElementById('userName').textContent = data.firstName;
+                        document.getElementById('dropdownName').textContent = data.firstName;
+                        document.getElementById('dropdownEmail').textContent = data.email;
 
-                if (data.loggedin) {
-                    // User is logged in - show profile button, hide login button
-                    profileDropdown.style.display = 'inline-block';
-                    loginBtn.style.display = 'none';
-
-                    // Update profile info
-                    document.getElementById('userName').textContent = data.firstName;
-                    document.getElementById('dropdownName').textContent = data.firstName;
-                    document.getElementById('dropdownEmail').textContent = data.email;
-                } else {
-                    // User is not logged in - show login button, hide profile button
-                    profileDropdown.style.display = 'none';
-                    loginBtn.style.display = 'inline-block';
-                }
-            })
-            .catch(error => console.log('Session check error:', error));
-    }
-
-    // Toggle dropdown menu
-    function toggleDropdown() {
-        const dropdown = document.getElementById('dropdownMenu');
-        dropdown.classList.toggle('show');
-    }
-
-    // Close dropdown when clicking outside
-    window.addEventListener('click', function(event) {
-        const dropdown = document.getElementById('dropdownMenu');
-        const profileBtn = document.querySelector('.profile-btn');
-
-        if (dropdown && !event.target.closest('.profile-dropdown')) {
-            dropdown.classList.remove('show');
+                        // Role-based profile link
+                        const profileLink = document.getElementById('profileLink');
+                        if (data.role === 'admin' || data.role === 'owner') {
+                            profileLink.href = 'admin.php';
+                            profileLink.innerHTML = '<i class="fas fa-user-shield"></i> Admin Panel';
+                        } else {
+                            profileLink.href = 'profile.php';
+                        }
+                    } else {
+                        // User is not logged in - show login button, hide profile button
+                        profileDropdown.style.display = 'none';
+                        loginBtn.style.display = 'inline-block';
+                    }
+                })
+                .catch(error => console.log('Session check error:', error));
         }
-    });
 
-    // Login button click
-    const loginBtn = document.getElementById('loginBtn');
-    if (loginBtn) {
-        loginBtn.addEventListener('click', function () {
-            window.location.href = 'login.php';
+        // Toggle dropdown menu
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdownMenu');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function (event) {
+            const dropdown = document.getElementById('dropdownMenu');
+            const profileBtn = document.querySelector('.profile-btn');
+
+            if (dropdown && !event.target.closest('.profile-dropdown')) {
+                dropdown.classList.remove('show');
+            }
         });
-    }
 
-    // Check session on page load
-    window.addEventListener('load', checkSession);
-</script>
+        // Login button click
+        const loginBtn = document.getElementById('loginBtn');
+        if (loginBtn) {
+            loginBtn.addEventListener('click', function () {
+                window.location.href = 'login.php';
+            });
+        }
+
+        // Check session on page load
+        window.addEventListener('load', checkSession);
+    </script>
 </body>
+
 </html>

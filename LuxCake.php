@@ -1,16 +1,67 @@
 <?php
-session_start(); // لازم للتحقق من اللوج إن لاحقاً إذا أردت
+require_once 'config.php';
+
+// Ensure user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+$package_type = 'luxury';
+$items = [];
+$success_msg = "";
+
+// 1. Handle Form Submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_selections'])) {
+    try {
+        // Clear previous selections for this package
+        $stmtDel = $pdo->prepare("DELETE FROM user_cake_selections WHERE user_id = ? AND cake_id IN (SELECT id FROM cake_menu WHERE package_type = ?)");
+        $stmtDel->execute([$user_id, $package_type]);
+
+        if (isset($_POST['selected_items']) && is_array($_POST['selected_items'])) {
+            $stmtIns = $pdo->prepare("INSERT INTO user_cake_selections (user_id, cake_id) VALUES (?, ?)");
+            foreach ($_POST['selected_items'] as $cake_id) {
+                $stmtIns->execute([$user_id, $cake_id]);
+            }
+        }
+        $success_msg = "Your selections have been saved successfully!";
+    } catch (Exception $e) {
+        $error_msg = "Error saving selections: " . $e->getMessage();
+    }
+}
+
+// 2. Fetch Items from DB
+try {
+    $stmt = $pdo->prepare("SELECT * FROM cake_menu WHERE package_type = ? ORDER BY category DESC, name ASC");
+    $stmt->execute([$package_type]);
+    $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Group by category
+    $menu_by_category = [];
+    foreach ($items as $item) {
+        $menu_by_category[$item['category']][] = $item;
+    }
+
+    // Fetch current user selections to pre-check checkboxes
+    $stmt_sel = $pdo->prepare("SELECT cake_id FROM user_cake_selections WHERE user_id = ?");
+    $stmt_sel->execute([$user_id]);
+    $user_selections = $stmt_sel->fetchAll(PDO::FETCH_COLUMN);
+
+} catch (PDOException $e) {
+    die("Error fetching menu: " . $e->getMessage());
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Luxury Cake Menu – WEDÉ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- jQuery للـ AJAX -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         :root {
             --green-dark: #4B5945;
@@ -20,7 +71,11 @@ session_start(); // لازم للتحقق من اللوج إن لاحقاً إذ
             --green-extra-pale: #E8F0E5;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Poppins', sans-serif;
@@ -42,23 +97,27 @@ session_start(); // لازم للتحقق من اللوج إن لاحقاً إذ
             width: 100%;
             z-index: 10;
             height: 70px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
+
         header h1 {
             font-family: 'Great Vibes', cursive;
             font-size: 36px;
             color: var(--green-pale);
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
+
         nav a {
             color: white;
             text-decoration: none;
             margin-left: 25px;
             font-weight: 500;
             transition: 0.3s;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
-        nav a:hover { opacity: 0.8; }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
         .nav-btn {
             padding: 10px 20px;
             background-color: var(--green-light);
@@ -70,73 +129,82 @@ session_start(); // لازم للتحقق من اللوج إن لاحقاً إذ
             margin-left: 25px;
             transition: 0.3s;
         }
-        .nav-btn:hover { background-color: var(--green-dark); transform: translateY(-2px); }
+
+        .nav-btn:hover {
+            background-color: var(--green-dark);
+            transform: translateY(-2px);
+        }
 
         .food-hero {
             position: relative;
-            height: 80vh;
+            height: 60vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             overflow: hidden;
         }
+
         .food-hero video {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             opacity: 0.4;
             z-index: 1;
         }
+
         .food-hero .hero-text {
-            background: rgba(255,255,255,0.9);
+            background: rgba(255, 255, 255, 0.9);
             padding: 50px;
             border-radius: 20px;
             max-width: 800px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             z-index: 2;
         }
+
         .food-hero h1 {
             font-family: 'Great Vibes', cursive;
             font-size: 62px;
             color: var(--green-dark);
             margin-bottom: 20px;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+
         .food-hero p {
             font-size: 18px;
             line-height: 1.6;
             color: #333;
         }
 
-        .food-intro {
-            padding: 80px 60px;
+        .alert-success {
+            background-color: var(--green-light);
+            color: white;
+            padding: 15px;
             text-align: center;
-            background: linear-gradient(135deg, #f5f8f3, var(--green-pale));
-        }
-        .food-intro p {
+            margin: 20px auto;
             max-width: 800px;
-            margin: 0 auto;
-            font-size: 18px;
-            line-height: 1.8;
-            color: var(--green-dark);
+            border-radius: 10px;
         }
 
         .menu-section {
-            padding: 100px 60px;
+            padding: 80px 60px;
             background: white;
         }
-        .menu-section:nth-child(odd) {
+
+        .menu-section:nth-child(even) {
             background: var(--green-extra-pale);
         }
+
         .menu-section h2 {
             font-family: 'Great Vibes', cursive;
             font-size: 48px;
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 50px;
             color: var(--green-dark);
         }
+
         .dishes-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -144,71 +212,67 @@ session_start(); // لازم للتحقق من اللوج إن لاحقاً إذ
             max-width: 1400px;
             margin: 0 auto;
         }
+
         .dish-card {
             background: white;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(75,89,69,0.12);
+            box-shadow: 0 10px 30px rgba(75, 89, 69, 0.12);
             transition: all 0.4s ease;
             text-align: center;
         }
+
         .dish-card:hover {
             transform: translateY(-15px);
-            box-shadow: 0 25px 50px rgba(75,89,69,0.2);
+            box-shadow: 0 25px 50px rgba(75, 89, 69, 0.2);
         }
+
         .dish-card img {
             width: 100%;
             height: 250px;
             object-fit: cover;
             transition: transform 0.5s ease;
         }
+
         .dish-card:hover img {
             transform: scale(1.1);
         }
+
         .dish-info {
             padding: 30px;
         }
+
         .dish-info h3 {
             font-size: 24px;
             margin-bottom: 12px;
             color: var(--green-dark);
         }
+
         .dish-info p {
             font-size: 16px;
             color: #555;
             line-height: 1.6;
+            margin-bottom: 15px;
         }
+
         .select-checkbox {
-            margin-top: 15px;
-            display: block;
-        }
-        .select-checkbox input[type="checkbox"] {
-            transform: scale(1.4);
-            margin-right: 10px;
-            cursor: pointer;
-        }
-        .select-checkbox label {
-            font-weight: 500;
-            color: var(--green-dark);
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             cursor: pointer;
         }
 
-        /* قسم السلة */
-        .cart-section {
-            padding: 60px 60px;
-            background: var(--green-extra-pale);
-            text-align: center;
+        .select-checkbox input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--green-dark);
         }
-        #cartItems {
-            font-size: 18px;
-            margin-bottom: 30px;
-            min-height: 50px;
+
+        .select-checkbox label {
+            font-weight: 500;
             color: var(--green-dark);
-        }
-        #saveMessage {
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: 600;
         }
 
         .food-cta {
@@ -217,25 +281,30 @@ session_start(); // لازم للتحقق من اللوج إن لاحقاً إذ
             background: var(--green-dark);
             color: white;
         }
+
         .food-cta h2 {
             font-family: 'Great Vibes', cursive;
             font-size: 48px;
             margin-bottom: 20px;
         }
-        .food-cta p {
-            font-size: 18px;
-            max-width: 800px;
-            margin: 0 auto 40px;
-            opacity: 0.95;
-        }
-        .food-cta .nav-btn {
-            padding: 15px 40px;
+
+        .submit-btn {
+            padding: 15px 45px;
             font-size: 18px;
             background: var(--green-light);
+            color: white;
+            border-radius: 30px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 30px;
         }
-        .food-cta .nav-btn:hover {
+
+        .submit-btn:hover {
             background: var(--green-pale);
             color: var(--green-dark);
+            transform: scale(1.05);
         }
 
         footer {
@@ -244,658 +313,82 @@ session_start(); // لازم للتحقق من اللوج إن لاحقاً إذ
             text-align: center;
             padding: 40px 20px;
         }
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-bottom: 30px;
-        }
-        .footer-column h3 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: var(--green-pale);
-            font-weight: 500;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-        }
-        .footer-column a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            margin-bottom: 10px;
-            font-size: 14px;
-            transition: 0.3s;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-        }
-        .footer-column a:hover { color: var(--green-pale); }
+
         .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
             padding-top: 20px;
             margin-top: 30px;
         }
-
-        @media (max-width: 768px) {
-            .food-hero h1 { font-size: 48px; }
-            .food-hero .hero-text { padding: 30px; }
-            .dishes-grid { grid-template-columns: 1fr; }
-            .dish-card img { height: 200px; }
-        }
     </style>
 </head>
+
 <body>
 
-<header>
-    <h1>WEDÉ</h1>
-    <nav>
-        <a href="#features">Features</a>
-        <a href="#tools">Tools</a>
-        <a href="services.html">Services</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="contact.html">Contact</a>
-        <button id="loginBtn" class="nav-btn">Login</button>
-    </nav>
-</header>
+    <header>
+        <h1>WEDÉ</h1>
+        <nav>
+            <a href="main.html">Home</a>
+            <a href="services.php">Services</a>
+            <a href="profile.php">Profile</a>
+            <a href="contact.php">Contact</a>
+            <a href="logout.php" class="nav-btn">Logout</a>
+        </nav>
+    </header>
 
-<section class="food-hero">
-    <video autoplay muted loop playsinline>
-        <source src="imgs/v5.mp4" type="video/mp4">
-    </video>
-    <div class="hero-text">
-        <h1>Luxury Cake Menu</h1>
-        <p>Indulge in our premium selection of sophisticated cakes, crafted for an unforgettable experience with WEDÉ.</p>
-    </div>
-</section>
+    <section class="food-hero">
+        <video autoplay muted loop playsinline>
+            <source src="imgs/v5.mp4" type="video/mp4">
+        </video>
+        <div class="hero-text">
+            <h1>Luxury Cake Menu</h1>
+            <p>Indulge in our premium selection of sophisticated cakes and artisanal drinks, curated for your dream
+                wedding.</p>
+        </div>
+    </section>
 
-<section class="food-intro">
-    <p>Indulge in our premium selection of sophisticated cakes, crafted for an unforgettable experience with WEDÉ.</p>
-</section>
+    <?php if ($success_msg): ?>
+        <div class="alert-success">
+            <i class="fas fa-check-circle"></i> <?php echo $success_msg; ?>
+        </div>
+    <?php endif; ?>
 
-<section class="menu-section">
-    <h2>Luxury Cakes</h2>
-    <div class="dishes-grid">
-        <div class="dish-card">
-            <img src="imgs/Kahlua Cake With Mocha Buttercream.jpg" alt="Kahlua Cake With Mocha Buttercream">
-            <div class="dish-info">
-                <h3>Kahlua Cake With Mocha Buttercream</h3>
-                <p>Kahlua-infused cake with mocha frosting.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Kahlua Cake With Mocha Buttercream">
-                    <label>اختيار هذه الكعكة</label>
+    <form method="POST">
+        <?php foreach ($menu_by_category as $category => $items): ?>
+            <section class="menu-section">
+                <h2><?php echo htmlspecialchars($category); ?></h2>
+                <div class="dishes-grid">
+                    <?php foreach ($items as $item): ?>
+                        <div class="dish-card">
+                            <img src="<?php echo htmlspecialchars($item['image_url']); ?>"
+                                alt="<?php echo htmlspecialchars($item['name']); ?>">
+                            <div class="dish-info">
+                                <h3><?php echo htmlspecialchars($item['name']); ?></h3>
+                                <p><?php echo htmlspecialchars($item['description']); ?></p>
+                                <div class="select-checkbox">
+                                    <input type="checkbox" name="selected_items[]" value="<?php echo $item['id']; ?>"
+                                        id="cake_<?php echo $item['id']; ?>" <?php echo in_array($item['id'], $user_selections) ? 'checked' : ''; ?>>
+                                    <label for="cake_<?php echo $item['id']; ?>">Select this item</label>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Ombre Peach Cake.jpg" alt="Ombre Peach Cake">
-            <div class="dish-info">
-                <h3>Ombre Peach Cake</h3>
-                <p>Stunning peach ombre effect in layers.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Ombre Peach Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Pineapple Cake (with dried Pineapple flowers).jpg" alt="Pineapple Cake">
-            <div class="dish-info">
-                <h3>Pineapple Cake (with dried Pineapple flowers)</h3>
-                <p>Tropical pineapple with dried flower decor.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Pineapple Cake (with dried Pineapple flowers)">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Raffaello Cake (Coconut Almond Cake).jpg" alt="Raffaello Cake">
-            <div class="dish-info">
-                <h3>Raffaello Cake (Coconut Almond Cake)</h3>
-                <p>Coconut and almond inspired by Raffaello.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Raffaello Cake (Coconut Almond Cake)">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/White Chocolate Raspberry Cake.jpg" alt="White Chocolate Raspberry Cake">
-            <div class="dish-info">
-                <h3>White Chocolate Raspberry Cake</h3>
-                <p>White chocolate with tart raspberry filling.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="White Chocolate Raspberry Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Milk Chocolate Almond Cake.jpg" alt="Milk Chocolate Almond Cake">
-            <div class="dish-info">
-                <h3>Milk Chocolate Almond Cake</h3>
-                <p>Creamy milk chocolate with almond crunch.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Milk Chocolate Almond Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Lemon Elderflower Cake (Copycat Royal Wedding Cake).jpg" alt="Lemon Elderflower Cake">
-            <div class="dish-info">
-                <h3>Lemon Elderflower Cake (Copycat Royal Wedding Cake)</h3>
-                <p>Light lemon and elderflower royal-inspired.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Lemon Elderflower Cake (Copycat Royal Wedding Cake)">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Boston Cream Pie.jpg" alt="Boston Cream Pie">
-            <div class="dish-info">
-                <h3>Boston Cream Pie</h3>
-                <p>Classic custard and chocolate ganache.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Boston Cream Pie">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Cotton Candy Cake.jpg" alt="Cotton Candy Cake">
-            <div class="dish-info">
-                <h3>Cotton Candy Cake</h3>
-                <p>Fluffy cotton candy flavor in cake form.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Cotton Candy Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Brown Butter Cake.jpg" alt="Brown Butter Cake">
-            <div class="dish-info">
-                <h3>Brown Butter Cake</h3>
-                <p>Rich nutty flavor from brown butter.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Brown Butter Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Nutella Banana Cake with Hazelnut Meringue.jpg" alt="Nutella Banana Cake">
-            <div class="dish-info">
-                <h3>Nutella Banana Cake with Hazelnut Meringue</h3>
-                <p>Nutella and banana with hazelnut meringue.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Nutella Banana Cake with Hazelnut Meringue">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Key Lime Pie Cake.jpg" alt="Key Lime Pie Cake">
-            <div class="dish-info">
-                <h3>Key Lime Pie Cake</h3>
-                <p>Tangy key lime pie in cake layers.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Key Lime Pie Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Chocolate Raspberry Cake.jpg" alt="Chocolate Raspberry Cake">
-            <div class="dish-info">
-                <h3>Chocolate Raspberry Cake</h3>
-                <p>Rich chocolate with fresh raspberries.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Chocolate Raspberry Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Raspberry Vanilla Mini Cakes.jpg" alt="Raspberry Vanilla Mini Cakes">
-            <div class="dish-info">
-                <h3>Raspberry Vanilla Mini Cakes</h3>
-                <p>Delicate vanilla cakes with raspberry.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Raspberry Vanilla Mini Cakes">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Berry Layer Cake Momofuku Birthday Cake.jpg" alt="Berry Layer Cake">
-            <div class="dish-info">
-                <h3>Berry Layer Cake Momofuku Birthday Cake</h3>
-                <p>Layered berry cake with elegant finish.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Berry Layer Cake Momofuku Birthday Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Nutella Hazelnut Cake.jpg" alt="Nutella Hazelnut Cake">
-            <div class="dish-info">
-                <h3>Nutella Hazelnut Cake</h3>
-                <p>Nutella-infused cake with hazelnut crunch.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Nutella Hazelnut Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Caramel Apple Cake.jpg" alt="Caramel Apple Cake">
-            <div class="dish-info">
-                <h3>Caramel Apple Cake</h3>
-                <p>Spiced apple cake with caramel drizzle.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Caramel Apple Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Peanut Butter Chocolate Cake.jpg" alt="Peanut Butter Chocolate Cake">
-            <div class="dish-info">
-                <h3>Peanut Butter Chocolate Cake</h3>
-                <p>Rich chocolate with creamy peanut butter.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Peanut Butter Chocolate Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Nanaimo Bar Cake.jpg" alt="Nanaimo Bar Cake">
-            <div class="dish-info">
-                <h3>Nanaimo Bar Cake</h3>
-                <p>Classic Canadian-inspired layered cake.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Nanaimo Bar Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/French Silk Pie Cake (Copycat Deep'n Delicious Chocolate Cake).jpg" alt="French Silk Pie Cake">
-            <div class="dish-info">
-                <h3>French Silk Pie Cake</h3>
-                <p>Silky smooth chocolate indulgence.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="French Silk Pie Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Mint Chocolate Chip Cake.jpg" alt="Mint Chocolate Chip Cake">
-            <div class="dish-info">
-                <h3>Mint Chocolate Chip Cake</h3>
-                <p>Refreshing mint with chocolate chips.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Mint Chocolate Chip Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Chocolate Dulce de Leche Cake.jpg" alt="Chocolate Dulce de Leche Cake">
-            <div class="dish-info">
-                <h3>Chocolate Dulce de Leche Cake</h3>
-                <p>Decadent chocolate with caramel dulce.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Chocolate Dulce de Leche Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Chocolate Gingerbread Cake.jpg" alt="Chocolate Gingerbread Cake">
-            <div class="dish-info">
-                <h3>Chocolate Gingerbread Cake</h3>
-                <p>Spiced gingerbread with chocolate twist.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Chocolate Gingerbread Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Ferrero Rocher Cake.jpg" alt="Ferrero Rocher Cake">
-            <div class="dish-info">
-                <h3>Ferrero Rocher Cake</h3>
-                <p>Hazelnut chocolate luxury inspired by Ferrero.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Ferrero Rocher Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Chocolate Mocha Cake.jpg" alt="Chocolate Mocha Cake">
-            <div class="dish-info">
-                <h3>Chocolate Mocha Cake</h3>
-                <p>Rich chocolate with coffee essence.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Chocolate Mocha Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Nutella Cake.jpg" alt="Nutella Cake">
-            <div class="dish-info">
-                <h3>Nutella Cake</h3>
-                <p>Pure Nutella bliss in every bite.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Nutella Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Black Forest Cake.jpg" alt="Black Forest Cake">
-            <div class="dish-info">
-                <h3>Black Forest Cake</h3>
-                <p>Classic chocolate with cherry filling.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Black Forest Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Chocolate Truffle Cake.jpg" alt="Chocolate Truffle Cake">
-            <div class="dish-info">
-                <h3>Chocolate Truffle Cake</h3>
-                <p>Ultra-rich chocolate truffle layers.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Chocolate Truffle Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Chocolate Strawberry Cake Hot Chocolate Cake With Marshmallow Filling.jpg" alt="Hot Chocolate Cake">
-            <div class="dish-info">
-                <h3>Hot Chocolate Cake With Marshmallow Filling</h3>
-                <p>Warm chocolate with fluffy marshmallow.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Hot Chocolate Cake With Marshmallow Filling">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Dark Chocolate Honeycomb Cake.jpg" alt="Dark Chocolate Honeycomb Cake">
-            <div class="dish-info">
-                <h3>Dark Chocolate Honeycomb Cake</h3>
-                <p>Dark chocolate with crunchy honeycomb.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Dark Chocolate Honeycomb Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Turtles Cake.jpg" alt="Turtles Cake">
-            <div class="dish-info">
-                <h3>Turtles Cake</h3>
-                <p>Caramel pecan chocolate delight.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Turtles Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Cookie Dough Cake.jpg" alt="Cookie Dough Cake">
-            <div class="dish-info">
-                <h3>Cookie Dough Cake</h3>
-                <p>Cookie dough lovers' dream cake.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Cookie Dough Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Crème Brûlée Cake.jpg" alt="Crème Brûlée Cake">
-            <div class="dish-info">
-                <h3>Crème Brûlée Cake</h3>
-                <p>Creamy custard with caramelized top.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Crème Brûlée Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/Banana Split Cake.jpg" alt="Banana Split Cake">
-            <div class="dish-info">
-                <h3>Banana Split Cake</h3>
-                <p>Banana split flavors in cake form.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Banana Split Cake">
-                    <label>اختيار هذه الكعكة</label>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+            </section>
+        <?php endforeach; ?>
 
-<section class="menu-section">
-    <h2>Drinks</h2>
-    <div class="dishes-grid">
-        <div class="dish-card">
-            <img src="imgs/IcedBananaProteinMatcha.jpg" alt="Iced Banana Protein Matcha">
-            <div class="dish-info">
-                <h3>Iced Banana Protein Matcha</h3>
-                <p>Refreshing matcha with banana protein.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Iced Banana Protein Matcha">
-                    <label>اختيار هذا المشروب</label>
-                </div>
-            </div>
+        <section class="food-cta">
+            <h2>Finalized Your Dream Menu?</h2>
+            <p>Save your selections and we'll take care of the rest.</p>
+            <button type="submit" name="save_selections" class="submit-btn">Save Content</button>
+        </section>
+    </form>
+
+    <footer>
+        <div class="footer-bottom">
+            © 2025 <span style="color: var(--green-pale);">WEDÉ</span> | All rights reserved
         </div>
-        <div class="dish-card">
-            <img src="imgs/IcedVanillaCreamProteinLatte.jpg" alt="Iced Vanilla Cream Protein Latte">
-            <div class="dish-info">
-                <h3>Iced Vanilla Cream Protein Latte</h3>
-                <p>Creamy vanilla latte with protein boost.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Iced Vanilla Cream Protein Latte">
-                    <label>اختيار هذا المشروب</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/SBX20211210_CaramelRibbonCrunchFrapp.jpg" alt="Caramel Ribbon Crunch Frapp">
-            <div class="dish-info">
-                <h3>Caramel Ribbon Crunch Frapp</h3>
-                <p>Rich caramel frappe with crunch topping.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Caramel Ribbon Crunch Frapp">
-                    <label>اختيار هذا المشروب</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/DragonDrink.jpg" alt="Dragon Drink">
-            <div class="dish-info">
-                <h3>Dragon Drink</h3>
-                <p>Exotic dragon fruit and mango blend.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Dragon Drink">
-                    <label>اختيار هذا المشروب</label>
-                </div>
-            </div>
-        </div>
-        <div class="dish-card">
-            <img src="imgs/water (2).jpg" alt="Water">
-            <div class="dish-info">
-                <h3>Water</h3>
-                <p>Pure and refreshing hydration.</p>
-                <div class="select-checkbox">
-                    <input type="checkbox" name="selected_items[]" value="Water">
-                    <label>اختيار هذا المشروب</label>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- قسم السلة وحفظ الاختيارات -->
-<section class="cart-section">
-    <h2 style="font-family: 'Great Vibes', cursive; font-size: 42px; margin-bottom: 20px;">سلة الاختيارات</h2>
-    <div id="cartItems">لم تقم باختيار أي عنصر بعد.</div>
-    <button id="saveSelectionsBtn" class="nav-btn" style="padding: 15px 60px; font-size: 20px; margin-top: 20px;">
-        حفظ الاختيارات في قاعدة البيانات
-    </button>
-    <p id="saveMessage"></p>
-</section>
-
-<section class="food-cta">
-    <h2>Ready to Indulge in Luxury?</h2>
-    <p>Choose your premium cakes and exclusive drinks for an unforgettable celebration.</p>
-    <button class="nav-btn" onclick="window.location.href='contact.html'">Book a Consultation</button>
-</section>
-
-<footer>
-    <div class="footer-content">
-        <div class="footer-column">
-            <h3>Plan</h3>
-            <a href="services.html">All Services</a>
-            <a href="rsvp.html">RSVP Manager</a>
-            <a href="budget.html">Budget Tracker</a>
-            <a href="gallery.html">Gallery</a>
-        </div>
-        <div class="footer-column">
-            <h3>Discover</h3>
-            <a href="services.html">Wedding Vendors</a>
-            <a href="gallery.html">Photo Gallery</a>
-            <a href="services.html">Planning Tips</a>
-        </div>
-        <div class="footer-column">
-            <h3>Company</h3>
-            <a href="contact.html">Contact Us</a>
-            <a href="#">About WEDÉ</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-        </div>
-        <div class="footer-column">
-            <h3>Follow Us</h3>
-            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-            <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
-            <a href="#"><i class="fab fa-pinterest"></i> Pinterest</a>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        © 2025 <span style="color: var(--green-pale);">WEDÉ</span> | All rights reserved
-    </div>
-</footer>
-
-<script>
-    document.getElementById('loginBtn').addEventListener('click', function () {
-        window.location.href = 'login.html';
-    });
-
-    // تحديث السلة في الوقت الفعلي
-    function updateCart() {
-        var selected = [];
-        $('input[name="selected_items[]"]:checked').each(function() {
-            selected.push($(this).val());
-        });
-
-        if (selected.length === 0) {
-            $('#cartItems').text('لم تقم باختيار أي عنصر بعد.');
-        } else {
-            $('#cartItems').html('<strong>اختياراتك الحالية:</strong><br>' + selected.join('<br>'));
-        }
-    }
-
-    // تحديث السلة عند تغيير أي checkbox
-    $('input[name="selected_items[]"]').on('change', updateCart);
-
-    // حفظ الاختيارات
-    $('#saveSelectionsBtn').on('click', function() {
-        var selectedItems = [];
-        $('input[name="selected_items[]"]:checked').each(function() {
-            selectedItems.push($(this).val());
-        });
-
-        if (selectedItems.length === 0) {
-            $('#saveMessage').text('الرجاء اختيار عنصر واحد على الأقل قبل الحفظ!').css('color', 'red');
-            return;
-        }
-
-        $('#saveMessage').text('جاري الحفظ...').css('color', '#4B5945');
-
-        $.ajax({
-            url: '', // نفس الملف (لأن الكود كله في ملف واحد)
-            type: 'POST',
-            data: { save_selections: true, selections: selectedItems },
-            success: function(response) {
-                $('#saveMessage').html(response);
-            },
-            error: function() {
-                $('#saveMessage').text('فشل الاتصال، تأكد من السيرفر').css('color', 'red');
-            }
-        });
-    });
-</script>
-
-<?php
-// ==== كود PHP لحفظ الاختيارات داخل نفس الملف ====
-if (isset($_POST['save_selections'])) {
-    // تحقق من تسجيل الدخول
-    if (!isset($_SESSION['user_id'])) {
-        echo '<span style="color:red;">يجب تسجيل الدخول أولاً!</span>';
-exit();
-}
-
-$user_id = $_SESSION['user_id'];
-
-if (!isset($_POST['selections']) || !is_array($_POST['selections']) || empty($_POST['selections'])) {
-echo '<span style="color:red;">لا توجد اختيارات للحفظ!</span>';
-exit();
-}
-
-$selections = $_POST['selections'];
-$notes = "اختيارات الكعك والمشروبات: " . implode(" | ", $selections);
-
-// اتصال بقاعدة البيانات (عدل البيانات حسب إعداداتك)
-$conn = new mysqli("localhost", "root", "", "wedding_db");
-
-if ($conn->connect_error) {
-echo '<span style="color:red;">فشل الاتصال بقاعدة البيانات</span>';
-exit();
-}
-
-// استخدام عمود notes في جدول user_packages
-$stmt = $conn->prepare("INSERT INTO user_packages (user_id, notes, created_at)
-VALUES (?, ?, NOW())
-ON DUPLICATE KEY UPDATE notes = VALUES(notes), created_at = NOW()");
-$stmt->bind_param("is", $user_id, $notes);
-
-if ($stmt->execute()) {
-echo '<span style="color:green;">تم حفظ اختياراتك بنجاح في قاعدة البيانات!</span>';
-} else {
-echo '<span style="color:red;">حدث خطأ أثناء الحفظ</span>';
-}
-
-$stmt->close();
-$conn->close();
-exit(); // مهم جدًا لمنع إعادة تحميل الصفحة كاملة
-}
-?>
+    </footer>
 
 </body>
+
 </html>

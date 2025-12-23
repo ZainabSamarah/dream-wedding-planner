@@ -1,10 +1,19 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Photography Mini Session – WEDÉ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
@@ -16,7 +25,11 @@
             --green-extra-pale: #E8F0E5;
         }
 
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Poppins', sans-serif;
@@ -38,7 +51,7 @@
             width: 100%;
             z-index: 10;
             height: 70px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
         header h1 {
@@ -53,7 +66,9 @@
             text-decoration: none;
         }
 
-        .logo-link:hover { opacity: 0.8; }
+        .logo-link:hover {
+            opacity: 0.8;
+        }
 
         nav a {
             color: white;
@@ -64,7 +79,9 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
-        nav a:hover { opacity: 0.8; }
+        nav a:hover {
+            opacity: 0.8;
+        }
 
         .nav-btn {
             padding: 10px 30px;
@@ -77,6 +94,8 @@
             font-size: 16px;
             transition: 0.3s;
             margin-left: 25px;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .nav-btn:hover {
@@ -98,28 +117,32 @@
         .hero::after {
             content: "";
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index:2;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2;
         }
 
         .hero video {
             position: absolute;
-            top:0; left:0;
-            width:100%; height:100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            z-index:1;
+            z-index: 1;
         }
 
         .hero-text {
             position: relative;
             z-index: 3;
-            background: rgba(255,255,255,0.95);
+            background: rgba(255, 255, 255, 0.95);
             padding: 50px 60px;
             border-radius: 20px;
             max-width: 900px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
             color: var(--green-dark);
         }
 
@@ -128,7 +151,7 @@
             font-size: 56px;
             color: var(--green-dark);
             margin-bottom: 15px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             animation: fadeInDown 1s ease-out;
         }
 
@@ -148,13 +171,27 @@
         }
 
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* === Package Info Section === */
@@ -183,13 +220,13 @@
             background: white;
             padding: 40px 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(75,89,69,0.15);
+            box-shadow: 0 10px 30px rgba(75, 89, 69, 0.15);
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .info-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(75,89,69,0.25);
+            box-shadow: 0 20px 40px rgba(75, 89, 69, 0.25);
         }
 
         .info-card i {
@@ -225,7 +262,7 @@
             margin-bottom: 20px;
         }
 
-        .form-section > p {
+        .form-section>p {
             max-width: 750px;
             margin: 0 auto 40px;
             font-size: 18px;
@@ -239,7 +276,7 @@
             background: var(--green-extra-pale);
             padding: 50px;
             border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(75,89,69,0.15);
+            box-shadow: 0 10px 30px rgba(75, 89, 69, 0.15);
         }
 
         .form-group {
@@ -299,7 +336,7 @@
         .submit-btn:hover {
             background: linear-gradient(135deg, var(--green-medium), var(--green-dark));
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
         .saved-msg {
@@ -308,6 +345,9 @@
             font-weight: 600;
             font-size: 16px;
             display: none;
+            background: rgba(40, 167, 69, 0.1);
+            padding: 15px;
+            border-radius: 10px;
         }
 
         .saved-msg.show {
@@ -341,7 +381,7 @@
             background: white;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(75,89,69,0.1);
+            box-shadow: 0 8px 25px rgba(75, 89, 69, 0.1);
             display: flex;
             align-items: flex-start;
             gap: 20px;
@@ -410,7 +450,7 @@
             background: var(--green-pale);
             color: var(--green-dark);
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
         /* === Footer === */
@@ -448,10 +488,12 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
-        .footer-column a:hover { color: var(--green-pale); }
+        .footer-column a:hover {
+            color: var(--green-pale);
+        }
 
         .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
             padding-top: 20px;
             margin-top: 30px;
         }
@@ -483,208 +525,238 @@
 
 <body>
 
-<header>
-    <h1><a href="main.html" class="logo-link">WEDÉ</a></h1>
-    <nav>
-        <a href="#features">Features</a>
-        <a href="#tools">Tools</a>
-        <a href="services.html">Services</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="contact.html">Contact</a>
-        <button id="loginBtn" class="nav-btn">Login</button>
-    </nav>
-</header>
-
-<!-- Hero -->
-<section class="hero">
-    <video autoplay muted loop playsinline>
-        <source src="imgs/ph.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-    <div class="hero-text">
-        <h1>Photography Sessions</h1>
-        <h2>Photography Mini Session</h2>
-        <p>This package includes wedding day photography inside the venue for all users. The Mini Session outside the venue is optional for users who want a private external shoot. Choose your preferred date, time, and location if you want an outside session.</p>
-    </div>
-</section>
-
-<!-- Package Info -->
-<section class="package-info">
-    <h2>What's Included</h2>
-    <div class="info-cards">
-        <div class="info-card">
-            <i class="fas fa-camera"></i>
-            <h3>Wedding Day Coverage</h3>
-            <p>Full photography coverage inside your wedding venue, capturing every precious moment of your special day.</p>
-        </div>
-        <div class="info-card">
-            <i class="fas fa-mountain-sun"></i>
-            <h3>Mini Session Option</h3>
-            <p>Optional outdoor mini session at your chosen location - park, beach, studio, or any scenic spot you prefer.</p>
-        </div>
-        <div class="info-card">
-            <i class="fas fa-images"></i>
-            <h3>Professional Editing</h3>
-            <p>All photos professionally edited and delivered in high resolution, ready for prints and albums.</p>
-        </div>
-    </div>
-</section>
-
-<!-- Mini Session Form -->
-<section class="form-section">
-    <h2>Book Your Mini Session</h2>
-    <p>Schedule your optional outdoor photography session. Choose your perfect date, time, and location to create beautiful memories.</p>
-
-    <div class="session-form">
-        <form id="miniSessionForm">
-            <div class="form-group">
-                <label for="date"><i class="fas fa-calendar"></i> Session Date</label>
-                <input type="date" id="date" required>
-            </div>
-
-            <div class="form-group">
-                <label for="time"><i class="fas fa-clock"></i> Preferred Time</label>
-                <input type="time" id="time" required>
-            </div>
-
-            <div class="form-group">
-                <label for="location"><i class="fas fa-map-marker-alt"></i> Location</label>
-                <input type="text" id="location" placeholder="Enter location (Park, Studio, Beach...)" required>
-            </div>
-
-            <div class="form-group">
-                <label for="notes"><i class="fas fa-sticky-note"></i> Additional Notes (Optional)</label>
-                <textarea id="notes" placeholder="Any special requests or preferences..."></textarea>
-            </div>
-
-            <button type="submit" class="submit-btn">
-                <i class="fas fa-check-circle"></i> Confirm Session
-            </button>
-            <div class="saved-msg" id="savedMsg">
-                <i class="fas fa-check-circle"></i> Session Saved Successfully!
-            </div>
-        </form>
-    </div>
-</section>
-
-<!-- Benefits -->
-<section class="benefits">
-    <h2>Why Choose Our Photography</h2>
-    <div class="benefits-grid">
-        <div class="benefit-item">
-            <i class="fas fa-user-check"></i>
-            <div class="benefit-content">
-                <h4>Experienced Photographers</h4>
-                <p>Our team consists of award-winning professionals with years of wedding photography experience.</p>
-            </div>
-        </div>
-        <div class="benefit-item">
-            <i class="fas fa-bolt"></i>
-            <div class="benefit-content">
-                <h4>Quick Turnaround</h4>
-                <p>Receive your edited photos within 2-3 weeks after your wedding day.</p>
-            </div>
-        </div>
-        <div class="benefit-item">
-            <i class="fas fa-shield-alt"></i>
-            <div class="benefit-content">
-                <h4>Backup & Security</h4>
-                <p>All photos are backed up immediately with multiple redundancies for complete peace of mind.</p>
-            </div>
-        </div>
-        <div class="benefit-item">
-            <i class="fas fa-palette"></i>
-            <div class="benefit-content">
-                <h4>Custom Editing Style</h4>
-                <p>Choose from various editing styles to match your wedding theme and personal preferences.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-section">
-    <h2>Ready to Capture Your Moments?</h2>
-    <p>Let us help you create timeless memories that you'll cherish forever. Book your photography package today!</p>
-    <a href="contact.html" class="cta-btn">Contact Us Now</a>
-</section>
-
-<footer>
-    <div class="footer-content">
-        <div class="footer-column">
-            <h3>Plan</h3>
-            <a href="services.html">All Services</a>
-            <a href="rsvp.html">RSVP Manager</a>
-            <a href="budget.html">Budget Tracker</a>
+    <header>
+        <h1><a href="index.php" class="logo-link">WEDÉ</a></h1>
+        <nav>
+            <a href="index.php">Home</a>
+            <a href="services.php">Services</a>
             <a href="gallery.html">Gallery</a>
+            <a href="contact.php">Contact</a>
+            <a href="logout.php" class="nav-btn">Logout</a>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <video autoplay muted loop playsinline>
+            <source src="imgs/ph.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="hero-text">
+            <h1>Photography Sessions</h1>
+            <h2>Photography Mini Session</h2>
+            <p>This package includes wedding day photography inside the venue for all users. The Mini Session outside
+                the venue is optional for users who want a private external shoot. Choose your preferred date, time, and
+                location if you want an outside session.</p>
         </div>
-        <div class="footer-column">
-            <h3>Discover</h3>
-            <a href="services.html">Wedding Vendors</a>
-            <a href="gallery.html">Photo Gallery</a>
-            <a href="services.html">Planning Tips</a>
+    </section>
+
+    <!-- Package Info -->
+    <section class="package-info">
+        <h2>What's Included</h2>
+        <div class="info-cards">
+            <div class="info-card">
+                <i class="fas fa-camera"></i>
+                <h3>Wedding Day Coverage</h3>
+                <p>Full photography coverage inside your wedding venue, capturing every precious moment of your special
+                    day.</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-mountain-sun"></i>
+                <h3>Mini Session Option</h3>
+                <p>Optional outdoor mini session at your chosen location - park, beach, studio, or any scenic spot you
+                    prefer.</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-images"></i>
+                <h3>Professional Editing</h3>
+                <p>All photos professionally edited and delivered in high resolution, ready for prints and albums.</p>
+            </div>
         </div>
-        <div class="footer-column">
-            <h3>Company</h3>
-            <a href="contact.html">Contact Us</a>
-            <a href="#">About WEDÉ</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
+    </section>
+
+    <!-- Mini Session Form -->
+    <section class="form-section">
+        <h2>Book Your Mini Session</h2>
+        <p>Schedule your optional outdoor photography session. Choose your perfect date, time, and location to create
+            beautiful memories.</p>
+
+        <div class="session-form">
+            <form id="miniSessionForm">
+                <div class="form-group">
+                    <label for="date"><i class="fas fa-calendar"></i> Session Date</label>
+                    <input type="date" id="date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="time"><i class="fas fa-clock"></i> Preferred Time</label>
+                    <input type="time" id="time" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="location"><i class="fas fa-map-marker-alt"></i> Location</label>
+                    <input type="text" id="location" placeholder="Enter location (Park, Studio, Beach...)" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes"><i class="fas fa-sticky-note"></i> Additional Notes (Optional)</label>
+                    <textarea id="notes" placeholder="Any special requests or preferences..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <i class="fas fa-check-circle"></i> Confirm Session
+                </button>
+                <div class="saved-msg" id="savedMsg">
+                    <i class="fas fa-check-circle"></i> Session Saved Successfully!
+                </div>
+            </form>
         </div>
-        <div class="footer-column">
-            <h3>Follow Us</h3>
-            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-            <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
-            <a href="#"><i class="fab fa-pinterest"></i> Pinterest</a>
+    </section>
+
+    <!-- Benefits -->
+    <section class="benefits">
+        <h2>Why Choose Our Photography</h2>
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <i class="fas fa-user-check"></i>
+                <div class="benefit-content">
+                    <h4>Experienced Photographers</h4>
+                    <p>Our team consists of award-winning professionals with years of wedding photography experience.
+                    </p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-bolt"></i>
+                <div class="benefit-content">
+                    <h4>Quick Turnaround</h4>
+                    <p>Receive your edited photos within 2-3 weeks after your wedding day.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-shield-alt"></i>
+                <div class="benefit-content">
+                    <h4>Backup & Security</h4>
+                    <p>All photos are backed up immediately with multiple redundancies for complete peace of mind.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-palette"></i>
+                <div class="benefit-content">
+                    <h4>Custom Editing Style</h4>
+                    <p>Choose from various editing styles to match your wedding theme and personal preferences.</p>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="footer-bottom">
-        © 2025 <span style="color: var(--green-pale);">WEDÉ</span> | All rights reserved
-    </div>
-</footer>
+    </section>
 
-<script>
-    // Login button
-    document.getElementById('loginBtn').addEventListener('click', function () {
-        window.location.href = 'login.html';
-    });
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2>Ready to Capture Your Moments?</h2>
+        <p>Let us help you create timeless memories that you'll cherish forever. Book your photography package today!
+        </p>
+        <a href="contact.php" class="cta-btn">Contact Us Now</a>
+    </section>
 
-    // Mini Session Form Logic
-    const FORM_KEY = 'miniSessionData';
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Plan</h3>
+                <a href="services.php">All Services</a>
+                <a href="rsvp.html">RSVP Manager</a>
+                <a href="gallery.html">Gallery</a>
+            </div>
+            <div class="footer-column">
+                <h3>Discover</h3>
+                <a href="services.php">Wedding Vendors</a>
+                <a href="gallery.html">Photo Gallery</a>
+                <a href="services.php">Planning Tips</a>
+            </div>
+            <div class="footer-column">
+                <h3>Company</h3>
+                <a href="contact.php">Contact Us</a>
+                <a href="#">About WEDÉ</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div class="footer-column">
+                <h3>Follow Us</h3>
+                <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+                <a href="#"><i class="fab fa-pinterest"></i> Pinterest</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2025 <span style="color: var(--green-pale);">WEDÉ</span> | All rights reserved
+        </div>
+    </footer>
 
-    function loadSession() {
-        return JSON.parse(localStorage.getItem(FORM_KEY) || '{}');
-    }
+    <script>
+        // Backend Integration
+        const API_URL = 'save_photography.php';
 
-    function saveSession(data) {
-        localStorage.setItem(FORM_KEY, JSON.stringify(data));
-        const msg = document.getElementById('savedMsg');
-        msg.classList.add('show');
-        setTimeout(() => {
-            msg.classList.remove('show');
-        }, 3000);
-    }
+        document.getElementById('miniSessionForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
 
-    document.getElementById('miniSessionForm').addEventListener('submit', function(e){
-        e.preventDefault();
-        const data = {
-            date: document.getElementById('date').value,
-            time: document.getElementById('time').value,
-            location: document.getElementById('location').value,
-            notes: document.getElementById('notes').value
-        };
-        saveSession(data);
-    });
+            const btn = document.getElementById('submitBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            btn.disabled = true;
 
-    // Load saved data on page load
-    window.addEventListener('load', () => {
-        const data = loadSession();
-        if(data.date) document.getElementById('date').value = data.date;
-        if(data.time) document.getElementById('time').value = data.time;
-        if(data.location) document.getElementById('location').value = data.location;
-        if(data.notes) document.getElementById('notes').value = data.notes;
-    });
-</script>
+            const data = {
+                action: 'save_session',
+                date: document.getElementById('date').value,
+                time: document.getElementById('time').value,
+                location: document.getElementById('location').value,
+                notes: document.getElementById('notes').value
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    const msg = document.getElementById('savedMsg');
+                    msg.classList.add('show');
+                    setTimeout(() => msg.classList.remove('show'), 3000);
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('A network error occurred.');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+
+        // Load saved data on page load from DB
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'get_session' })
+                });
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    const data = result.data;
+                    if (data.session_date) document.getElementById('date').value = data.session_date;
+                    if (data.session_time) document.getElementById('time').value = data.session_time;
+                    if (data.location) document.getElementById('location').value = data.location;
+                    if (data.notes) document.getElementById('notes').value = data.notes;
+                }
+            } catch (error) {
+                console.error('Error loading session:', error);
+            }
+        });
+    </script>
 
 </body>
+
 </html>
